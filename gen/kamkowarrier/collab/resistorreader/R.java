@@ -228,7 +228,7 @@ containing a value of this type.
         public static final int icon=0x7f020001;
     }
     public static final class id {
-        public static final int action_settings=0x7f04000b;
+        public static final int action_settings=0x7f04000c;
         public static final int band1=0x7f040003;
         public static final int band2=0x7f040004;
         public static final int fill=0x7f040001;
@@ -238,8 +238,9 @@ containing a value of this type.
         public static final int output_value=0x7f040008;
         public static final int plus_minus=0x7f040009;
         public static final int stroke=0x7f040000;
-        public static final int textView=0x7f04000a;
+        public static final int textView=0x7f04000b;
         public static final int tolerance=0x7f040006;
+        public static final int tolerance_output=0x7f04000a;
     }
     public static final class layout {
         public static final int activity_resistor=0x7f030000;

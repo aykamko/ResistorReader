@@ -3,9 +3,9 @@
 
     <string name="app_name">ResistorReader</string>
     <string name="action_settings">Settings</string>
-    <string name="output_hint">Resistance:</string>
-    <string name="plusminus">±</string>
-    <string name="tolerance">%</string>
+    <string name="output_hint">0.0</string>
+    <string name="plusminus">Ω ± %</string>
+    <string name="tolerance"></string>
     <color name="black">#FF000000</color>
     <color name="brown">#FFCC6600</color>
     <color name="red">#FFFF0000</color>

@@ -8,38 +8,31 @@ public class Calculator {
 	double tol; //CURRENTLY NOT USED
 	
     public String calculate(int a, int b, int c, int d) {
-    	val1 = a;
-    	val2 = b;
-    	mul = c;
-    	tol = d;
-    	int result;
+    	
+    	this.val1 = a;
+    	this.val2 = b;
+    	this.mul = c;
+    	this.tol = d;
+    	
+    	double result;
     	String output;
     	
-    	result = (int) ((10*val1 + val2) * Math.pow(10.0,mul));
+    	result = (((10 * val1) + val2) * Math.pow(10, mul));
     	
-    	// kilo 000
-    	//mega 000,000
+    	//kilo 000 or 1e4
+    	//mega 000,000 or 1e6 /
     	
-    	if (result > 100000000) {
-    		int mill = result/1000000;
-    		int thou = (result%1000000)/1000;
-    		
-    		output = mill + "." + thou + " M " + "\u2126";
-    		
+    	if (result > 1e6) {
+    		double mill = result / 1e6;
+    		double thou = (result % 1e3) / 1e3;
+    		output = mill + thou + " M ";
+    	} else if (result > 1e3) {
+    		double thou = result / 1e3;
+    		double hund = (result % 1e2) / 1e2;
+    		output = thou + hund + " K ";
+    	} else {
+    		output = result + "";
     	}
-    	
-    	else if (result > 1000) {
-    		int thou = result/1000;
-    		int hund = (result%100)/100;
-    		
-    		output = thou + "." + hund + " K " + "\u2126";
-    		
-    	}
-    	
-    	else{
-    		output = "" + result + "\u2126";//
-    	}
-    return output;	
-    	
+    return output;
     }
 }

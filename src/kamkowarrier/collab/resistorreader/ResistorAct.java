@@ -5,8 +5,10 @@ import org.taptwo.android.widget.ViewFlow.ViewSwitchListener;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.widget.TextView;
 
 public class ResistorAct extends Activity {
@@ -23,8 +25,17 @@ public class ResistorAct extends Activity {
 	    Integer[] tolerance = { R.color.brown, R.color.red, 
 	    		R.color.gold, R.color.silver, R.color.salmon };
 	    
-	    final int[] band_vals = {0,0,0,0};
-		
+	    final int[] band_vals = {4,6,7,1};
+	    
+	    
+	    TextView symbols = (TextView) findViewById(R.id.plus_minus);
+	    symbols.measure(
+	            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+	            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+	    int width = symbols.getMeasuredWidth();
+	    symbols.setText(R.string.plusminus);
+	    symbols.setTextSize(TypedValue.COMPLEX_UNIT_PX, width + 5);
+	    
 		ViewFlow band1_vf = (ViewFlow) findViewById(R.id.band1);
 		ViewFlow band2_vf = (ViewFlow) findViewById(R.id.band2);
 		ViewFlow multiplier_vf = (ViewFlow) findViewById(R.id.multiplier);
@@ -35,16 +46,22 @@ public class ResistorAct extends Activity {
 		CircularAdapter multiplier_ca = new CircularAdapter(this, colors);
 		CircularAdapter tolerance_ca = new CircularAdapter(this, tolerance);
 		
-		band1_vf.setAdapter(band1_ca, band1_ca.MIDDLE);
-		band2_vf.setAdapter(band2_ca, band2_ca.MIDDLE);
-		multiplier_vf.setAdapter(multiplier_ca, multiplier_ca.MIDDLE);
-		tolerance_vf.setAdapter(tolerance_ca, tolerance_ca.MIDDLE);
+		band1_vf.setAdapter(band1_ca, band1_ca.MIDDLE + 4);
+		band2_vf.setAdapter(band2_ca, band2_ca.MIDDLE + 6);
+		multiplier_vf.setAdapter(multiplier_ca, multiplier_ca.MIDDLE + 7);
+		tolerance_vf.setAdapter(tolerance_ca, tolerance_ca.MIDDLE + 1);
+		
+		Calculator calc = new Calculator();
+		TextView output = (TextView) findViewById(R.id.output_value);
+		String out = calc.calculate(band_vals[0], band_vals[1], band_vals[2], band_vals[3]);
+		output.setText(out);
 		
 		band1_vf.setOnViewSwitchListener(new ViewSwitchListener() {
 		    public void onSwitched(View v, int position) {
 		    	Calculator calc = new Calculator();
 		    	TextView output = (TextView) findViewById(R.id.output_value);
-		    	String out = calc.calculate(((Integer)v.getTag()).intValue(),band_vals[1],band_vals[2],band_vals[3]);
+		    	String out = calc.calculate(((Integer)v.getTag()).intValue(), band_vals[1], 
+		    			band_vals[2], band_vals[3]);
 		    	output.setText(out);
 		    	band_vals[0] = ((Integer)v.getTag()).intValue();
 		    }
@@ -54,7 +71,8 @@ public class ResistorAct extends Activity {
 		    public void onSwitched(View v, int position) {
 		    	Calculator calc = new Calculator();
 		    	TextView output = (TextView) findViewById(R.id.output_value);
-		    	String out = calc.calculate(band_vals[0],((Integer)v.getTag()).intValue(),band_vals[2],band_vals[3]);
+		    	String out = calc.calculate(band_vals[0], ((Integer)v.getTag()).intValue(), 
+		    			band_vals[2], band_vals[3]);
 		    	output.setText(out);
 		    	band_vals[1] = ((Integer)v.getTag()).intValue();
 		    }
@@ -64,11 +82,13 @@ public class ResistorAct extends Activity {
 		    public void onSwitched(View v, int position) {
 		    	Calculator calc = new Calculator();
 		    	TextView output = (TextView) findViewById(R.id.output_value);
-		    	String out = calc.calculate(band_vals[0],band_vals[1],((Integer)v.getTag()).intValue(),band_vals[3]);
+		    	String out = calc.calculate(band_vals[0], band_vals[1], 
+		    			((Integer)v.getTag()).intValue(), band_vals[3]);
 		    	output.setText(out);
 		    	band_vals[2] = ((Integer)v.getTag()).intValue();
 		    }
 		});
+		
 	}
 
 	@Override

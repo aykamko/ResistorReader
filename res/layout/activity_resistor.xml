@@ -42,29 +42,28 @@
     
     <EditText
         android:id="@+id/output_value"
-        android:layout_gravity="center"
-        android:gravity="left"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="4"
         android:hint="@string/output_hint"
+        android:gravity="right"
         android:textSize="30sp" />
     
     <TextView
         android:id="@+id/plus_minus"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/plusminus"
-        android:textSize="50sp" />
+        android:layout_weight="3"
+        android:gravity="center"
+        android:hint="@string/plusminus" />
     
     <EditText
-        android:id="@+id/tolerance"
-        android:layout_gravity="center"
-        android:gravity="right"
-        android:layout_width="wrap_content"
+        android:id="@+id/tolerance_output"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="2"
         android:hint="@string/tolerance"
+        android:gravity="left"
         android:textSize="30sp" />
     
     </LinearLayout>
