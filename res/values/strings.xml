@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ResistorReader</string>
+    <string name="action_settings">Settings</string>
+    <string name="output_hint">Resistance:</string>
+    <string name="plusminus">±</string>
+    <string name="tolerance">%</string>
+    <color name="black">#FF000000</color>
+    <color name="brown">#FFCC6600</color>
+    <color name="red">#FFFF0000</color>
+    <color name="orange">#FFFF6600</color>
+    <color name="yellow">#FFFFFF00</color>
+    <color name="green">#FF66CC33</color>
+    <color name="blue">#FF0066CC</color>
+    <color name="violet">#FF9900CC</color>
+    <color name="gray">#FF666666</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gold">#FFFFCC00</color>
+    <color name="silver">#FFCCCCCC</color>
+    <color name="salmon">#FFFF99CC</color>
+    
+
+</resources>

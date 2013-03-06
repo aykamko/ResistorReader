@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <org.taptwo.android.widget.ViewFlow
+        android:id="@+id/band1"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:duplicateParentState="true" >
+    </org.taptwo.android.widget.ViewFlow>
+    
+    <org.taptwo.android.widget.ViewFlow
+        android:id="@+id/band2"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:duplicateParentState="true" >
+    </org.taptwo.android.widget.ViewFlow>
+    
+    <org.taptwo.android.widget.ViewFlow
+        android:id="@+id/multiplier"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:duplicateParentState="true" >
+    </org.taptwo.android.widget.ViewFlow>
+    
+    <org.taptwo.android.widget.ViewFlow
+        android:id="@+id/tolerance"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:duplicateParentState="true" >
+    </org.taptwo.android.widget.ViewFlow>
+    
+   <LinearLayout
+    android:id="@+id/output_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" > 
+    
+    <EditText
+        android:id="@+id/output_value"
+        android:layout_gravity="center"
+        android:gravity="left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/output_hint"
+        android:textSize="30sp" />
+    
+    <TextView
+        android:id="@+id/plus_minus"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/plusminus"
+        android:textSize="50sp" />
+    
+    <EditText
+        android:id="@+id/tolerance"
+        android:layout_gravity="center"
+        android:gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/tolerance"
+        android:textSize="30sp" />
+    
+    </LinearLayout>
+
+</LinearLayout>
