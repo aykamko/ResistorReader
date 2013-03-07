@@ -41,7 +41,7 @@ public final class R {
 		public static final int[] CircleFlowIndicator = { 0x7f010001, 0x7f010002, 0x7f010003, 0x7f010004, 0x7f010005, 0x7f010006, 0x7f010007, 0x7f010008 };
 	}
 	public static final class drawable {
-		public static final int icon = 0x7f020001;
+		public static final int icon = 0x7f020002;
 	}
 	public static final class attr {
 		public static final int customTypeface = 0x7f010013;

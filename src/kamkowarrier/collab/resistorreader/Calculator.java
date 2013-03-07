@@ -6,7 +6,7 @@ public class Calculator {
 	double val2;
 	double mul;
 	double tol; 
-	
+	//
     public String calculate(int a, int b, int c, int d) {
     	
     	this.val1 = a;

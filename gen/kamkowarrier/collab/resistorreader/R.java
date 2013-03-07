@@ -223,29 +223,32 @@ containing a value of this type.
         public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int icon=0x7f020001;
-        public static final int resistor_base=0x7f020002;
-        public static final int resistor_outline=0x7f020003;
+        public static final int background=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int icon=0x7f020002;
+        public static final int resistor_base=0x7f020003;
+        public static final int resistor_outline=0x7f020004;
     }
     public static final class id {
-        public static final int LL_output=0x7f040007;
-        public static final int LL_tolerance=0x7f04000b;
-        public static final int action_settings=0x7f040010;
+        public static final int LL_outputholder=0x7f040007;
+        public static final int LL_resistance=0x7f040008;
+        public static final int LL_tolerance=0x7f04000c;
+        public static final int action_settings=0x7f040012;
         public static final int band1=0x7f040003;
         public static final int band2=0x7f040004;
         public static final int fill=0x7f040001;
-        public static final int lower_bound=0x7f04000c;
+        public static final int lower_bound=0x7f04000d;
         public static final int main_layout=0x7f040002;
         public static final int multiplier=0x7f040005;
-        public static final int ohm=0x7f040009;
-        public static final int output_value=0x7f040008;
-        public static final int plus_minus=0x7f04000a;
+        public static final int ohm=0x7f04000a;
+        public static final int output_value=0x7f040009;
+        public static final int percent=0x7f04000f;
+        public static final int plus_minus=0x7f04000b;
         public static final int stroke=0x7f040000;
-        public static final int textView=0x7f04000f;
+        public static final int textView=0x7f040011;
         public static final int tolerance=0x7f040006;
-        public static final int tolerance_output=0x7f04000d;
-        public static final int upper_bound=0x7f04000e;
+        public static final int tolerance_output=0x7f04000e;
+        public static final int upper_bound=0x7f040010;
     }
     public static final class layout {
         public static final int activity_resistor=0x7f030000;
@@ -257,13 +260,14 @@ containing a value of this type.
     public static final class string {
         public static final int action_settings=0x7f050002;
         public static final int app_name=0x7f050001;
+        public static final int def_hint=0x7f050003;
         public static final int hello=0x7f050000;
-        public static final int ohm=0x7f050006;
+        public static final int ohm=0x7f050007;
         public static final int output_hint=0x7f050005;
-        public static final int percent=0x7f050008;
-        public static final int plusminus=0x7f050007;
-        public static final int range_hint=0x7f050003;
-        public static final int tolerance_hint=0x7f050004;
+        public static final int percent=0x7f050009;
+        public static final int plusminus=0x7f050008;
+        public static final int range_hint=0x7f050004;
+        public static final int tolerance_hint=0x7f050006;
     }
     public static final class style {
         /** 
