@@ -9,28 +9,28 @@
     <org.taptwo.android.widget.ViewFlow
         android:id="@+id/band1"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="80sp"
         android:duplicateParentState="true" >
     </org.taptwo.android.widget.ViewFlow>
     
     <org.taptwo.android.widget.ViewFlow
         android:id="@+id/band2"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="80sp"
         android:duplicateParentState="true" >
     </org.taptwo.android.widget.ViewFlow>
     
     <org.taptwo.android.widget.ViewFlow
         android:id="@+id/multiplier"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="80sp"
         android:duplicateParentState="true" >
     </org.taptwo.android.widget.ViewFlow>
     
     <org.taptwo.android.widget.ViewFlow
         android:id="@+id/tolerance"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="80sp"
         android:duplicateParentState="true" >
     </org.taptwo.android.widget.ViewFlow>
     
@@ -42,7 +42,7 @@
     
     <EditText
         android:id="@+id/output_value"
-        android:layout_width="0dp"
+        android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:layout_weight="4"
         android:hint="@string/output_hint"
@@ -51,7 +51,7 @@
     
     <TextView
         android:id="@+id/plus_minus"
-        android:layout_width="0dp"
+        android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
         android:gravity="center"
@@ -59,7 +59,7 @@
     
     <EditText
         android:id="@+id/tolerance_output"
-        android:layout_width="0dp"
+        android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:gravity="left"

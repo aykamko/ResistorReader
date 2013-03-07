@@ -51,10 +51,13 @@ public class ResistorAct extends Activity {
 		multiplier_vf.setAdapter(multiplier_ca, multiplier_ca.MIDDLE + 7);
 		tolerance_vf.setAdapter(tolerance_ca, tolerance_ca.MIDDLE + 1);
 		
+		//Initial calculator set
 		Calculator calc = new Calculator();
-		TextView output = (TextView) findViewById(R.id.output_value);
+		EditText output = (EditText) findViewById(R.id.output_value);
+		EditText tol_output = (EditText) findViewById(R.id.tolerance_output);
 		String out = calc.calculate(band_vals[0], band_vals[1], band_vals[2], band_vals[3]);
 		output.setText(out);
+		tol_output.setText(Double.toString(calc.tol));
 		
 		band1_vf.setOnViewSwitchListener(new ViewSwitchListener() {
 		    public void onSwitched(View v, int position) {
