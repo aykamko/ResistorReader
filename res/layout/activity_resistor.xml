@@ -6,39 +6,62 @@
     android:layout_height="match_parent"
     android:background="@drawable/background" >
 
+<LinearLayout
+    android:id="@+id/img_holder"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:orientation="horizontal"
+    android:layout_alignParentTop="true"
+    android:layout_margin="15sp" >
+    
+    <ImageView
+        android:id="@+id/resistorImg"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/img_desc"
+        android:src="@drawable/resistor_base" />
+    
+    <LinearLayout
+        android:id="@+id/band_holder"
+        android:layout_width="0sp"
+        android:layout_weight="1"
+        android:layout_height="348sp"
+        android:orientation="vertical" >
+        
     <org.taptwo.android.widget.ViewFlow
         android:id="@+id/band1"
-        android:hint="@string/def_hint"
-        android:layout_width="match_parent"
+        android:layout_width="200sp"
         android:layout_height="80sp"
-        android:duplicateParentState="true" >
+        android:duplicateParentState="true"
+        android:hint="@string/def_hint" >
+
     </org.taptwo.android.widget.ViewFlow>
 
     <org.taptwo.android.widget.ViewFlow
         android:id="@+id/band2"
-        android:layout_width="match_parent"
+        android:layout_width="200sp"
         android:layout_height="80sp"
-        android:layout_below="@id/band1"
         android:duplicateParentState="true" >
     </org.taptwo.android.widget.ViewFlow>
 
     <org.taptwo.android.widget.ViewFlow
         android:id="@+id/multiplier"
-        android:layout_width="match_parent"
+        android:layout_width="200sp"
         android:layout_height="80sp"
-        android:layout_below="@id/band2"
         android:duplicateParentState="true" >
     </org.taptwo.android.widget.ViewFlow>
 
     <org.taptwo.android.widget.ViewFlow
         android:id="@+id/tolerance"
-        android:layout_width="match_parent"
+        android:layout_width="200sp"
         android:layout_height="80sp"
-        android:layout_below="@id/multiplier"
         android:duplicateParentState="true" >
     </org.taptwo.android.widget.ViewFlow>
     
-    <LinearLayout
+    </LinearLayout>
+</LinearLayout>
+
+<LinearLayout
         android:id="@+id/LL_outputholder"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -129,6 +152,5 @@
             android:textSize="25sp" />
         
     </LinearLayout>
-    </LinearLayout>
-
+</LinearLayout>     
 </RelativeLayout>

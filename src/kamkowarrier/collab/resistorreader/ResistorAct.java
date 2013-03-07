@@ -9,7 +9,11 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.MeasureSpec;
+import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ResistorAct extends Activity {
@@ -27,14 +31,33 @@ public class ResistorAct extends Activity {
 	    		R.color.green, R.color.brown, R.color.red, R.color.gold, R.color.silver };
 	    
 	    final int[] band_vals = {4,6,7,1};   
-	    
+	    //
 	    TextView symbols = (TextView) findViewById(R.id.plus_minus);
+   /*   RelativeLayout rl = (RelativeLayout) findViewById(R.id.main_layout);
+	    LinearLayout ll = (LinearLayout) findViewById(R.id.LL_outputholder);
+	    ImageView resImg = (ImageView) findViewById(R.id.resistorImg);
+	    
+	    rl.measure(
+	            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+	            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+	    int rlHeight = rl.getMeasuredHeight();
+	    
+	    ll.measure(
+	            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+	            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+	    int llHeight = ll.getMeasuredHeight();
+	    
+	    LinearLayout.LayoutParams resImgParams = 
+	    		new LinearLayout.LayoutParams((rlHeight - llHeight), 
+	    				LayoutParams.WRAP_CONTENT);
+	    resImg.setLayoutParams(resImgParams); */
+	    
 	    symbols.measure(
 	            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
 	            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-	    int width = symbols.getMeasuredWidth();
+	    int symbolsWidth = symbols.getMeasuredWidth();
 	    symbols.setText(R.string.plusminus);
-	    symbols.setTextSize(TypedValue.COMPLEX_UNIT_PX, width + 5);
+	    symbols.setTextSize(TypedValue.COMPLEX_UNIT_PX, symbolsWidth + 5);
 	    
 		ViewFlow band1_vf = (ViewFlow) findViewById(R.id.band1);
 		ViewFlow band2_vf = (ViewFlow) findViewById(R.id.band2);
@@ -96,9 +119,13 @@ public class ResistorAct extends Activity {
 		    public void onSwitched(View v, int position) {
 		    	Calculator calc = new Calculator();
 		    	EditText output = (EditText) findViewById(R.id.tolerance_output);
+		    	TextView lower = (TextView) findViewById(R.id.lower_bound);
+		    	TextView upper = (TextView) findViewById(R.id.upper_bound);
 		    	String out = calc.calculate(band_vals[0], band_vals[1], band_vals[2], ((Integer)v.getTag()).intValue());
 		    	out = Double.toString(calc.tol);
 		    	output.setText(out);
+		    	lower.setText("( " + calc.bounds[0] + " )");
+		        upper.setText("( " + calc.bounds[1] + " )");
 		    	band_vals[3] = ((Integer)v.getTag()).intValue();
 		    }
 		});

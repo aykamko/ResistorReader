@@ -10,6 +10,7 @@
     <string name="ohm">Ω</string>
     <string name="plusminus">+  -</string>
     <string name="percent">%</string>
+    <string name="img_desc">Image of Resistor</string>
     <color name="black">#FF000000</color>
     <color name="brown">#FFCC6600</color>
     <color name="red">#FFFF0000</color>

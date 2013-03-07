@@ -6,7 +6,8 @@ public class Calculator {
 	double val2;
 	double mul;
 	double tol; 
-	//
+	String[] bounds;
+
     public String calculate(int a, int b, int c, int d) {
     	
     	this.val1 = a;
@@ -40,13 +41,16 @@ public class Calculator {
     	}
     	
     	double result;
-    	String output;
-    	
     	result = (((10 * val1) + val2) * Math.pow(10, mul)); //
-    	
-    	//kilo 000 or 1e4
-    	//mega 000,000 or 1e6
-    	
+
+    	bounds = new String[2];
+    	bounds[0] = addSuffix(result-(tol/100)*result);
+    	bounds[1] = addSuffix(result+(tol/100)*result);
+        return addSuffix(result);
+    }
+    
+    public String addSuffix(double result) {
+    	String output;
     	if (result > 1e6) {
     		double mill = result / 1e6;
     		double thou = (result % 1e3) / 1e3;
