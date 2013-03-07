@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.MeasureSpec;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class ResistorAct extends Activity {
@@ -22,8 +23,8 @@ public class ResistorAct extends Activity {
 	    		R.color.orange, R.color.yellow, R.color.green,
 	    		R.color.blue, R.color.violet, R.color.gray, R.color.white  };
 	    
-	    Integer[] tolerance = { R.color.brown, R.color.red, 
-	    		R.color.gold, R.color.silver, R.color.salmon };
+	    Integer[] tolerance = { R.color.violet, R.color.blue, 
+	    		R.color.green, R.color.brown, R.color.red, R.color.gold, R.color.silver };
 	    
 	    final int[] band_vals = {4,6,7,1};
 	    
@@ -86,6 +87,17 @@ public class ResistorAct extends Activity {
 		    			((Integer)v.getTag()).intValue(), band_vals[3]);
 		    	output.setText(out);
 		    	band_vals[2] = ((Integer)v.getTag()).intValue();
+		    }
+		});
+		
+		tolerance_vf.setOnViewSwitchListener(new ViewSwitchListener() {
+		    public void onSwitched(View v, int position) {
+		    	Calculator calc = new Calculator();
+		    	EditText output = (EditText) findViewById(R.id.tolerance_output);
+		    	String out = calc.calculate(band_vals[0], band_vals[1], band_vals[2], ((Integer)v.getTag()).intValue());
+		    	out = Double.toString(calc.tol);
+		    	output.setText(out);
+		    	band_vals[3] = ((Integer)v.getTag()).intValue();
 		    }
 		});
 		

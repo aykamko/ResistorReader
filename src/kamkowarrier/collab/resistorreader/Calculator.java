@@ -5,7 +5,7 @@ public class Calculator {
 	double val1;
 	double val2;
 	double mul;
-	double tol; //CURRENTLY NOT USED
+	double tol; 
 	
     public String calculate(int a, int b, int c, int d) {
     	
@@ -14,10 +14,35 @@ public class Calculator {
     	this.mul = c;
     	this.tol = d;
     	
+    	switch ((int) tol) {
+    	case 0:
+    		tol = 0.1;
+    		break;
+    	case 1:
+    		tol = 0.25;
+    		break;
+    	case 2:
+    		tol = 0.5;
+    		break;
+    	case 3:
+    		tol = 1;
+    		break;
+    	case 4:
+    		tol = 2;
+    		break;
+    	case 5:
+    		tol = 5;
+    		break;
+    	case 6:
+    		tol = 10;
+    		break;
+    	
+    	}
+    	
     	double result;
     	String output;
     	
-    	result = (((10 * val1) + val2) * Math.pow(10, mul));
+    	result = (((10 * val1) + val2) * Math.pow(10, mul)); //
     	
     	//kilo 000 or 1e4
     	//mega 000,000 or 1e6 /
