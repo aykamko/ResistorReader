@@ -26,8 +26,7 @@ public class ResistorAct extends Activity {
 	    Integer[] tolerance = { R.color.violet, R.color.blue, 
 	    		R.color.green, R.color.brown, R.color.red, R.color.gold, R.color.silver };
 	    
-	    final int[] band_vals = {4,6,7,1};
-	    
+	    final int[] band_vals = {4,6,7,1};   
 	    
 	    TextView symbols = (TextView) findViewById(R.id.plus_minus);
 	    symbols.measure(

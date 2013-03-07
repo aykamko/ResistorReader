@@ -207,7 +207,6 @@ containing a value of this type.
         public static final int green=0x7f070005;
         public static final int orange=0x7f070003;
         public static final int red=0x7f070002;
-        public static final int salmon=0x7f07000c;
         public static final int silver=0x7f07000b;
         public static final int violet=0x7f070007;
         public static final int white=0x7f070009;
@@ -255,7 +254,6 @@ containing a value of this type.
         public static final int hello=0x7f050000;
         public static final int output_hint=0x7f050003;
         public static final int plusminus=0x7f050004;
-        public static final int tolerance=0x7f050005;
     }
     public static final class style {
         /** 

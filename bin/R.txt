@@ -26,7 +26,6 @@ int color gray 0x7f070008
 int color green 0x7f070005
 int color orange 0x7f070003
 int color red 0x7f070002
-int color salmon 0x7f07000c
 int color silver 0x7f07000b
 int color violet 0x7f070007
 int color white 0x7f070009
@@ -56,7 +55,6 @@ int string app_name 0x7f050001
 int string hello 0x7f050000
 int string output_hint 0x7f050003
 int string plusminus 0x7f050004
-int string tolerance 0x7f050005
 int style AppBaseTheme 0x7f080000
 int style AppTheme 0x7f080001
 int[] styleable CircleFlowIndicator { 0x7f010001, 0x7f010002, 0x7f010003, 0x7f010004, 0x7f010005, 0x7f010006, 0x7f010007, 0x7f010008 }
