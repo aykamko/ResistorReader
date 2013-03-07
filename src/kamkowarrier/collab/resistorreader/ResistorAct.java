@@ -96,9 +96,13 @@ public class ResistorAct extends Activity {
 		    public void onSwitched(View v, int position) {
 		    	Calculator calc = new Calculator();
 		    	EditText output = (EditText) findViewById(R.id.tolerance_output);
+		    	TextView lower = (TextView) findViewById(R.id.lower_bound);
+		    	TextView upper = (TextView) findViewById(R.id.upper_bound);
 		    	String out = calc.calculate(band_vals[0], band_vals[1], band_vals[2], ((Integer)v.getTag()).intValue());
 		    	out = Double.toString(calc.tol);
 		    	output.setText(out);
+		    	lower.setText("( " + calc.bounds[0] + " )");
+		        upper.setText("( " + calc.bounds[1] + " )");
 		    	band_vals[3] = ((Integer)v.getTag()).intValue();
 		    }
 		});
