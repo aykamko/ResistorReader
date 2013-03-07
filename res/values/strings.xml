@@ -3,8 +3,12 @@
 
     <string name="app_name">ResistorReader</string>
     <string name="action_settings">Settings</string>
+    <string name="range_hint">(0.0)</string>
+    <string name="tolerance_hint">%0.0</string>
     <string name="output_hint">0.0</string>
-    <string name="plusminus">Ω ± %</string>
+    <string name="ohm">Ω</string>
+    <string name="plusminus">+  -</string>
+    <string name="percent">%</string>
     <color name="black">#FF000000</color>
     <color name="brown">#FFCC6600</color>
     <color name="red">#FFFF0000</color>

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
     <org.taptwo.android.widget.ViewFlow
         android:id="@+id/band1"
@@ -12,59 +11,110 @@
         android:layout_height="80sp"
         android:duplicateParentState="true" >
     </org.taptwo.android.widget.ViewFlow>
-    
+
     <org.taptwo.android.widget.ViewFlow
         android:id="@+id/band2"
         android:layout_width="match_parent"
         android:layout_height="80sp"
+        android:layout_below="@id/band1"
         android:duplicateParentState="true" >
     </org.taptwo.android.widget.ViewFlow>
-    
+
     <org.taptwo.android.widget.ViewFlow
         android:id="@+id/multiplier"
         android:layout_width="match_parent"
         android:layout_height="80sp"
+        android:layout_below="@id/band2"
         android:duplicateParentState="true" >
     </org.taptwo.android.widget.ViewFlow>
-    
+
     <org.taptwo.android.widget.ViewFlow
         android:id="@+id/tolerance"
         android:layout_width="match_parent"
         android:layout_height="80sp"
+        android:layout_below="@id/multiplier"
         android:duplicateParentState="true" >
     </org.taptwo.android.widget.ViewFlow>
     
-   <LinearLayout
-    android:id="@+id/output_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" > 
-    
-    <EditText
-        android:id="@+id/output_value"
-        android:layout_width="0sp"
+    <LinearLayout
+        android:id="@+id/LL_output" 
+        android:layout_below="@id/tolerance"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="4"
-        android:hint="@string/output_hint"
-        android:gravity="right"
-        android:textSize="30sp" />
-    
-    <TextView
-        android:id="@+id/plus_minus"
-        android:layout_width="0sp"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:gravity="center"
-        android:hint="@string/plusminus" />
-    
-    <EditText
-        android:id="@+id/tolerance_output"
-        android:layout_width="0sp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:gravity="left"
-        android:textSize="30sp" />
+        android:layout_marginRight="20sp"
+        android:layout_marginLeft="20sp" >
+        
+        <EditText
+            android:id="@+id/output_value"
+            android:layout_weight="1"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:hint="@string/output_hint"
+            android:textSize="60sp" />
+
+        <TextView
+            android:id="@+id/ohm"
+            android:text="@string/ohm"
+            android:textIsSelectable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
+            android:gravity="center"
+            android:textSize="60sp" />
     
     </LinearLayout>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/plus_minus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/LL_output"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:hint="@string/plusminus"
+        android:textIsSelectable="false"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:id="@+id/LL_tolerance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/plus_minus"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/lower_bound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/range_hint"
+            android:textIsSelectable="false"
+            android:textSize="25sp" />
+
+        <EditText
+            android:id="@+id/tolerance_output"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15sp"
+            android:layout_marginRight="15sp"
+            android:gravity="center"
+            android:hint="@string/tolerance_hint"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/upper_bound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/range_hint"
+            android:textIsSelectable="false"
+            android:textSize="25sp" />
+        
+    </LinearLayout>
+
+</RelativeLayout>

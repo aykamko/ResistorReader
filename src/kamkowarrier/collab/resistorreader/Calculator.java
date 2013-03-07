@@ -45,18 +45,23 @@ public class Calculator {
     	result = (((10 * val1) + val2) * Math.pow(10, mul)); //
     	
     	//kilo 000 or 1e4
-    	//mega 000,000 or 1e6 /
+    	//mega 000,000 or 1e6
     	
     	if (result > 1e6) {
     		double mill = result / 1e6;
     		double thou = (result % 1e3) / 1e3;
-    		output = mill + thou + " M ";
+    		int millInt = (Double.valueOf(mill)).intValue();
+    		int thouInt = (Double.valueOf(thou)).intValue();
+    		output = millInt + thouInt + "M";
     	} else if (result > 1e3) {
     		double thou = result / 1e3;
     		double hund = (result % 1e2) / 1e2;
-    		output = thou + hund + " K ";
+    		int thouInt = (Double.valueOf(thou)).intValue();
+    		int hundInt = (Double.valueOf(hund)).intValue();
+    		output = thouInt + hundInt + "K";
     	} else {
-    		output = result + "";
+    		int resultInt = (Double.valueOf(result)).intValue();
+    		output = (Integer.valueOf(resultInt)).toString();
     	}
     return output;
     }
