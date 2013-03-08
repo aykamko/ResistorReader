@@ -6,7 +6,7 @@
     <string name="def_hint">hint</string>
     <string name="range_hint">(0.0)</string>
     <string name="output_hint">0</string>
-    <string name="tolerance_hint">0.0</string>
+    <string name="tolerance_hint">10.0</string>
     <string name="ohm">Ω</string>
     <string name="plusminus">+  -</string>
     <string name="percent">%</string>
@@ -23,6 +23,19 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gold">#FFFFCC00</color>
     <color name="silver">#FFCCCCCC</color>
+    
+    <color name="androidBlue">#FF33B5E5</color>
+    
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
     
 
 </resources>

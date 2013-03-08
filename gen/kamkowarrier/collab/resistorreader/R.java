@@ -8,6 +8,9 @@
 package kamkowarrier.collab.resistorreader;
 
 public final class R {
+    public static final class array {
+        public static final int planets_array=0x7f080000;
+    }
     public static final class attr {
         /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
@@ -199,6 +202,7 @@ containing a value of this type.
         public static final int titlePadding=0x7f010009;
     }
     public static final class color {
+        public static final int androidBlue=0x7f07000c;
         public static final int black=0x7f070000;
         public static final int blue=0x7f070006;
         public static final int brown=0x7f070001;
@@ -231,35 +235,34 @@ containing a value of this type.
         public static final int resistor_outline=0x7f020005;
     }
     public static final class id {
+        public static final int FL_holder=0x7f040003;
         public static final int LL_outputholder=0x7f04000a;
         public static final int LL_resistance=0x7f04000b;
-        public static final int LL_tolerance=0x7f04000f;
-        public static final int action_settings=0x7f040015;
+        public static final int LL_tolerance=0x7f04000e;
+        public static final int action_settings=0x7f040014;
         public static final int band1=0x7f040006;
         public static final int band2=0x7f040007;
         public static final int band_holder=0x7f040005;
         public static final int fill=0x7f040001;
-        public static final int img_holder=0x7f040003;
-        public static final int lower_bound=0x7f040010;
+        public static final int lower_bound=0x7f04000f;
         public static final int main_layout=0x7f040002;
         public static final int multiplier=0x7f040008;
         public static final int ohm=0x7f04000d;
         public static final int output_value=0x7f04000c;
-        public static final int percent=0x7f040012;
-        public static final int plus_minus=0x7f04000e;
+        public static final int percent=0x7f040011;
         public static final int resistorImg=0x7f040004;
         public static final int stroke=0x7f040000;
-        public static final int textView=0x7f040014;
+        public static final int textView=0x7f040013;
         public static final int tolerance=0x7f040009;
-        public static final int tolerance_output=0x7f040011;
-        public static final int upper_bound=0x7f040013;
+        public static final int tolerance_output=0x7f040010;
+        public static final int upper_bound=0x7f040012;
     }
     public static final class layout {
         public static final int activity_resistor=0x7f030000;
         public static final int textview=0x7f030001;
     }
     public static final class menu {
-        public static final int resistor=0x7f090000;
+        public static final int resistor=0x7f0a0000;
     }
     public static final class string {
         public static final int action_settings=0x7f050002;
@@ -296,11 +299,11 @@ containing a value of this type.
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f080000;
+        public static final int AppBaseTheme=0x7f090000;
         /**  Application theme. 
  Not-API-Dependent style elements 
          */
-        public static final int AppTheme=0x7f080001;
+        public static final int AppTheme=0x7f090001;
     }
     public static final class styleable {
         /** Attributes that can be used with a CircleFlowIndicator.

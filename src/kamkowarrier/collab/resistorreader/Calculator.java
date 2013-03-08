@@ -1,13 +1,15 @@
 package kamkowarrier.collab.resistorreader;
 
+import java.math.BigDecimal;
+
 public class Calculator {
 	
 	double val1;
 	double val2;
 	double mul;
-	double tol; 
+	double tol;
 	String[] bounds;
-
+	
     public String calculate(int a, int b, int c, int d) {
     	
     	this.val1 = a;
@@ -44,25 +46,23 @@ public class Calculator {
     	result = (((10 * val1) + val2) * Math.pow(10, mul)); //
 
     	bounds = new String[2];
-    	bounds[0] = addSuffix(result-(tol/100)*result);
-    	bounds[1] = addSuffix(result+(tol/100)*result);
-        return addSuffix(result);
+    	bounds[0] = addSuffix(result-((tol/100.0)*result),2);
+    	bounds[1] = addSuffix(result+((tol/100.0)*result),2);
+        return addSuffix(result,1);
     }
     
-    public String addSuffix(double result) {
+    public String addSuffix(double result,int scale) {
     	String output;
     	if (result > 1e6) {
     		double mill = result / 1e6;
-    		double thou = (result % 1e3) / 1e3;
-    		int millInt = (Double.valueOf(mill)).intValue();
-    		int thouInt = (Double.valueOf(thou)).intValue();
-    		output = millInt + thouInt + "M";
+    		BigDecimal mill2 = new BigDecimal(mill);
+    		mill2 = mill2.setScale(scale,BigDecimal.ROUND_HALF_DOWN);
+    		output = mill2 + "M";
     	} else if (result > 1e3) {
     		double thou = result / 1e3;
-    		double hund = (result % 1e2) / 1e2;
-    		int thouInt = (Double.valueOf(thou)).intValue();
-    		int hundInt = (Double.valueOf(hund)).intValue();
-    		output = thouInt + hundInt + "K";
+    		BigDecimal thou2 = new BigDecimal(thou);
+    		thou2 = thou2.setScale(scale,BigDecimal.ROUND_HALF_DOWN);
+    		output = thou2 + "K";
     	} else {
     		int resultInt = (Double.valueOf(result)).intValue();
     		output = (Integer.valueOf(resultInt)).toString();
