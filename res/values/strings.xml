@@ -8,7 +8,7 @@
     <string name="output_hint">0</string>
     <string name="tolerance_hint">10.0</string>
     <string name="ohm">Ω</string>
-    <string name="plusminus">+  -</string>
+    <string name="blank"></string>
     <string name="percent">%</string>
     <string name="img_desc">Image of Resistor</string>
     <color name="black">#FF000000</color>
@@ -24,6 +24,15 @@
     <color name="gold">#FFFFCC00</color>
     <color name="silver">#FFCCCCCC</color>
     
+    <color name="androidBlack">#FF1D1D1D</color>
+    <color name="androidGray">#FFA6A6A6</color>
+    <color name="androidWhite">#FFFBFBFB</color>
+    <color name="androidBrown">#FF43140F</color>
+    <color name="androidRed">#FFFF4444</color>
+    <color name="androidOrange">#FFFF8800</color>
+    <color name="androidYellow">#FFFFFF4E</color>
+    <color name="androidGreen">#FF99CC00</color>
+    <color name="androidPurple">#FFAA66CC</color>
     <color name="androidBlue">#FF33B5E5</color>
     
     <string-array name="planets_array">

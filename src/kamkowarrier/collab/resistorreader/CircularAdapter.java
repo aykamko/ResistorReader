@@ -38,7 +38,7 @@ public class CircularAdapter extends BaseAdapter
         public long getItemId(int position) {
             return position % colorlist.length;
         }
-        
+        //
         public View getView(int position, View convertView, ViewGroup parent) {
            if (convertView == null) {
        		   convertView = mInflater.inflate(R.layout.textview, parent, false);

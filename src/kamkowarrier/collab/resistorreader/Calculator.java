@@ -11,7 +11,7 @@ public class Calculator {
 	String[] bounds;
 	
     public String calculate(int a, int b, int c, int d) {
-    	
+    	//
     	this.val1 = a;
     	this.val2 = b;
     	this.mul = c;

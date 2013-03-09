@@ -202,7 +202,16 @@ containing a value of this type.
         public static final int titlePadding=0x7f010009;
     }
     public static final class color {
-        public static final int androidBlue=0x7f07000c;
+        public static final int androidBlack=0x7f07000c;
+        public static final int androidBlue=0x7f070015;
+        public static final int androidBrown=0x7f07000f;
+        public static final int androidGray=0x7f07000d;
+        public static final int androidGreen=0x7f070013;
+        public static final int androidOrange=0x7f070011;
+        public static final int androidPurple=0x7f070014;
+        public static final int androidRed=0x7f070010;
+        public static final int androidWhite=0x7f07000e;
+        public static final int androidYellow=0x7f070012;
         public static final int black=0x7f070000;
         public static final int blue=0x7f070006;
         public static final int brown=0x7f070001;
@@ -235,31 +244,34 @@ containing a value of this type.
         public static final int resistor_outline=0x7f020005;
     }
     public static final class id {
-        public static final int FL_holder=0x7f040003;
-        public static final int LL_outputholder=0x7f04000a;
-        public static final int LL_resistance=0x7f04000b;
-        public static final int LL_tolerance=0x7f04000e;
-        public static final int action_settings=0x7f040014;
-        public static final int band1=0x7f040006;
-        public static final int band2=0x7f040007;
-        public static final int band_holder=0x7f040005;
+        public static final int FL_holder=0x7f04000f;
+        public static final int LL_bandholder=0x7f040003;
+        public static final int LL_outputholder=0x7f040006;
+        public static final int LL_resistance=0x7f040007;
+        public static final int LL_tolerance=0x7f04000a;
+        public static final int action_settings=0x7f040016;
+        public static final int band1=0x7f040011;
+        public static final int band2=0x7f040012;
+        public static final int bandLV=0x7f040005;
+        public static final int band_holder=0x7f040010;
         public static final int fill=0x7f040001;
-        public static final int lower_bound=0x7f04000f;
+        public static final int lower_bound=0x7f04000b;
         public static final int main_layout=0x7f040002;
-        public static final int multiplier=0x7f040008;
-        public static final int ohm=0x7f04000d;
-        public static final int output_value=0x7f04000c;
-        public static final int percent=0x7f040011;
+        public static final int multiplier=0x7f040013;
+        public static final int ohm=0x7f040009;
+        public static final int output_value=0x7f040008;
+        public static final int percent=0x7f04000d;
         public static final int resistorImg=0x7f040004;
         public static final int stroke=0x7f040000;
-        public static final int textView=0x7f040013;
-        public static final int tolerance=0x7f040009;
-        public static final int tolerance_output=0x7f040010;
-        public static final int upper_bound=0x7f040012;
+        public static final int textView=0x7f040015;
+        public static final int tolerance=0x7f040014;
+        public static final int tolerance_output=0x7f04000c;
+        public static final int upper_bound=0x7f04000e;
     }
     public static final class layout {
-        public static final int activity_resistor=0x7f030000;
-        public static final int textview=0x7f030001;
+        public static final int act_beta=0x7f030000;
+        public static final int activity_resistor=0x7f030001;
+        public static final int textview=0x7f030002;
     }
     public static final class menu {
         public static final int resistor=0x7f0a0000;
@@ -267,13 +279,13 @@ containing a value of this type.
     public static final class string {
         public static final int action_settings=0x7f050002;
         public static final int app_name=0x7f050001;
+        public static final int blank=0x7f050008;
         public static final int def_hint=0x7f050003;
         public static final int hello=0x7f050000;
         public static final int img_desc=0x7f05000a;
         public static final int ohm=0x7f050007;
         public static final int output_hint=0x7f050005;
         public static final int percent=0x7f050009;
-        public static final int plusminus=0x7f050008;
         public static final int range_hint=0x7f050004;
         public static final int tolerance_hint=0x7f050006;
     }
