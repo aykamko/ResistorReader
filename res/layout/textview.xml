@@ -4,6 +4,6 @@
         android:id="@+id/textView"
         android:textIsSelectable="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="80sp" >
     
 </TextView>
