@@ -4,9 +4,9 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@drawable/background"
     android:gravity="bottom|center_horizontal"
-    android:background="@drawable/background" >
+    android:orientation="vertical" >
     
     <LinearLayout
         android:id="@+id/LL_bandholder"
@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/img_desc"
-                android:src="@drawable/resistor" />
+                android:src="@drawable/resistor_outline" />
             
             <ListView 
                 android:id="@+id/LV_resistor"
@@ -36,10 +36,10 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:isScrollContainer="false"
-                android:divider="@android:color/transparent"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:dividerHeight="10sp" />
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10px" />
        
         </FrameLayout>
         <ListView
@@ -53,7 +53,7 @@
             android:divider="@android:color/transparent"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:dividerHeight="8sp" />
+            android:dividerHeight="8px" />
 
     </LinearLayout>
     <LinearLayout

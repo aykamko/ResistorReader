@@ -3,11 +3,6 @@ package kamkowarrier.collab.resistorreader;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.AbsListView.LayoutParams;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,27 +33,27 @@ public class ResistorAct extends Activity {
 			final BandTextView tol = new BandTextView(this, tolColors);
 			
 			// Create list of BandTextViews to be used in Adapter
-			final BandTextView[] resistorBands = { band1, band2, mult, tol};
+			final BandTextView[] resistorBands = { band1, band2, mult, tol };
 		
 			// Setting all elements
 			final EditText output = (EditText) findViewById(R.id.output_value);
 			final EditText tolOutput = (EditText) findViewById(R.id.tolerance_output);
 			final TextView lower = (TextView) findViewById(R.id.lower_bound);
 			final TextView upper = (TextView) findViewById(R.id.upper_bound);
-			final ListView lvSelect = (ListView) findViewById(R.id.LV_bands);
-			final ListView lvBands = (ListView) findViewById(R.id.LV_resistor);
+			final ListView selectLV = (ListView) findViewById(R.id.LV_bands);
+			final ListView bandLV = (ListView) findViewById(R.id.LV_resistor);
 
 			// Create and assign Color Select adapter
-			ColorSelectionAdapter lvBandsCA = new ColorSelectionAdapter(ResistorAct.this, 
+			ColorSelectionAdapter selectAdapter = new ColorSelectionAdapter(ResistorAct.this, 
 					R.layout.textview, bandColors, null, null);
-			lvSelect.setAdapter(lvBandsCA);
+			selectLV.setAdapter(selectAdapter);
 			
 			// Create and assign Resistor Band adapter
-			ResistorAdapter resAdapter = new ResistorAdapter(this, lvBandsCA, resistorBands);
-			lvBands.setAdapter(resAdapter);
+			ResistorAdapter resAdapter = new ResistorAdapter(this, selectAdapter, resistorBands);
+			bandLV.setAdapter(resAdapter);
 			
 			// Set default Active Band to band1
-			lvBandsCA.activeBand = band1;
+			selectAdapter.activeBand = band1;
 			
 			// Create calculator
 			final Calculator calc = new Calculator();
