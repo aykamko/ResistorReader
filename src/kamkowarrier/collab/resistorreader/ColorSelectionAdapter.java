@@ -10,27 +10,34 @@ import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class ColorSelectionAdapter extends ArrayAdapter<Integer> {
+public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
 	
 	Context context;
 	int layoutResourceId;
-	Integer colors[];
+	Integer[][] colorSchemes;
+	Integer[] activeScheme;
 	AbsListView.LayoutParams params;
-	BandTextView activeBand;
+	ResistorView resistorView;
 	
 	public ColorSelectionAdapter(Context context, int layoutResourceId, 
-			Integer[] colors, AbsListView.LayoutParams params, BandTextView activeBand) {
-		super(context, R.layout.textview, colors);
+			Integer[][] colorSchemes, AbsListView.LayoutParams params, ResistorView resistorView) {
+		super(context, R.layout.textview, colorSchemes);
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
-		this.colors = colors;
 		this.params = params;
-		this.activeBand = activeBand;
+		this.resistorView = resistorView;
+		this.colorSchemes = colorSchemes;
+		setActiveScheme(0);
     }
 	
 	@Override
 	public int getCount() {
-		return colors.length;
+		return activeScheme.length;
+	}
+	
+	public void setActiveScheme(int i) {
+		this.activeScheme = colorSchemes[i];
+		this.notifyDataSetChanged();
 	}
 	
 	public View getView(final int position, View convertView, ViewGroup parent) {
@@ -41,12 +48,12 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer> {
     	   }
         
            convertView = (TextView) convertView.findViewById(R.id.textView);
-           convertView.setBackgroundResource(colors[position]);
+           convertView.setBackgroundResource(activeScheme[position]);
            convertView.setTag(position);
            
            if (params != null) {
         	   AbsListView.LayoutParams newParams = new AbsListView.LayoutParams
-        			   (params.width, (params.height / colors.length) - 8);
+        			   (params.width, (params.height / activeScheme.length) - 8);
         	   convertView.setLayoutParams(newParams);
         	   } else {
         		   convertView.setLayoutParams(new AbsListView.LayoutParams
@@ -60,8 +67,7 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer> {
 					switch(e.getAction())
 					{
 					case MotionEvent.ACTION_DOWN:
-						activeBand.setBackgroundResource(colors[position]);
-						// TODO: Have MotionEvent communicate with calculator
+						resistorView.updateActiveBand(activeScheme[position]);
 						return true;
 					}
 					return false;

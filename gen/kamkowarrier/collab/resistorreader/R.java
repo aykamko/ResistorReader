@@ -54,27 +54,26 @@ public final class R {
         public static final int background=0x7f020000;
         public static final int ic_launcher=0x7f020001;
         public static final int resistor=0x7f020002;
-        public static final int resistor_base=0x7f020003;
+        public static final int resistor_mask=0x7f020003;
         public static final int resistor_outline=0x7f020004;
     }
     public static final class id {
         public static final int FL_resistor=0x7f0a0002;
         public static final int LL_bandholder=0x7f0a0001;
-        public static final int LL_outputholder=0x7f0a0006;
-        public static final int LL_resistance=0x7f0a0007;
-        public static final int LL_tolerance=0x7f0a000a;
-        public static final int LV_bands=0x7f0a0005;
-        public static final int LV_resistor=0x7f0a0004;
-        public static final int action_settings=0x7f0a0010;
-        public static final int lower_bound=0x7f0a000b;
+        public static final int LL_outputholder=0x7f0a0005;
+        public static final int LL_resistance=0x7f0a0006;
+        public static final int LL_tolerance=0x7f0a0009;
+        public static final int LV_bands=0x7f0a0004;
+        public static final int action_settings=0x7f0a000f;
+        public static final int lower_bound=0x7f0a000a;
         public static final int main_layout=0x7f0a0000;
-        public static final int ohm=0x7f0a0009;
-        public static final int output_value=0x7f0a0008;
-        public static final int percent=0x7f0a000d;
-        public static final int resistorImg=0x7f0a0003;
-        public static final int textView=0x7f0a000f;
-        public static final int tolerance_output=0x7f0a000c;
-        public static final int upper_bound=0x7f0a000e;
+        public static final int ohm=0x7f0a0008;
+        public static final int output_value=0x7f0a0007;
+        public static final int percent=0x7f0a000c;
+        public static final int resistor_view=0x7f0a0003;
+        public static final int textView=0x7f0a000e;
+        public static final int tolerance_output=0x7f0a000b;
+        public static final int upper_bound=0x7f0a000d;
     }
     public static final class layout {
         public static final int activity_resistor=0x7f030000;

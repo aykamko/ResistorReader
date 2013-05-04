@@ -1,4 +1,4 @@
-package kamkowarrier.collab.resistorreader;
+/* package kamkowarrier.collab.resistorreader;
 
 import android.content.Context;
 import android.view.MotionEvent;
@@ -44,8 +44,8 @@ public class ResistorAdapter extends BaseAdapter {
 					switch(e.getAction())
 					{
 					case MotionEvent.ACTION_DOWN:
-						colorSelect.colors = colorList;
-						colorSelect.activeBand = (BandTextView) convertView;
+						// colorSelect.colors = colorList;
+						// colorSelect.activeBand = (BandTextView) convertView;
 						colorSelect.notifyDataSetChanged();
 						return true;
 					}
@@ -58,3 +58,4 @@ public class ResistorAdapter extends BaseAdapter {
 	}
 
 }
+*/

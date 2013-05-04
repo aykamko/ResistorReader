@@ -19,27 +19,13 @@
             android:id="@+id/FL_resistor"
             android:layout_width="150sp"
             android:layout_marginLeft="25sp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center" >
 
-            <ImageView
-                android:id="@+id/resistorImg"
+            <kamkowarrier.collab.resistorreader.ResistorView
+                android:id="@+id/resistor_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/img_desc"
-                android:src="@drawable/resistor_outline" />
-            
-            <ListView 
-                android:id="@+id/LV_resistor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:isScrollContainer="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="10px" />
+                android:layout_height="match_parent" />
        
         </FrameLayout>
         <ListView
