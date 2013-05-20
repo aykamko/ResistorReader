@@ -61,6 +61,7 @@
                 android:id="@+id/output_value"
                 android:layout_weight="1"
                 android:layout_width="0sp"
+                android:maxLength="11"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:hint="@string/output_hint"
@@ -98,7 +99,8 @@
     
             <EditText
                 android:id="@+id/tolerance_output"
-                android:layout_width="80sp"
+                android:layout_width="90sp"
+                android:maxLength="4"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8sp"
                 android:gravity="center"
