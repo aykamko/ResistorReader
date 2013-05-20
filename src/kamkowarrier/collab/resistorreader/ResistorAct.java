@@ -45,6 +45,16 @@ public class ResistorAct extends Activity {
 			final Integer[] tempColors = { R.color.androidBrown, R.color.androidRed, 
 					R.color.androidOrange, R.color.androidYellow };
 			
+			//Test////
+			ColorBand cb = new ColorBand(this);
+			ColorBand.TolBand tb = cb.new TolBand(this);
+			int[] test = tb.colors;
+			
+			for (int c:test) {
+				System.out.println(tb.colorToValue(c));
+			}
+			//////////
+			
 			final Integer[][] colorSchemes = { bandColors, bandColors, multColors, tolColors, tempColors };
 			
 			// Setting output elements
@@ -70,6 +80,7 @@ public class ResistorAct extends Activity {
 			// Create calculator
 			final Calculator calc = new Calculator();
 			final int[] band_vals = {4, 6, 7, 1};
+			// System.out.println(band_vals[1]);
 			
 			// Initial calculate
 			String out = calc.calculate(band_vals[0], band_vals[1], band_vals[2], band_vals[3]);

@@ -37,7 +37,7 @@
     <color name="androidGray">#FFA6A6A6</color>
     <color name="androidWhite">#FFFBFBFB</color>
     
-    <integer-array name="bandColors">
+    <integer-array name="valColors">
         <item>0xFF1D1D1D</item>
         <item>0xFF43140F</item>
         <item>0xFFFF4444</item>

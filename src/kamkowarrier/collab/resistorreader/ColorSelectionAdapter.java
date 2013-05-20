@@ -67,11 +67,11 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
 					switch(e.getAction())
 					{
 					case MotionEvent.ACTION_DOWN:
+					case MotionEvent.ACTION_MOVE:
 						resistorView.updateActiveBand(activeScheme[position]);
-						return true;
+						break;
 					}
-					return false;
-					
+					return true;
 				}
 			});
 

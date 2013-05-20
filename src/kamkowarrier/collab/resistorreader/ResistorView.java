@@ -74,7 +74,7 @@ public class ResistorView extends View {
 				switch(e.getAction())
 				{
 				case MotionEvent.ACTION_DOWN:
-					float pos = e.getY() * scale;
+					float pos = e.getY() * scale; // Adjust to new scale of View
 					int i = 0;
 					while (i < eventRangeList.size()) {
 							if (eventRangeList.get(i).isBetween(pos)) {
@@ -141,7 +141,7 @@ public class ResistorView extends View {
 	
 	public void updateActiveBand(int color){
 		bandColors[activeBand] = color;
-		
+		// Calculator.calculate(bandColors);
 		invalidate();
 	}
 
