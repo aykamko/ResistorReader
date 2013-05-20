@@ -45,15 +45,18 @@ public class ResistorAct extends Activity {
 			final Integer[] tempColors = { R.color.androidBrown, R.color.androidRed, 
 					R.color.androidOrange, R.color.androidYellow };
 			
-			//Test////
+			////Test////
 			ColorBand cb = new ColorBand(this);
 			ColorBand.TolBand tb = cb.new TolBand(this);
-			int[] test = tb.colors;
 			
-			for (int c:test) {
-				System.out.println(tb.colorToValue(c));
-			}
-			//////////
+			System.out.println(tb.valueToColor(10));
+			System.out.println(tb.valueToColor(5));
+			System.out.println(tb.valueToColor(1));
+			System.out.println(tb.valueToColor(2));
+			System.out.println(tb.valueToColor(0.5));
+			System.out.println(tb.valueToColor(0.25));
+			System.out.println(tb.valueToColor(0.1));
+			////////////
 			
 			final Integer[][] colorSchemes = { bandColors, bandColors, multColors, tolColors, tempColors };
 			

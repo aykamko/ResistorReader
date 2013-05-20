@@ -90,6 +90,13 @@ public class ResistorView extends View {
 		});
 	}
 	
+	public void setBandNum(int num) {
+		switch(num) {
+		case 4:
+			
+		}
+	}
+	
 	public void initializeColors(int[] bandColors) {
 		this.bandColors = bandColors;
 		invalidate(); // Redraws bitmap with bands

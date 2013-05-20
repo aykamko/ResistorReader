@@ -28,6 +28,11 @@ public class ColorBand {
 			}
 			return 50; // Error check
 		}
+		
+		public int valueToColor(int val) {
+			return colors[val];
+		}
+		
 	}
 	
 	public class MultBand extends ColorBand {
@@ -49,6 +54,11 @@ public class ColorBand {
 			return 50; // Error check
 		}
 		
+		public int valueToColor(double val) {
+			int i = Double.valueOf(Math.log10(val)).intValue();
+			return colors[i];
+		}
+	
 	}
 	
 	public class TolBand extends ColorBand {
@@ -87,6 +97,35 @@ public class ColorBand {
 			return val;
 		}
 		
+		public int valueToColor(double val) {
+			int color = 0xFFFF00FF;
+			int sw = Double.valueOf(val * 10).intValue();
+			switch (sw) {
+	    	case 100:
+	    		color = 0xFFCCCCCC;
+	    		break;
+	    	case 50:
+	    		color = 0xFFFFCC00;
+	    		break;
+	    	case 10:
+	    		color = 0xFF43140F;
+	    		break;
+	    	case 20:
+	    		color = 0xFFFF4444;
+	    		break;
+	    	case 5:
+	    		color = 0xFF99CC00;
+	    		break;
+	    	case 2:
+	    		color = 0xFF33B5E5;
+	    		break;
+	    	case 1:
+	    		color = 0xFFAA66CC;
+	    		break;
+	    	}
+			return color;
+		}
+		
 	}
 	
 	public class TempBand extends ColorBand {
@@ -97,8 +136,8 @@ public class ColorBand {
 			colors = res.getIntArray(R.array.tempColors);
 		}
 		
-		public double colorToValue(int color) {
-			double val = 0;
+		public int colorToValue(int color) {
+			int val = 0;
 			switch (color) {
 	    	case 0xFF43140F:
 	    		val = 100;
@@ -114,6 +153,25 @@ public class ColorBand {
 	    		break;
 	    	}
 			return val;
+		}
+		
+		public int valueToColor(int val) {
+			int color = 0xFFFF00FF;
+			switch (val) {
+	    	case 100:
+	    		color = 0xFF43140F;
+	    		break;
+	    	case 50:
+	    		color = 0xFFFF4444;
+	    		break;
+	    	case 15:
+	    		color = 0xFFFF8800;
+	    		break;
+	    	case 25:
+	    		color = 0xFFFFFF4E;
+	    		break;
+	    	}
+			return color;
 		}
 		
 	}
