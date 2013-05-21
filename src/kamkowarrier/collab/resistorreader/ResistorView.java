@@ -1,9 +1,6 @@
 package kamkowarrier.collab.resistorreader;
 
 import java.util.ArrayList;
-
-import kamkowarrier.collab.resistorreader.ColorBand.TolBand;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -172,8 +169,12 @@ public class ResistorView extends View {
 	
 	public void updateActiveBand(int color){
 		bandColors[activeBandNum] = color;
-		// calc.calculate(bandColors, bandTypeArray); *** DEEPS: This is where calculator is called. ***
+		calculate();
 		invalidate();
+	}
+	
+	public void calculate() {
+		calc.calculate(bandColors, bandTypeArray);
 	}
 
 }
