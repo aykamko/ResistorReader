@@ -172,7 +172,7 @@ public class ResistorView extends View {
 	
 	public void updateActiveBand(int color){
 		bandColors[activeBandNum] = color;
-		// calc.calculate(bandColors); *** DEEPS: This is where calculator is called. ***
+		// calc.calculate(bandColors, bandTypeArray); *** DEEPS: This is where calculator is called. ***
 		invalidate();
 	}
 
