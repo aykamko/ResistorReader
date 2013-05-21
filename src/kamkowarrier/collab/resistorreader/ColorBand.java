@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 
 public class ColorBand {
-    
+      
 	protected static Resources res;
 	public ColorBand(Context context) {
 		res = context.getResources();

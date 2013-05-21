@@ -12,6 +12,11 @@
     <string name="percent">%</string>
     <string name="img_desc">Image of Resistor</string>
     
+    <color name="gray1">#FFEAEAEA</color>
+    <color name="gray2">#FFD7D7D7</color>
+    <color name="gray3">#FFBEBEBE</color>
+    <color name="gray4">#FF616161</color>
+    
     <color name="black">#FF000000</color>
     <color name="brown">#FFCC6600</color>
     <color name="red">#FFFF0000</color>

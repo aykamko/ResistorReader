@@ -3,6 +3,7 @@ package kamkowarrier.collab.resistorreader;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -13,7 +14,7 @@ public class ResistorAct extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_resistor);
-			
+		
 			// Setting output elements
 			final EditText valueOut = (EditText) findViewById(R.id.output_value);
 			final EditText tolOut = (EditText) findViewById(R.id.tolerance_output);
@@ -29,11 +30,18 @@ public class ResistorAct extends Activity {
 			final ListView selectLV = (ListView) findViewById(R.id.LV_bands);
 			
 			// Initializing and assigning ColorSelectionAdapter
-			ColorSelectionAdapter selectAdapter = new ColorSelectionAdapter(ResistorAct.this, 
-					R.layout.textview, null, resistorView);
+			final ColorSelectionAdapter selectAdapter = new ColorSelectionAdapter(ResistorAct.this, 
+					R.layout.textview, resistorView, calc);
 			selectLV.setAdapter(selectAdapter);
 			resistorView.setSelector(selectAdapter);
 			resistorView.setCalc(calc);
+			
+			selectLV.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+				public void onGlobalLayout() { 
+					int selectLVHeight = selectLV.getHeight();
+					selectAdapter.setParams(selectLVHeight);
+				}
+			});
 			
 			// Initial calculate
 			resistorView.calculate();

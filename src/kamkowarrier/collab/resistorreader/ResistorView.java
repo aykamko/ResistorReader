@@ -157,7 +157,7 @@ public class ResistorView extends View {
 		Bitmap scaled = Bitmap.createScaledBitmap(drawBitmap, this.getWidth(), this.getHeight(), true);
 		
 		return scaled;
-	}
+	} 
 	
 	@Override
 	protected void onDraw(Canvas canvas) {

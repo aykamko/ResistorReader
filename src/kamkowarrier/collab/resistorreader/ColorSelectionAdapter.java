@@ -1,12 +1,13 @@
 package kamkowarrier.collab.resistorreader;
 
-// import kamkowarrier.collab.resistorreader.ColorBand.ValBand;
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -17,15 +18,17 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
 	int layoutResourceId;
 	int[] activeScheme;
 	ColorBand activeType;
-	AbsListView.LayoutParams params;
+	int listViewHeight = 0;
 	ResistorView resistorView;
+	Calculator calc;
+	float scale = (new DisplayMetrics()).scaledDensity;
 	
-	public ColorSelectionAdapter(Context context, int layoutResourceId, AbsListView.LayoutParams params, ResistorView resistorView) {
+	public ColorSelectionAdapter(Context context, int layoutResourceId, ResistorView resistorView, Calculator calc) {
 		super(context, R.layout.textview);
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
-		this.params = params;
 		this.resistorView = resistorView;
+		this.calc = calc;
 		setActives(0);
     }
 	
@@ -40,6 +43,15 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
 		this.notifyDataSetChanged();
 	}
 	
+	public void setParams(int height) {
+		this.listViewHeight = height;
+		this.notifyDataSetChanged();
+	}
+	
+	public int scaled(float input) {
+		return (int) (input / scale);
+	}
+	
 	public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
         	  LayoutInflater li = (LayoutInflater) 
@@ -49,18 +61,35 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
         
            TextView resultView = (TextView) convertView.findViewById(R.id.textView);
            resultView.setBackgroundColor(activeScheme[position]);
-           resultView.setText(Double.valueOf(activeType.colorToValue(activeScheme[position])).toString());
            
-           if (params != null) {
+           String text = "";
+           if (activeScheme.length > 7) {
+        	   text = calc.addSuffix(activeType.colorToValue(activeScheme[position]), 0);
+           } else {
+        	   text = (Double.valueOf(activeType.colorToValue(activeScheme[position])).toString());
+           }
+           
+           resultView.setText(text);
+           resultView.setTextSize(20);
+           resultView.setGravity(Gravity.CENTER);
+           
+           if ((activeScheme[position] == 0xFF1D1D1D) || 
+        		   (activeScheme[position] == 0xFF43140F)) {
+        	   resultView.setTextColor(0xFFFFFFFF);
+           } else {
+        	   resultView.setTextColor(0xFF000000);
+           }
+           
+           if (listViewHeight != 0) {
         	   AbsListView.LayoutParams newParams = new AbsListView.LayoutParams
-        			   (params.width, (params.height / activeScheme.length) - 8);
-        	   convertView.setLayoutParams(newParams);
+        			   (AbsListView.LayoutParams.MATCH_PARENT, (listViewHeight / activeScheme.length) - 8);
+        	   resultView.setLayoutParams(newParams);
         	   } else {
-        		   convertView.setLayoutParams(new AbsListView.LayoutParams
+        		   resultView.setLayoutParams(new AbsListView.LayoutParams
         				   (AbsListView.LayoutParams.MATCH_PARENT, 60));
         	   }
            
-           convertView.setOnTouchListener(new OnTouchListener() {
+           resultView.setOnTouchListener(new OnTouchListener() {
 				
 				@Override
 				public boolean onTouch(View v, MotionEvent e) {
