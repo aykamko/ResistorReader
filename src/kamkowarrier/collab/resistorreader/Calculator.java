@@ -1,6 +1,7 @@
 package kamkowarrier.collab.resistorreader;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public class Calculator {
 	
@@ -10,8 +11,25 @@ public class Calculator {
 	double tol;
 	String[] bounds;
 	
+	/*
+	 *  DEEPS: This method is called at the end of the ResistorView class. ResistorView communicates with a set instance of Calculator.
+	 *  
+	public String calculate(int[] bandColors, ColorBand[] bandTypeArray) {
+	
+	    ArrayList<Double> values = new ArrayList<Double>();
+	    for (int i = 0; i < bandColors.length; i++) {
+	        values.add(bandTypeArray[i].colorToValue(bandColors[i]))
+	    }
+	    
+	    blah blah blah
+	    
+	    return String;
+	
+	}
+	 */
+	
     public String calculate(int a, int b, int c, int d) {
-    	//
+    	
     	this.val1 = a;
     	this.val2 = b;
     	this.mul = c;

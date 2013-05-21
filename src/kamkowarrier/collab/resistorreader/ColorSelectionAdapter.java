@@ -1,5 +1,6 @@
 package kamkowarrier.collab.resistorreader;
 
+// import kamkowarrier.collab.resistorreader.ColorBand.ValBand;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,20 +15,18 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
 	
 	Context context;
 	int layoutResourceId;
-	Integer[][] colorSchemes;
-	Integer[] activeScheme;
+	int[] activeScheme;
+	ColorBand activeType;
 	AbsListView.LayoutParams params;
 	ResistorView resistorView;
 	
-	public ColorSelectionAdapter(Context context, int layoutResourceId, 
-			Integer[][] colorSchemes, AbsListView.LayoutParams params, ResistorView resistorView) {
-		super(context, R.layout.textview, colorSchemes);
+	public ColorSelectionAdapter(Context context, int layoutResourceId, AbsListView.LayoutParams params, ResistorView resistorView) {
+		super(context, R.layout.textview);
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 		this.params = params;
 		this.resistorView = resistorView;
-		this.colorSchemes = colorSchemes;
-		setActiveScheme(0);
+		setActives(0);
     }
 	
 	@Override
@@ -35,8 +34,9 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
 		return activeScheme.length;
 	}
 	
-	public void setActiveScheme(int i) {
-		this.activeScheme = colorSchemes[i];
+	public void setActives(int i) {
+		this.activeScheme = resistorView.bandScheme[i];
+		this.activeType = resistorView.bandTypeArray[i];
 		this.notifyDataSetChanged();
 	}
 	
@@ -47,9 +47,9 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
         	  convertView = li.inflate(R.layout.textview, null);
     	   }
         
-           convertView = (TextView) convertView.findViewById(R.id.textView);
-           convertView.setBackgroundResource(activeScheme[position]);
-           convertView.setTag(position);
+           TextView resultView = (TextView) convertView.findViewById(R.id.textView);
+           resultView.setBackgroundColor(activeScheme[position]);
+           resultView.setText(Double.valueOf(activeType.colorToValue(activeScheme[position])).toString());
            
            if (params != null) {
         	   AbsListView.LayoutParams newParams = new AbsListView.LayoutParams
@@ -75,7 +75,7 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
 				}
 			});
 
-           return convertView;
+           return resultView;
     	}
 	
 }

@@ -32,56 +32,27 @@ public class ResistorAct extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_resistor);
-
-			// Setting color inputs
-			final Integer[] bandColors = { R.color.androidBlack, R.color.androidBrown, R.color.androidRed, 
-					R.color.androidOrange, R.color.androidYellow, R.color.androidGreen, R.color.androidBlue, 
-					R.color.androidPurple, R.color.androidGray, R.color.androidWhite };
-			final Integer[] multColors = { R.color.silver, R.color.gold, R.color.androidBlack, R.color.androidBrown, 
-					R.color.androidRed, R.color.androidOrange, R.color.androidYellow, R.color.androidGreen, 
-					R.color.androidBlue, R.color.androidPurple, };
-			final Integer[] tolColors = { R.color.silver, R.color.gold, R.color.androidBrown, R.color.androidRed, 
-					R.color.androidGreen, R.color.androidBlue, R.color.androidPurple, };
-			final Integer[] tempColors = { R.color.androidBrown, R.color.androidRed, 
-					R.color.androidOrange, R.color.androidYellow };
-			
-			////Test////
-			ColorBand cb = new ColorBand(this);
-			ColorBand.TolBand tb = cb.new TolBand(this);
-			
-			System.out.println(tb.valueToColor(10));
-			System.out.println(tb.valueToColor(5));
-			System.out.println(tb.valueToColor(1));
-			System.out.println(tb.valueToColor(2));
-			System.out.println(tb.valueToColor(0.5));
-			System.out.println(tb.valueToColor(0.25));
-			System.out.println(tb.valueToColor(0.1));
-			////////////
-			
-			final Integer[][] colorSchemes = { bandColors, bandColors, multColors, tolColors, tempColors };
 			
 			// Setting output elements
 			final EditText output = (EditText) findViewById(R.id.output_value);
 			final EditText tolOutput = (EditText) findViewById(R.id.tolerance_output);
 			final TextView lower = (TextView) findViewById(R.id.lower_bound);
 			final TextView upper = (TextView) findViewById(R.id.upper_bound);
+			final Calculator calc = new Calculator();
 			
 			// Setting input elements
 			final ResistorView resistorView = (ResistorView) findViewById(R.id.resistor_view);
 			final ListView selectLV = (ListView) findViewById(R.id.LV_bands);
-
-			// Initializes a list of colors to be used as bands in ResistorView
-			int[] resistorBands = { bandColors[3], bandColors[5], tolColors[6], tolColors[0] };
-			resistorView.initializeColors(resistorBands);
 			
 			// Create and assign Color Select adapter
 			ColorSelectionAdapter selectAdapter = new ColorSelectionAdapter(ResistorAct.this, 
-					R.layout.textview, colorSchemes, null, resistorView);
+					R.layout.textview, null, resistorView);
 			selectLV.setAdapter(selectAdapter);
 			resistorView.setSelector(selectAdapter);
+			resistorView.setCalc(calc);
 			
 			// Create calculator
-			final Calculator calc = new Calculator();
+			
 			final int[] band_vals = {4, 6, 7, 1};
 			// System.out.println(band_vals[1]);
 			

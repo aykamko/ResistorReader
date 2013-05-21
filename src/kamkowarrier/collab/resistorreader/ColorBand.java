@@ -4,21 +4,25 @@ import android.content.Context;
 import android.content.res.Resources;
 
 public class ColorBand {
-
+    
 	protected static Resources res;
 	public ColorBand(Context context) {
 		res = context.getResources();
 	}
 	
+	public double colorToValue(int color) { return 0; }
+	public int valueToColor(double val) { return 0; }
+	public int[] colors;
+	
 	public class ValBand extends ColorBand {
 		
-		protected int[] colors;
+		public int[] colors;
 		public ValBand(Context context) {
 			super(context);
 			colors = res.getIntArray(R.array.valColors);
 		}
 		
-		public int colorToValue(int color) {
+		public double colorToValue(int color) {
 			int val = 0;
 			while (val < colors.length) {
 				if (color == colors[val]) {
@@ -37,7 +41,7 @@ public class ColorBand {
 	
 	public class MultBand extends ColorBand {
 		
-		protected int[] colors;
+		public int[] colors;
 		public MultBand(Context context) {
 			super(context);
 			colors = res.getIntArray(R.array.multColors);
@@ -63,7 +67,7 @@ public class ColorBand {
 	
 	public class TolBand extends ColorBand {
 		
-		protected int[] colors;
+		public int[] colors;
 		public TolBand(Context context) {
 			super(context);
 			colors = res.getIntArray(R.array.tolColors);
@@ -130,13 +134,13 @@ public class ColorBand {
 	
 	public class TempBand extends ColorBand {
 		
-		protected int[] colors;
+		public int[] colors;
 		public TempBand(Context context) {
 			super(context);
 			colors = res.getIntArray(R.array.tempColors);
 		}
 		
-		public int colorToValue(int color) {
+		public double colorToValue(int color) {
 			int val = 0;
 			switch (color) {
 	    	case 0xFF43140F:
