@@ -18,6 +18,7 @@ public class Calculator {
 		String str = "";
 	    ArrayList<Double> values = new ArrayList<Double>();
 	    for (int i = 0; i < bandColors.length; i++) {
+	    	System.out.println(bandTypeArray[i].colorToValue(bandColors[i]));
 	        values.add(bandTypeArray[i].colorToValue(bandColors[i]));
 	    }
 	    if (values.size() == 4) {
@@ -25,7 +26,7 @@ public class Calculator {
 	    	val2 = values.get(1);
 	    	mul = values.get(2);
 	    	tol = values.get(3);
-	    	result = (((10 * val1) + val2) * Math.pow(10, mul));
+	    	result = (val1 + 0.1*val2) * mul;
 	    	str = addSuffix(result,1);
 	    }
 	    else { //Not accounting for six bands!
@@ -34,7 +35,7 @@ public class Calculator {
 	    	val3 = values.get(2);
 	    	mul = values.get(3);
 	    	tol = values.get(4);
-	    	result = (((10 * val1) + val2 + .1*val3) * Math.pow(10, mul));
+	    	result = (val1 + .1*val2 + .01*val3) * mul;
 	    	str = addSuffix(result,1);
 	    }
 	    bounds = new String[2];
