@@ -4,73 +4,44 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@drawable/background"
     android:gravity="bottom|center_horizontal"
-    android:background="@drawable/background" >
-
-    <FrameLayout
-        android:id="@+id/FL_holder"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+        android:id="@+id/LL_bandholder"
         android:layout_width="match_parent"
         android:layout_weight="1"
-        android:layout_height="0sp" >
-    
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-            
-            <ImageView
-                android:id="@+id/resistorImg"
-                android:layout_width="200sp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10sp"
-                android:layout_marginTop="10sp"
-                android:contentDescription="@string/img_desc"
-                android:src="@drawable/resistor" />
-       
-        </RelativeLayout> 
-        <RelativeLayout
-            android:id="@+id/band_holder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-    
-            <org.taptwo.android.widget.ViewFlow
-                android:id="@+id/band1"
-                android:layout_width="158sp"
-                android:layout_height="40sp"
-                android:layout_marginLeft="26dp"
-                android:layout_marginTop="104dp"
-                android:duplicateParentState="true" />
+        android:layout_height="0sp"
+        android:orientation="horizontal" >
         
-            <org.taptwo.android.widget.ViewFlow
-                android:id="@+id/band2"
-                android:layout_width="158sp"
-                android:layout_height="40sp"
-                android:layout_alignLeft="@+id/band1"
-                android:layout_below="@+id/band1"
-                android:layout_marginTop="10sp"
-                android:duplicateParentState="true" />
-            
-            <org.taptwo.android.widget.ViewFlow
-                android:id="@+id/multiplier"
-                android:layout_width="158sp"
-                android:layout_height="40sp"
-                android:layout_marginTop="10sp"
-                android:layout_alignLeft="@+id/band2"
-                android:layout_below="@+id/band2"
-                android:duplicateParentState="true" />
-        
-            <org.taptwo.android.widget.ViewFlow
-                android:id="@+id/tolerance"
-                android:layout_width="158sp"
-                android:layout_height="40sp"
-                android:layout_marginTop="10sp"
-                android:layout_alignLeft="@+id/multiplier"
-                android:layout_below="@+id/multiplier"
-                android:duplicateParentState="true" />
-        
-        </RelativeLayout>
+        <FrameLayout
+            android:id="@+id/FL_resistor"
+            android:layout_width="150sp"
+            android:layout_marginLeft="25sp"
+            android:layout_height="match_parent"
+            android:gravity="center" >
 
-    </FrameLayout>
+            <kamkowarrier.collab.resistorreader.ResistorView
+                android:id="@+id/resistor_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+       
+        </FrameLayout>
+        <ListView
+            android:id="@+id/LV_bands"
+            android:layout_margin="15sp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:isScrollContainer="false"
+            android:gravity="center"
+            android:divider="@android:color/transparent"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:dividerHeight="8px" />
+
+    </LinearLayout>
     <LinearLayout
             android:id="@+id/LL_outputholder"
             android:orientation="vertical"
@@ -90,6 +61,7 @@
                 android:id="@+id/output_value"
                 android:layout_weight="1"
                 android:layout_width="0sp"
+                android:maxLength="11"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:hint="@string/output_hint"
@@ -127,7 +99,8 @@
     
             <EditText
                 android:id="@+id/tolerance_output"
-                android:layout_width="80sp"
+                android:layout_width="90sp"
+                android:maxLength="4"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8sp"
                 android:gravity="center"

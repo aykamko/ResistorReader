@@ -11,6 +11,7 @@
     <string name="blank"></string>
     <string name="percent">%</string>
     <string name="img_desc">Image of Resistor</string>
+    
     <color name="black">#FF000000</color>
     <color name="brown">#FFCC6600</color>
     <color name="red">#FFFF0000</color>
@@ -21,30 +22,62 @@
     <color name="violet">#FF9900CC</color>
     <color name="gray">#FF666666</color>
     <color name="white">#FFFFFFFF</color>
+    
     <color name="gold">#FFFFCC00</color>
     <color name="silver">#FFCCCCCC</color>
     
     <color name="androidBlack">#FF1D1D1D</color>
-    <color name="androidGray">#FFA6A6A6</color>
-    <color name="androidWhite">#FFFBFBFB</color>
     <color name="androidBrown">#FF43140F</color>
     <color name="androidRed">#FFFF4444</color>
     <color name="androidOrange">#FFFF8800</color>
     <color name="androidYellow">#FFFFFF4E</color>
     <color name="androidGreen">#FF99CC00</color>
-    <color name="androidPurple">#FFAA66CC</color>
     <color name="androidBlue">#FF33B5E5</color>
+    <color name="androidPurple">#FFAA66CC</color>
+    <color name="androidGray">#FFA6A6A6</color>
+    <color name="androidWhite">#FFFBFBFB</color>
     
-    <string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-    </string-array>
+    <integer-array name="valColors">
+        <item>0xFF1D1D1D</item>
+        <item>0xFF43140F</item>
+        <item>0xFFFF4444</item>
+        <item>0xFFFF8800</item>
+        <item>0xFFFFFF4E</item>
+        <item>0xFF99CC00</item>
+        <item>0xFF33B5E5</item>
+        <item>0xFFAA66CC</item>
+        <item>0xFFA6A6A6</item>
+        <item>0xFFFBFBFB</item>
+    </integer-array>
     
+    <integer-array name="multColors">
+        <item>0xFFCCCCCC</item>
+        <item>0xFFFFCC00</item>
+        <item>0xFF1D1D1D</item>
+        <item>0xFF43140F</item>
+        <item>0xFFFF4444</item>
+        <item>0xFFFF8800</item>
+        <item>0xFFFFFF4E</item>
+        <item>0xFF99CC00</item>
+        <item>0xFF33B5E5</item>
+        <item>0xFFAA66CC</item>
+    </integer-array>
+    
+    <integer-array name="tolColors">
+        <item>0xFFCCCCCC</item>
+        <item>0xFFFFCC00</item>
+        <item>0xFF43140F</item>
+        <item>0xFFFF4444</item>
+        <item>0xFF99CC00</item>
+        <item>0xFF33B5E5</item>
+        <item>0xFFAA66CC</item>
+    </integer-array>
+    
+    <integer-array name="tempColors">
+        <item>0xFF43140F</item>
+        <item>0xFFFF4444</item>
+        <item>0xFFFF8800</item>
+        <item>0xFFFFFF4E</item>
+    </integer-array>
 
 </resources>
