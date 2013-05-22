@@ -69,13 +69,11 @@ public class ResistorAct extends Activity {
 			
 			valueOut.setOnKeyListener(new OnKeyListener() {
 				public boolean onKey(View view, int keyCode, KeyEvent event) {
-					if (event.getAction() == KeyEvent.ACTION_DOWN) { //Key down? {
+					if (event.getAction() == KeyEvent.ACTION_DOWN) {
 						switch(keyCode) {
 							case KeyEvent.KEYCODE_ENTER:
 		   						TextReader reader = new TextReader();
 		   						if (!reader.isValidString(valueOut.getText().toString())) {
-		   							
-		   							System.out.println("set to" + boxVals[0]);
 		   							ohm.setText(redX);
 		   							break;
 		   						}
@@ -107,12 +105,15 @@ public class ResistorAct extends Activity {
 							case KeyEvent.KEYCODE_ENTER:
 								resistorView.activeBandNum = 3; //make this more general!
 								TextReader reader = new TextReader();
+								if (!reader.isValidString(tolOut.getText().toString())) {
+									percent.setText(redX);
+		   							break;
+								}
 								double val = Double.valueOf(tolOut.getText().toString());
-								//ADD ERROR HANDLING
 								System.out.println(val);
 								val = reader.findClosestVal(val,reader.validTols);
 								tolOut.setText(Double.valueOf(val).toString());
-								
+								boxVals[1] = Double.valueOf(val).toString();
 								ColorBand c = new ColorBand(resistorView.getContext());
 			        			ColorBand.TolBand tolB = c.new TolBand(resistorView.getContext());
 			        			int color = tolB.valueToColor(val);
@@ -132,9 +133,6 @@ public class ResistorAct extends Activity {
 		public boolean onTouch(View view, MotionEvent event) {
 			switch(event.getAction()) {
 			    case MotionEvent.ACTION_DOWN:
-			    	//if (!ohm.getText().toString().equals("X")) {
-			    	//  ohm.setText(redX);
-			    	//}
 			    	if (ohm.getText().toString().equals("X")) {
 			    		ohm.setText(getString(R.string.ohm));
 			    		valueOut.setText(boxVals[0]);
@@ -146,17 +144,13 @@ public class ResistorAct extends Activity {
 		}
 	});
 	//Touch listener for percent TextView
-	final int ohmId = ohm.getId(); 
 	percent.setOnTouchListener(new OnTouchListener() {
 		public boolean onTouch(View view, MotionEvent event) {
 			switch(event.getAction()) {
 			    case MotionEvent.ACTION_DOWN:
-			    	if (!percent.getText().toString().equals("X")) {
-			    	  ohm.setText(redX);
-			    	}
-			    	else if (ohm.getText().toString().equals("X")) {
-			    		ohm.setText(getString(R.string.ohm));
-			    		System.out.println("SET");
+			    	if (percent.getText().toString().equals("X")) {
+			    		percent.setText(getString(R.string.percent));
+			    		tolOut.setText(boxVals[1]);
 			    	}
 					default:
 						break;
