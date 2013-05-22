@@ -8,6 +8,8 @@
     <string name="output_hint">0</string>
     <string name="tolerance_hint">10.0</string>
     <string name="ohm">Ω</string>
+    <string name= "x1"><font fgcolor="#ffff0000">X</font></string>
+    <string name= "x2"><font fgcolor="#ffff0000">X</font></string>
     <string name="blank"></string>
     <string name="percent">%</string>
     <string name="img_desc">Image of Resistor</string>

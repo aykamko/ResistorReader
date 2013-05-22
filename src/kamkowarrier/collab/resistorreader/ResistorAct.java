@@ -1,8 +1,12 @@
 package kamkowarrier.collab.resistorreader;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -23,6 +27,8 @@ public class ResistorAct extends Activity {
 			final EditText tolOut = (EditText) findViewById(R.id.tolerance_output);
 			final TextView lower = (TextView) findViewById(R.id.lower_bound);
 			final TextView upper = (TextView) findViewById(R.id.upper_bound);
+			final TextView ohm = (TextView) findViewById(R.id.ohm);
+			final TextView percent = (TextView) findViewById(R.id.percent);
 			
 			// Initializing Calculator and setting outputs
 			final Calculator calc = new Calculator();
@@ -53,30 +59,37 @@ public class ResistorAct extends Activity {
 			//Need to add error checking/ handling
 			//TextReader doesn't work with 5 band resistors
 			//CALCULATOR IS WRONG ARRRRGGH (try salmon black orange, off by factor of ten)
+			
+			// The above is to set the X for error checking
+			final SpannableString redX = new SpannableString("X");
+			redX.setSpan(new ForegroundColorSpan(Color.RED), 0, 1, 0);
+			
+			//element at index 0 is for value, 1 for tolerance
+			final String[] boxVals = {valueOut.getText().toString(), tolOut.getText().toString()};
+			
 			valueOut.setOnKeyListener(new OnKeyListener() {
 				public boolean onKey(View view, int keyCode, KeyEvent event) {
 					if (event.getAction() == KeyEvent.ACTION_DOWN) { //Key down? {
 						switch(keyCode) {
 							case KeyEvent.KEYCODE_ENTER:
 		   						TextReader reader = new TextReader();
+		   						if (!reader.isValidString(valueOut.getText().toString())) {
+		   							
+		   							System.out.println("set to" + boxVals[0]);
+		   							ohm.setText(redX);
+		   							break;
+		   						}
 	    						  reader.read(valueOut.getText().toString());
-	    						  //System.out.println("entered val is" + reader.userVal);
-	    						  //System.out.println("real val is" + reader.realVal);
-	    						  //System.out.println("bands should be" + reader.band[0] + " " + reader.band[1] + " " + reader.band[2]);
         						  valueOut.setText(reader.realVal);
+        						  boxVals[0] = valueOut.getText().toString();
         						  //BAD! This needs to be cleaned up
-        						  int[] bands = new int[3];
 							  	  int original = resistorView.activeBandNum;
-							  	  for (int i = 0; i < 3; i++) {
-							  		  bands[i] = reader.band[i];
-							  	  }
 								  for (int i = 0; i < 3; i++) { //replace 3 with variable for length
 			        			    resistorView.activeBandNum = i;
 			        			    ColorBand c = new ColorBand(resistorView.getContext());
 			        			    ColorBand.ValBand valB = c.new ValBand(resistorView.getContext());
-			        			    int val = valB.valueToColor(bands[i]);
+			        			    int val = valB.valueToColor(reader.band[i]);
 					    			resistorView.updateWithoutCalc(val);
-					    			//resistorView.selectAdap.setActives(i);
 								  }
 								  resistorView.activeBandNum = original;
         						  return true;
@@ -113,8 +126,47 @@ public class ResistorAct extends Activity {
 				}
 			});
 							
-			
-        }
+	 
+	//Touch listener for ohm textView
+	ohm.setOnTouchListener(new OnTouchListener() {
+		public boolean onTouch(View view, MotionEvent event) {
+			switch(event.getAction()) {
+			    case MotionEvent.ACTION_DOWN:
+			    	//if (!ohm.getText().toString().equals("X")) {
+			    	//  ohm.setText(redX);
+			    	//}
+			    	if (ohm.getText().toString().equals("X")) {
+			    		ohm.setText(getString(R.string.ohm));
+			    		valueOut.setText(boxVals[0]);
+			    	}
+					default:
+						break;
+				}
+			return false;
+		}
+	});
+	//Touch listener for percent TextView
+	final int ohmId = ohm.getId(); 
+	percent.setOnTouchListener(new OnTouchListener() {
+		public boolean onTouch(View view, MotionEvent event) {
+			switch(event.getAction()) {
+			    case MotionEvent.ACTION_DOWN:
+			    	if (!percent.getText().toString().equals("X")) {
+			    	  ohm.setText(redX);
+			    	}
+			    	else if (ohm.getText().toString().equals("X")) {
+			    		ohm.setText(getString(R.string.ohm));
+			    		System.out.println("SET");
+			    	}
+					default:
+						break;
+				}
+			return false;
+		}
+	});
+	
+	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
