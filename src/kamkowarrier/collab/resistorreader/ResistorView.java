@@ -173,6 +173,12 @@ public class ResistorView extends View {
 		invalidate();
 	}
 	
+	public void updateWithoutCalc(int color) {
+		bandColors[activeBandNum] = color;
+		invalidate();
+		//selectAdap.setActives(activeBandNum);
+	}
+	
 	public void calculate() {
 		calc.calculate(bandColors, bandTypeArray);
 	}

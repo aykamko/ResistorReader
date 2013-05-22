@@ -83,6 +83,7 @@
                 android:id="@+id/output_value"
                 android:layout_weight="1"
                 android:layout_width="0sp"
+                android:singleLine="true"
                 android:maxLength="11"
                 android:layout_height="wrap_content"
                 android:gravity="right"

@@ -7,6 +7,9 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.view.*;
+import android.view.View.*;
+import android.widget.*;
 
 public class ResistorAct extends Activity {
 	
@@ -45,6 +48,41 @@ public class ResistorAct extends Activity {
 			
 			// Initial calculate
 			resistorView.calculate();
+			
+			// Listener for EditText boxes
+			valueOut.setOnKeyListener(new OnKeyListener() {
+				public boolean onKey(View view, int keyCode, KeyEvent event) {
+					if (event.getAction() == KeyEvent.ACTION_DOWN) { //Key down? {
+						switch(keyCode) {
+							case KeyEvent.KEYCODE_ENTER:
+		   						TextReader reader = new TextReader();
+	    						  reader.read(valueOut.getText().toString());
+	    						  System.out.println("entered val is" + reader.userVal);
+	    						  System.out.println("real val is" + reader.realVal);
+	    						  System.out.println("bands should be" + reader.band[0] + " " + reader.band[1] + " " + reader.band[2]);
+        						  valueOut.setText(reader.realVal);
+        						  //BAD!
+        						  int[] bands = new int[3];
+							  	  int original = resistorView.activeBandNum;
+							  	  for (int i = 0; i < 3; i++) {
+							  		  bands[i] = reader.band[i];
+							  	  }
+								  for (int i = 0; i < 3; i++) { //replace 3 with variable for length
+			        			    resistorView.activeBandNum = i;
+					    			resistorView.updateWithoutCalc(bands[i]);
+					    			//resistorView.selectAdap.setActives(i);
+								  }
+								  resistorView.activeBandNum = original;
+        						  return true;
+						    default:
+						    	break;
+						} 
+				  }
+				  return false;	
+			}
+		});
+	
+	//Still need to add tolerance box
 			
         }
 
