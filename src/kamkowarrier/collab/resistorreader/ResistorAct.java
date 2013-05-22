@@ -52,6 +52,7 @@ public class ResistorAct extends Activity {
 			// Listener for EditText boxes
 			//Need to add error checking/ handling
 			//TextReader doesn't work with 5 band resistors
+			//CALCULATOR IS WRONG ARRRRGGH (try salmon black orange, off by factor of ten)
 			valueOut.setOnKeyListener(new OnKeyListener() {
 				public boolean onKey(View view, int keyCode, KeyEvent event) {
 					if (event.getAction() == KeyEvent.ACTION_DOWN) { //Key down? {
