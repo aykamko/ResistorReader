@@ -2,6 +2,7 @@ package kamkowarrier.collab.resistorreader;
 
 //ACCOUNT FOR GOLD AND SILVER BANDS!
 //BLACK AS FIRST BAND IS INVALID
+// Needs to know whether the resistor is 4 band or 5 band
 
 public class TextReader{
 
@@ -9,6 +10,13 @@ public boolean isValid;
 public int[] band;
 public String realVal;
 public String userVal;
+double[] validVals = {1.0,1.1,1.2,1.3,1.5,1.6,1.8,2.0,2.2,2.4,2.7,3.0,3.3,3.6,3.9,4.3,4.7,5.1,5.6,6.2,6.8,7.5,8.2,9.1};
+double[] validTols = {0.1, 0.25, 0.5, 1, 2, 10};
+
+
+public void read(String str) {
+	valueToBands(parseNumbers(str));
+}
 
 public boolean isIn(String e, String things) {
   for (int i = 0; i < things.length(); i++) {
@@ -70,10 +78,10 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
       smallVal = smallVal/10;
       numberOfZeroes++;
     }
-    double closestVal = findClosestVal(smallVal);
+    double closestVal = findClosestVal(smallVal,validVals);
     if (Character.toString(e.charAt(e.length() -1)).equals("M")) {
       value = closestVal*Math.pow(10,numberOfZeroes)*1000000;
-      System.out.println("get here");
+      //System.out.println("get here");
       realVal = closestVal*Math.pow(10,numberOfZeroes) + "M"; 
     }
     else if (Character.toString(e.charAt(e.length() -1)).equals("K")) {
@@ -81,6 +89,7 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
       realVal = closestVal*Math.pow(10,numberOfZeroes) + "K"; 
     }
     else {
+      value = closestVal*Math.pow(10, numberOfZeroes); 
       realVal = value + "";
     }
   }
@@ -89,12 +98,11 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
 
 
 //takes in a double less than 10
-// you can make a more efficent algorithm for this!
-public double findClosestVal(double val) {
-  double[] validVals = {1.0,1.1,1.2,1.3,1.5,1.6,1.8,2.0,2.2,2.4,2.7,3.0,3.3,3.6,3.9,4.3,4.7,5.1,5.6,6.2,6.8,7.5,8.2,9.1};
+// you can make a more efficient algorithm for this!
+public double findClosestVal(double val, double[] valids) {
   double min = 10.0;
   double closestVal = 0.0;
-  for (double i : validVals) {
+  for (double i : valids) {
     if (Math.abs(i - val) < min) {
       min = Math.abs(i-val);
       closestVal = i;
@@ -102,6 +110,41 @@ public double findClosestVal(double val) {
   }
   return closestVal;
 }
+
+public void valueToBands(double val) { 
+	  band = new int[3];
+	  int numZeroes = 0;
+	  if (val < 1) {
+	    Double v = new Double(val*10);
+	    band[0] = v.intValue();
+	    v = new Double((val*10-band[0])*10);
+	    band[1] = v.intValue();
+	    band[2] = 0; //silver
+	  } 
+	  else if (val < 10) {
+	    Double v = new Double(val);
+	    band[0] = v.intValue();
+	    v = new Double((val- band[0])*10);
+	    band[1] = v.intValue();
+	    band[2] = 1; //gold
+	  } 
+	  else {
+	    while (val >= 10) {  
+	      val = val/10;
+	      numZeroes ++;
+	    }
+	    Double v = new Double(val);
+	    band[0] = v.intValue();
+	    v = new Double((val- band[0])*10);
+	    band[1] = v.intValue();
+	    if (numZeroes > 0) {
+	      band[2] = numZeroes-1;
+	    }
+	    else {
+	      band[2] = 0;
+	    }
+	  }
+	}
 
 public static void main(String[] args) {
 String str1 = "123M";
@@ -115,8 +158,8 @@ System.out.println(read.isValidString(str2));
 System.out.println(read.isValidString(str3));
 System.out.println(read.isValidString(str4));
 System.out.println(read.isValidString(str5));
-System.out.println(read.findClosestVal(1.8));
-System.out.println(read.findClosestVal(5));
+System.out.println(read.findClosestVal(1.8,read.validVals));
+System.out.println(read.findClosestVal(5,read.validVals));
 System.out.println(read.parseNumbers(".7"));
 read.valueToBands(read.parseNumbers(".7"));
 for (int x = 0; x < 3; x++) {
@@ -125,38 +168,5 @@ for (int x = 0; x < 3; x++) {
 }
 
 
-public void valueToBands(double val) { 
-  band = new int[3];
-  int numZeroes = 0;
-  if (val < 1) {
-    Double v = new Double(val*10);
-    band[0] = v.intValue();
-    v = new Double((val*10-band[0])*10);
-    band[1] = v.intValue();
-    band[2] = 0; //silver
-  } 
-  else if (val < 10) {
-    Double v = new Double(val);
-    band[0] = v.intValue();
-    v = new Double((val- band[0])*10);
-    band[1] = v.intValue();
-    band[2] = 1; //gold
-  } 
-  else {
-    while (val >= 10) {  
-      val = val/10;
-      numZeroes ++;
-    }
-    Double v = new Double(val);
-    band[0] = v.intValue();
-    v = new Double((val- band[0])*10);
-    band[1] = v.intValue();
-    if (numZeroes > 0) {
-      band[2] = numZeroes-1;
-    }
-    else {
-      band[2] = 0;
-    }
-  }
-}
+
 }
