@@ -50,6 +50,8 @@ public class ResistorAct extends Activity {
 			resistorView.calculate();
 			
 			// Listener for EditText boxes
+			//Need to add error checking/ handling
+			//TextReader doesn't work with 5 band resistors
 			valueOut.setOnKeyListener(new OnKeyListener() {
 				public boolean onKey(View view, int keyCode, KeyEvent event) {
 					if (event.getAction() == KeyEvent.ACTION_DOWN) { //Key down? {
@@ -57,9 +59,9 @@ public class ResistorAct extends Activity {
 							case KeyEvent.KEYCODE_ENTER:
 		   						TextReader reader = new TextReader();
 	    						  reader.read(valueOut.getText().toString());
-	    						  System.out.println("entered val is" + reader.userVal);
-	    						  System.out.println("real val is" + reader.realVal);
-	    						  System.out.println("bands should be" + reader.band[0] + " " + reader.band[1] + " " + reader.band[2]);
+	    						  //System.out.println("entered val is" + reader.userVal);
+	    						  //System.out.println("real val is" + reader.realVal);
+	    						  //System.out.println("bands should be" + reader.band[0] + " " + reader.band[1] + " " + reader.band[2]);
         						  valueOut.setText(reader.realVal);
         						  //BAD! This needs to be cleaned up
         						  int[] bands = new int[3];
@@ -84,8 +86,32 @@ public class ResistorAct extends Activity {
 				  return false;	
 			}
 		});
-	
-	//Still need to add tolerance box
+			tolOut.setOnKeyListener(new OnKeyListener() {
+				public boolean onKey(View view, int keyCode, KeyEvent event) {
+					if (event.getAction() == KeyEvent.ACTION_DOWN) { //Key down? {
+						switch(keyCode) {
+							case KeyEvent.KEYCODE_ENTER:
+								resistorView.activeBandNum = 3; //make this more general!
+								TextReader reader = new TextReader();
+								double val = Double.valueOf(tolOut.getText().toString());
+								//ADD ERROR HANDLING
+								System.out.println(val);
+								val = reader.findClosestVal(val,reader.validTols);
+								tolOut.setText(Double.valueOf(val).toString());
+								
+								ColorBand c = new ColorBand(resistorView.getContext());
+			        			ColorBand.TolBand tolB = c.new TolBand(resistorView.getContext());
+			        			int color = tolB.valueToColor(val);
+			        			resistorView.updateWithoutCalc(color);
+			        	        return true;
+							default:
+								break;
+						}
+					}
+					return false;
+				}
+			});
+							
 			
         }
 
