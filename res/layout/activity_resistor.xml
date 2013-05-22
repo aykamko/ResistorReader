@@ -123,6 +123,7 @@
                 android:id="@+id/tolerance_output"
                 android:layout_width="90sp"
                 android:maxLength="4"
+                android:singleLine="true"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8sp"
                 android:gravity="center"
