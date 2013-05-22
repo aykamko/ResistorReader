@@ -98,6 +98,7 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
 					case MotionEvent.ACTION_DOWN:
 					case MotionEvent.ACTION_MOVE:
 						resistorView.updateActiveBand(activeScheme[position]);
+						//System.out.println("In CSA" + resistorView.activeBandNum);
 						break;
 					}
 					return true;

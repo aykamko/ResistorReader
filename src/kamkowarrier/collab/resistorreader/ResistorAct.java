@@ -61,7 +61,7 @@ public class ResistorAct extends Activity {
 	    						  System.out.println("real val is" + reader.realVal);
 	    						  System.out.println("bands should be" + reader.band[0] + " " + reader.band[1] + " " + reader.band[2]);
         						  valueOut.setText(reader.realVal);
-        						  //BAD!
+        						  //BAD! This needs to be cleaned up
         						  int[] bands = new int[3];
 							  	  int original = resistorView.activeBandNum;
 							  	  for (int i = 0; i < 3; i++) {
@@ -69,7 +69,10 @@ public class ResistorAct extends Activity {
 							  	  }
 								  for (int i = 0; i < 3; i++) { //replace 3 with variable for length
 			        			    resistorView.activeBandNum = i;
-					    			resistorView.updateWithoutCalc(bands[i]);
+			        			    ColorBand c = new ColorBand(resistorView.getContext());
+			        			    ColorBand.ValBand valB = c.new ValBand(resistorView.getContext());
+			        			    int val = valB.valueToColor(bands[i]);
+					    			resistorView.updateWithoutCalc(val);
 					    			//resistorView.selectAdap.setActives(i);
 								  }
 								  resistorView.activeBandNum = original;
