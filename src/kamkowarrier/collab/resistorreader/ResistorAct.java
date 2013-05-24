@@ -27,6 +27,10 @@ public class ResistorAct extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_resistor);
 		
+		    // Getting scaled translation amount for arrow image
+	        final Resources r = getResources();
+	        final float trans = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, r.getDisplayMetrics());
+		
 			// Setting output elements
 			final EditText valueOut = (EditText) findViewById(R.id.output_value);
 			final EditText tolOut = (EditText) findViewById(R.id.tolerance_output);
@@ -46,6 +50,7 @@ public class ResistorAct extends Activity {
 			// Setting input elements
 			final Button fourBandButton = (Button) findViewById(R.id.fourBandButton);
 			final Button fiveBandButton = (Button) findViewById(R.id.fiveBandButton);
+			fiveBandButton.setTextColor(r.getColor(R.color.gray4));
 			final ResistorView resistorView = (ResistorView) findViewById(R.id.resistor_view);
 			final ListView selectLV = (ListView) findViewById(R.id.LV_bands);
 			
@@ -57,9 +62,7 @@ public class ResistorAct extends Activity {
 			resistorView.setCalc(calc);
 			resistorView.setArrow((ImageView) arrow);
 			
-			// Getting scaled translation amount for arrow image
-		    Resources r = getResources();
-		    final float trans = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, r.getDisplayMetrics());
+
 			
 		    
 		    // Observer that measures various screen elements when they are drawn
@@ -82,12 +85,16 @@ public class ResistorAct extends Activity {
 	        fourBandButton.setOnClickListener(new View.OnClickListener() {
 	            public void onClick(View v) {
 	                resistorView.setBandMode(4);
+	                fourBandButton.setTextColor(0xFF000000);
+	                fiveBandButton.setTextColor(r.getColor(R.color.gray4));
 	            }
 	        });
 	        
 	        fiveBandButton.setOnClickListener(new View.OnClickListener() {
 	            public void onClick(View v) {
 	                resistorView.setBandMode(5);
+	                fiveBandButton.setTextColor(0xFF000000);
+	                fourBandButton.setTextColor(r.getColor(R.color.gray4));
 	            }
 	        });
 			

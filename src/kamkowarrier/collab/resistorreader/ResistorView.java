@@ -1,6 +1,7 @@
 package kamkowarrier.collab.resistorreader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -51,7 +52,8 @@ public class ResistorView extends View {
 	int[][] bandScheme = {};
 	ColorBand[] bandTypeArray = {};
 	int activeBandNum;
-	int[] bandColors = {};
+	int thirdValBand;
+	ArrayList<Integer> bandColors = new ArrayList<Integer>();
 	ArrayList<Range> eventRangeList = new ArrayList<Range>();
 	
 	// Variables and methods to set ColorSelectionAdapter and Calculator instances
@@ -86,8 +88,9 @@ public class ResistorView extends View {
 		super(context, attrs);
 		
 		this.setBandMode(4);
-		this.bandColors = new int[] { bandScheme[0][3], bandScheme[1][5], bandScheme[2][6], bandScheme[3][0] };
-		this.changeBand(0);
+		this.bandColors.addAll(Arrays.asList(bandScheme[0][3], bandScheme[1][5], bandScheme[2][6], bandScheme[3][0]));
+		this.changeToBand(0);
+		this.thirdValBand = 0xFF1D1D1D;
 		
 		this.resistorOutline = BitmapFactory.decodeResource(res, R.drawable.resistor_outline);
 		this.resistorMask = BitmapFactory.decodeResource(res, R.drawable.resistor_mask);
@@ -95,12 +98,9 @@ public class ResistorView extends View {
 		this.canvasWidth = resistorMask.getWidth();
 		this.canvasHeight = resistorMask.getHeight();
 		
-		this.drawBitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
 		this.paint = new Paint();
 		paint.setFilterBitmap(false);
 		paint.setAntiAlias(true);
-		
-		this.drawCanvas = new Canvas(drawBitmap);
 		
 		this.setOnTouchListener(new OnTouchListener () {
 			public boolean onTouch(View v, MotionEvent e) {
@@ -111,7 +111,7 @@ public class ResistorView extends View {
 					int i = 0;
 					while (i < eventRangeList.size()) {
 							if (eventRangeList.get(i).isBetween(pos)) {
-								changeBand(i); // Updates "pointer" to resistor band on touch
+								changeToBand(i); // Updates "pointer" to resistor band on touch
 								updateArrow();
 								selectAdap.setActives(i);
 								return true;
@@ -124,47 +124,66 @@ public class ResistorView extends View {
 		});
 	}
 	
-	// Method that sets the band mode for the ResistorView (4 bands, 5 bands, or 6 bands)
+	// Method that sets the band mode for the ResistorView (4 bands or 5 bands)
 	public void setBandMode(int mode) {
 		switch(mode) {
 		case 4:
 			bandScheme = new int[][] { valB.colors, valB.colors, mulB.colors, tolB.colors };
 			bandTypeArray = new ColorBand[] { valB, valB, mulB, tolB };
+			
+			if (bandColors.size() == 5) {
+				thirdValBand = bandColors.get(2).intValue();
+				bandColors.remove(2);
+				if (activeBandNum > 1) {
+					activeBandNum -= 1;
+				}
+			}
+			
 			break;
 		case 5:
 			bandScheme = new int[][] { valB.colors, valB.colors, valB.colors, mulB.colors, tolB.colors };
 			bandTypeArray = new ColorBand[] { valB, valB, valB, mulB, tolB };
+			
+			if (bandColors.size() == 4) {
+				bandColors.add(2, thirdValBand);
+				if (activeBandNum > 1) {
+					activeBandNum += 1;
+				}
+			}
+			
 			break;
-		case 6:
-			bandScheme = new int[][] { valB.colors, valB.colors, valB.colors, mulB.colors, tolB.colors, temB.colors };
-			bandTypeArray = new ColorBand[] { valB, valB, valB, mulB, tolB, temB };
+		default:
 			break;
 		}
-		if (this.getHeight() != 0) {
+		
+		if (arrow != null) {
 			arrow.setVisibility(View.INVISIBLE);
 			invalidate();
+			calculate();
 		}
+		
 	}
 	
 	private void drawBands() {
 		
 		int startY = -360;
-		int len = bandScheme.length;
-		int i = 0;
+		int len = bandColors.size();
 		eventRangeList.clear();
 		Range current;
 		
-		while (i < len) {
-			paint.setColor(bandColors[i]);
+		for (int i = 0; i < len; i++) {
+			paint.setColor(bandColors.get(i).intValue());
 			current = new Range((canvasHeight / 2) + (startY + (i * ((600 / len) + (40 - (10 * (len - 4)))))),
 					(canvasHeight / 2) + ((startY + (600 / len)) + (i * ((600 / len) + (40 - (10 * (len - 4)))))));
 		    drawCanvas.drawRect(0, current.start, canvasWidth, current.end, paint);
 		    eventRangeList.add(current);
-		    i++;
 		}
 	}
 	
 	private Bitmap drawBitmap() {
+		
+		this.drawBitmap = Bitmap.createBitmap(canvasWidth, canvasHeight, Bitmap.Config.ARGB_8888);
+		this.drawCanvas = new Canvas(drawBitmap);
 		
 		drawBands();
 		drawCanvas.drawBitmap(resistorOutline, 0, 0, paint);
@@ -191,27 +210,23 @@ public class ResistorView extends View {
 		canvas.drawBitmap(finalized, 0, 0, paint);
 	}
 	
-	public void changeBand(int i) {
+	public void changeToBand(int i) {
 		this.activeBandNum = i;
 	}
 	
 	public void updateArrow() {
 		arrow.setVisibility(VISIBLE);
-		
-		System.out.println(viewTop);
-		System.out.println(arrowHeight);
-		
 		arrow.setY((eventRangeList.get(activeBandNum).middle() / scale) - (viewTop + (arrowHeight / 2)));
 	}
 	
 	public void updateActiveBand(int color){
-		bandColors[activeBandNum] = color;
+		bandColors.set(activeBandNum, color);
 		calculate();
 		invalidate();
 	}
 	
 	public void updateWithoutCalc(int color) {
-		bandColors[activeBandNum] = color;
+		bandColors.set(activeBandNum, color);
 		invalidate();
 		//selectAdap.setActives(activeBandNum);
 	}

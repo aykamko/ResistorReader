@@ -28,14 +28,14 @@ public class Calculator {
 		this.upper = upper;
 	}
 	
-	public void calculate(int[] bandColors, ColorBand[] bandTypeArray) {
+	public void calculate(ArrayList<Integer> bandColors, ColorBand[] bandTypeArray) {
 		
 		String str = "";
 	    ArrayList<Double> values = new ArrayList<Double>();
 	    
-	    for (int i = 0; i < bandColors.length; i++) {
-	    	System.out.println(bandTypeArray[i].colorToValue(bandColors[i]));
-	        values.add(bandTypeArray[i].colorToValue(bandColors[i]));
+	    for (int i = 0; i < bandColors.size(); i++) {
+	    	// System.out.println(bandTypeArray[i].colorToValue(bandColors[i]));
+	        values.add(bandTypeArray[i].colorToValue(bandColors.get(i).intValue()));
 	    }
 	    
 	    if (values.size() == 4) {
