@@ -2,6 +2,7 @@ package kamkowarrier.collab.resistorreader;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -21,7 +22,7 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
 	int listViewHeight = 0;
 	ResistorView resistorView;
 	Calculator calc;
-	float scale = (new DisplayMetrics()).scaledDensity;
+	DisplayMetrics metric;
 	
 	public ColorSelectionAdapter(Context context, int layoutResourceId, ResistorView resistorView, Calculator calc) {
 		super(context, R.layout.textview);
@@ -29,6 +30,7 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
 		this.layoutResourceId = layoutResourceId;
 		this.resistorView = resistorView;
 		this.calc = calc;
+		this.metric = context.getResources().getDisplayMetrics();
 		setActives(0);
     }
 	
@@ -48,8 +50,8 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
 		this.notifyDataSetChanged();
 	}
 	
-	public int scaled(float input) {
-		return (int) (input / scale);
+	public float spToPix(float sp) {
+	    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, metric);
 	}
 	
 	public View getView(final int position, View convertView, ViewGroup parent) {
@@ -82,7 +84,8 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
            
            if (listViewHeight != 0) {
         	   AbsListView.LayoutParams newParams = new AbsListView.LayoutParams
-        			   (AbsListView.LayoutParams.MATCH_PARENT, (listViewHeight / activeScheme.length) - 8);
+        			   (AbsListView.LayoutParams.MATCH_PARENT, 
+        					   (int) (((listViewHeight - spToPix(4)) / activeScheme.length) - spToPix(4)));
         	   resultView.setLayoutParams(newParams);
         	   } else {
         		   resultView.setLayoutParams(new AbsListView.LayoutParams

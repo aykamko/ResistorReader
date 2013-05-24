@@ -1,6 +1,7 @@
 package kamkowarrier.collab.resistorreader;
 
 import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 public class ResistorView extends View {
 	
@@ -31,6 +33,10 @@ public class ResistorView extends View {
 			}
 			return false;
 		}
+		
+		public float middle() {
+			return ((end - start) / 2) + start;
+		}
 	}
 	
 	// Initializing band class instances
@@ -47,8 +53,6 @@ public class ResistorView extends View {
 	int activeBandNum;
 	int[] bandColors = {};
 	ArrayList<Range> eventRangeList = new ArrayList<Range>();
-	float scale;
-
 	
 	// Variables and methods to set ColorSelectionAdapter and Calculator instances
 	ColorSelectionAdapter selectAdap;
@@ -65,6 +69,17 @@ public class ResistorView extends View {
 	int canvasHeight;
 	Paint paint;
 	Canvas drawCanvas;
+	float scale;
+	
+	// Arrow variables
+	float viewTop = 0;
+	float arrowHeight = 0;
+	ImageView arrow;
+	public void setArrow(ImageView v) { this.arrow = v; }
+	public void setArrowVars(float top, float height) { 
+		this.viewTop = top; 
+		this.arrowHeight = height;
+	}
 	
 	// Init method (includes a touch listener)
 	public ResistorView(Context context, AttributeSet attrs) {
@@ -72,7 +87,7 @@ public class ResistorView extends View {
 		
 		this.setBandMode(4);
 		this.bandColors = new int[] { bandScheme[0][3], bandScheme[1][5], bandScheme[2][6], bandScheme[3][0] };
-		this.activeBandNum = 0;
+		this.changeBand(0);
 		
 		this.resistorOutline = BitmapFactory.decodeResource(res, R.drawable.resistor_outline);
 		this.resistorMask = BitmapFactory.decodeResource(res, R.drawable.resistor_mask);
@@ -96,7 +111,8 @@ public class ResistorView extends View {
 					int i = 0;
 					while (i < eventRangeList.size()) {
 							if (eventRangeList.get(i).isBetween(pos)) {
-								activeBandNum = i; // Updates "pointer" to resistor band on touch
+								changeBand(i); // Updates "pointer" to resistor band on touch
+								updateArrow();
 								selectAdap.setActives(i);
 								return true;
 							}
@@ -123,6 +139,10 @@ public class ResistorView extends View {
 			bandScheme = new int[][] { valB.colors, valB.colors, valB.colors, mulB.colors, tolB.colors, temB.colors };
 			bandTypeArray = new ColorBand[] { valB, valB, valB, mulB, tolB, temB };
 			break;
+		}
+		if (this.getHeight() != 0) {
+			arrow.setVisibility(View.INVISIBLE);
+			invalidate();
 		}
 	}
 	
@@ -156,6 +176,10 @@ public class ResistorView extends View {
 		scale = (float) canvasHeight / this.getHeight();
 		Bitmap scaled = Bitmap.createScaledBitmap(drawBitmap, this.getWidth(), this.getHeight(), true);
 		
+		if (arrow.getVisibility() == View.INVISIBLE) {
+			updateArrow();
+		}
+		
 		return scaled;
 	} 
 	
@@ -165,6 +189,19 @@ public class ResistorView extends View {
 		
 		Bitmap finalized = drawBitmap();
 		canvas.drawBitmap(finalized, 0, 0, paint);
+	}
+	
+	public void changeBand(int i) {
+		this.activeBandNum = i;
+	}
+	
+	public void updateArrow() {
+		arrow.setVisibility(VISIBLE);
+		
+		System.out.println(viewTop);
+		System.out.println(arrowHeight);
+		
+		arrow.setY((eventRangeList.get(activeBandNum).middle() / scale) - (viewTop + (arrowHeight / 2)));
 	}
 	
 	public void updateActiveBand(int color){

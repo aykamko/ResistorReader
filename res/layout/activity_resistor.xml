@@ -8,11 +8,17 @@
     android:gravity="bottom|center_horizontal"
     android:orientation="vertical" >
     
+    <FrameLayout
+        android:id="@+id/topHolder"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+        
+
     <LinearLayout
         android:id="@+id/LL_bandholder"
         android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0sp"
+        android:layout_height="match_parent"
         android:orientation="horizontal" >
         
         <FrameLayout
@@ -32,15 +38,58 @@
         </FrameLayout>
         
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+            
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35sp"
+            android:layout_marginLeft="15sp"
+            android:layout_marginRight="15sp"
+            android:layout_marginTop="15sp"
+            android:layout_marginBottom="4sp"
+            android:orientation="horizontal"
+            android:background="@color/gray3"
+            android:padding="2dp" >
+                
+            <Button
+                android:id="@+id/fourBandButton"
+                android:text="4"
+                android:textSize="25sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:background="@color/gray2"
+                android:layout_marginRight="1dp" />
+
+            <Button
+                android:id="@+id/fiveBandButton"
+                android:text="5"
+                android:textSize="25sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:background="@color/gray2"
+                android:layout_marginLeft="1dp" />
+        
+        </LinearLayout>
+        <LinearLayout
             android:id="@+id/selectHolder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="15sp"
+            android:layout_marginLeft="15sp"
+            android:layout_marginRight="15sp"
+            android:layout_marginBottom="15sp"
+            android:orientation="vertical"
             android:background="@color/gray3" >
             
+        <!--  - spToPix(4) - (spToPix(4) / (activeScheme.length + 1)) 
+        android:dividerHeight="4sp" -->
+        
         <ListView
             android:id="@+id/LV_bands"
-            android:padding="5sp"
+            android:padding="4sp"
             android:layout_margin="2dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -49,11 +98,29 @@
             android:gravity="center"
             android:background="@color/gray2"
             android:divider="@android:color/transparent"
-            android:dividerHeight="8px" />
+            android:dividerHeight="4sp"
+            />
         
+        </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
+    
+        <RelativeLayout
+        android:id="@+id/arrowHolder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:src="@drawable/arrow" />
+        
+    </RelativeLayout>  
+    
+    </FrameLayout>
     
     <View
         android:id="@+id/space_bottom"

@@ -1,19 +1,24 @@
 package kamkowarrier.collab.resistorreader;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnKeyListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.view.*;
-import android.view.View.*;
-import android.widget.*;
 
 public class ResistorAct extends Activity {
 	
@@ -30,11 +35,17 @@ public class ResistorAct extends Activity {
 			final TextView ohm = (TextView) findViewById(R.id.ohm);
 			final TextView percent = (TextView) findViewById(R.id.percent);
 			
+			// Setting arrow
+			final View selectHolder = (View) findViewById(R.id.selectHolder);
+			final View arrow = (View) findViewById(R.id.arrow);
+			
 			// Initializing Calculator and setting outputs
 			final Calculator calc = new Calculator();
 			calc.setOutputViews(valueOut, tolOut, lower, upper);
 			
 			// Setting input elements
+			final Button fourBandButton = (Button) findViewById(R.id.fourBandButton);
+			final Button fiveBandButton = (Button) findViewById(R.id.fiveBandButton);
 			final ResistorView resistorView = (ResistorView) findViewById(R.id.resistor_view);
 			final ListView selectLV = (ListView) findViewById(R.id.LV_bands);
 			
@@ -44,13 +55,41 @@ public class ResistorAct extends Activity {
 			selectLV.setAdapter(selectAdapter);
 			resistorView.setSelector(selectAdapter);
 			resistorView.setCalc(calc);
+			resistorView.setArrow((ImageView) arrow);
 			
+			// Getting scaled translation amount for arrow image
+		    Resources r = getResources();
+		    final float trans = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, r.getDisplayMetrics());
+			
+		    
+		    // Observer that measures various screen elements when they are drawn
 			selectLV.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 				public void onGlobalLayout() { 
-					int selectLVHeight = selectLV.getHeight();
+					int selectLVHeight = selectLV.getMeasuredHeight();
+					float resistorViewTop = resistorView.getY();
+					
+					int[] selectHolderCoords = { 0, 0 };
+					selectHolder.getLocationOnScreen(selectHolderCoords);
+					
+					float arrowWidth = arrow.getWidth();
+					
+					arrow.setX(selectHolderCoords[0] - arrowWidth + trans);
 					selectAdapter.setParams(selectLVHeight);
+					resistorView.setArrowVars(resistorViewTop, arrowWidth);
 				}
 			});
+			
+	        fourBandButton.setOnClickListener(new View.OnClickListener() {
+	            public void onClick(View v) {
+	                resistorView.setBandMode(4);
+	            }
+	        });
+	        
+	        fiveBandButton.setOnClickListener(new View.OnClickListener() {
+	            public void onClick(View v) {
+	                resistorView.setBandMode(5);
+	            }
+	        });
 			
 			// Initial calculate
 			resistorView.calculate();
