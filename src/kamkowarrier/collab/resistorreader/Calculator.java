@@ -43,7 +43,12 @@ public class Calculator {
 	    	val2 = values.get(1);
 	    	mul = values.get(2);
 	    	tol = values.get(3);
-	    	result = (val1 + 0.1 * val2) * mul;
+	    	if (val2 == 0) {
+	    		result = (val1*10)*mul;
+	    	}
+	    	else {
+		    	result = (val1*10 + val2) * mul;
+	    	}
 	    	str = addSuffix(result, 1);
 	    } else { //Not accounting for six bands!
 	    	val1 = values.get(0);
@@ -51,7 +56,20 @@ public class Calculator {
 	    	val3 = values.get(2);
 	    	mul = values.get(3);
 	    	tol = values.get(4);
-	    	result = (val1 + .1 * val2 + .01 * val3) * mul;
+	    	if (val2 == 0) {
+	    		if (val3 == 0) {
+	    			result = (val1*100) * mul;
+	    		}
+	    		else {
+	    			result = (val1*100 + val3) * mul;
+	    		}
+	    	}
+	    	else if (val3 == 0) {
+	    		result = (val1*100 + 10*val2) * mul; 
+	    	}
+	    	else {
+		    	result = (val1*100 + val2*10 + val3) * mul;
+	    	}
 	    	str = addSuffix(result, 1);
 	    }
 	    
@@ -69,7 +87,11 @@ public class Calculator {
     
     public String addSuffix(double result, int scale) {
     	String output;
-    	if (result > 1e6) {
+    	if (result == 0) {
+    		output = "0";
+    	} else if (result < 1) {
+    		output = Double.valueOf(result).toString();
+    	} else if (result > 1e6) {
     		double mill = result / 1e6;
     		BigDecimal mill2 = new BigDecimal(mill);
     		mill2 = mill2.setScale(scale, BigDecimal.ROUND_HALF_DOWN);

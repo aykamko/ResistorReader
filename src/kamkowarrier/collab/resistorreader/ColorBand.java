@@ -51,7 +51,7 @@ public class ColorBand {
 			int val = 0;
 			while (val < colors.length) {
 				if (color == colors[val]) {
-					return Math.pow(10, val);
+				    return Math.pow(10, val-2);
 				}
 				val++;
 			}
