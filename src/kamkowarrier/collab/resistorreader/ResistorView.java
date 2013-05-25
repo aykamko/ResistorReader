@@ -43,6 +43,7 @@ public class ResistorView extends View {
 	// Initializing band class instances
 	Context ctx = getContext();
 	ColorBand ColB = new ColorBand(ctx);
+	ColorBand.FirstBand firstB = ColB.new FirstBand(ctx);
 	ColorBand.ValBand valB = ColB.new ValBand(ctx);
 	ColorBand.TolBand tolB = ColB.new TolBand(ctx);
 	ColorBand.MultBand mulB = ColB.new MultBand(ctx);
@@ -128,8 +129,8 @@ public class ResistorView extends View {
 	public void setBandMode(int mode) {
 		switch(mode) {
 		case 4:
-			bandScheme = new int[][] { valB.colors, valB.colors, mulB.colors, tolB.colors };
-			bandTypeArray = new ColorBand[] { valB, valB, mulB, tolB };
+			bandScheme = new int[][] { firstB.colors, valB.colors, mulB.colors, tolB.colors };
+			bandTypeArray = new ColorBand[] { firstB, valB, mulB, tolB };
 			
 			if (bandColors.size() == 5) {
 				thirdValBand = bandColors.get(2).intValue();
@@ -141,8 +142,8 @@ public class ResistorView extends View {
 			
 			break;
 		case 5:
-			bandScheme = new int[][] { valB.colors, valB.colors, valB.colors, mulB.colors, tolB.colors };
-			bandTypeArray = new ColorBand[] { valB, valB, valB, mulB, tolB };
+			bandScheme = new int[][] { firstB.colors, valB.colors, valB.colors, mulB.colors, tolB.colors };
+			bandTypeArray = new ColorBand[] { firstB, valB, valB, mulB, tolB };
 			
 			if (bandColors.size() == 4) {
 				bandColors.add(2, thirdValBand);

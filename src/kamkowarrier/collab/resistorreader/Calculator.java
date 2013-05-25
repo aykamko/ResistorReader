@@ -74,8 +74,8 @@ public class Calculator {
 	    }
 	    
 	    bounds = new String[2];
-    	bounds[0] = addSuffix(result - ((tol / 100.0) * result), 2);
-    	bounds[1] = addSuffix(result + ((tol / 100.0) * result), 2);
+    	bounds[0] = addSuffix(result - ((tol / 100.0) * result), 1);
+    	bounds[1] = addSuffix(result + ((tol / 100.0) * result), 1);
     	
     	// Sending output to Views
 		valueOut.setText(str);
@@ -91,12 +91,12 @@ public class Calculator {
     		output = "0";
     	} else if (result < 1) {
     		output = Double.valueOf(result).toString();
-    	} else if (result > 1e6) {
+    	} else if (result >= 1e6) {
     		double mill = result / 1e6;
     		BigDecimal mill2 = new BigDecimal(mill);
     		mill2 = mill2.setScale(scale, BigDecimal.ROUND_HALF_DOWN);
     		output = mill2 + "M";
-    	} else if (result > 1e3) {
+    	} else if (result >= 1e3) {
     		double thou = result / 1e3;
     		BigDecimal thou2 = new BigDecimal(thou);
     		thou2 = thou2.setScale(scale, BigDecimal.ROUND_HALF_DOWN);

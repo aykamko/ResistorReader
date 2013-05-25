@@ -39,6 +39,34 @@ public class ColorBand {
 		
 	}
 	
+public class FirstBand extends ColorBand {
+		
+		public int[] colors;
+		public FirstBand(Context context) {
+			super(context);
+			colors = res.getIntArray(R.array.firstColors);
+		}
+		
+		public double colorToValue(int color) {
+			int val = 0;
+			while (val < colors.length) {
+				if (color == colors[val]) {
+					return val + 1;
+				}
+				val++;
+			}
+			return 50; // Error check
+		}
+		
+		public int valueToColor(int val) throws Exception {
+			if (val == 0) {
+				throw new Exception("If you're seeing this then FirstBand in ColorBand needs to be fixed");
+			}
+			return colors[val-1];
+		}
+		
+	}
+	
 	public class MultBand extends ColorBand {
 		
 		public int[] colors;

@@ -33,7 +33,7 @@ public boolean isValidString(String e) {
     //System.out.println("String is one char and char is not a number");
     return false;
   }
-  if (!isIn(lastChar,"1234567890MK.")) {
+  if (!isIn(lastChar,"1234567890MK.mk")) {
     //System.out.println("Last char " + lastChar + " is not valid");
     return false;
   }
@@ -79,12 +79,12 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
       numberOfZeroes++;
     }
     double closestVal = findClosestVal(smallVal,validVals);
-    if (Character.toString(e.charAt(e.length() -1)).equals("M")) {
+    if (Character.toString(e.charAt(e.length() -1)).equals("M") || Character.toString(e.charAt(e.length() -1)).equals("m")) {
       value = closestVal*Math.pow(10,numberOfZeroes)*1000000;
       //System.out.println("get here");
       realVal = closestVal*Math.pow(10,numberOfZeroes) + "M"; 
     }
-    else if (Character.toString(e.charAt(e.length() -1)).equals("K")) {
+    else if (Character.toString(e.charAt(e.length() -1)).equals("K") || Character.toString(e.charAt(e.length() -1)).equals("k")) {
       value = closestVal*Math.pow(10,numberOfZeroes)*1000;
       realVal = closestVal*Math.pow(10,numberOfZeroes) + "K"; 
     }

@@ -104,8 +104,7 @@ public class ResistorAct extends Activity {
 			// Listener for EditText boxes
 			//Need to add error checking/ handling
 			//TextReader doesn't work with 5 band resistors
-			//CALCULATOR IS WRONG ARRRRGGH (try salmon black orange, off by factor of ten)
-			
+			//Add checks for out of range
 			// The above is to set the X for error checking
 			final SpannableString redX = new SpannableString("X");
 			redX.setSpan(new ForegroundColorSpan(Color.RED), 0, 1, 0);
@@ -136,6 +135,7 @@ public class ResistorAct extends Activity {
 					    			resistorView.updateWithoutCalc(val);
 								  }
 								  resistorView.activeBandNum = original;
+								  ohm.setText(getString(R.string.ohm));
         						  return true;
 						    default:
 						    	break;
@@ -146,7 +146,7 @@ public class ResistorAct extends Activity {
 		});
 			tolOut.setOnKeyListener(new OnKeyListener() {
 				public boolean onKey(View view, int keyCode, KeyEvent event) {
-					if (event.getAction() == KeyEvent.ACTION_DOWN) { //Key down? {
+					if (event.getAction() == KeyEvent.ACTION_DOWN) {
 						switch(keyCode) {
 							case KeyEvent.KEYCODE_ENTER:
 								resistorView.activeBandNum = 3; //make this more general!
@@ -164,6 +164,7 @@ public class ResistorAct extends Activity {
 			        			ColorBand.TolBand tolB = c.new TolBand(resistorView.getContext());
 			        			int color = tolB.valueToColor(val);
 			        			resistorView.updateWithoutCalc(color);
+			        			percent.setText(getString(R.string.percent));
 			        	        return true;
 							default:
 								break;
