@@ -13,9 +13,17 @@ public String userVal;
 double[] validVals = {1.0,1.1,1.2,1.3,1.5,1.6,1.8,2.0,2.2,2.4,2.7,3.0,3.3,3.6,3.9,4.3,4.7,5.1,5.6,6.2,6.8,7.5,8.2,9.1};
 double[] validTols = {0.1, 0.25, 0.5, 1.0, 2.0, 10.0};
 
+double[] e6 = {1.0, 1.5, 2.2 , 3.3, 4.7, 6.8 }; //20%
+double[] e12 = {1.2,1.8,2.7,3.9,5.6,8.2}; // plus e6! 10%
+double[] e24 = {1.1,1.3,1.6,2.0,2.4,3.0,3.6,4.3,5.1,6.2,7.5,9.1}; //plus e12! 5%
+/*double[] e48 = {100,121,147,178,215,261,316,383,464,562,681,825,
+        105,127,154,187,226,274,332,402,487,590,715,866
+        110  133  162  196  237  287  348  422  511  619  750  909
+         115  140  169  205  249  301  365  442  536  649  787  953
+*/
 
-public void read(String str) {
-	valueToBands(parseNumbers(str));
+public void read(String str,int numBands) {
+	valueToBands(parseNumbers(str), numBands);
 }
 
 public boolean isIn(String e, String things) {
@@ -96,6 +104,12 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
   return value;
 } 
 
+public boolean isInRange(double val, int numBands) {
+	if (val < 0.1 || val > 999e9) {
+		return false;
+	}
+	return true;
+} //this needs to be fixed so it notifies calling method of max allowed value
 
 //takes in a double less than 10
 // you can make a more efficient algorithm for this!
@@ -111,7 +125,8 @@ public double findClosestVal(double val, double[] valids) {
   return closestVal;
 }
 
-public void valueToBands(double val) { 
+public void valueToBands(double val, int numBands) { 
+	if (numBands == 4) {
 	  band = new int[3];
 	  int numZeroes = 0;
 	  if (val < 1) {
@@ -144,6 +159,49 @@ public void valueToBands(double val) {
 	      band[2] = 0;
 	    }
 	  }
+	}
+	else if (numBands == 5) {
+		if (val < 1) { //assuming val is >= 0.1
+			band[0] = 0; //black
+			Double v = new Double(val*10);
+			band[1] = v.intValue();
+			v = new Double((val*10-band[1])*10);
+			band[2] = v.intValue();
+			band[3] = 0; //silver
+		}
+		else if (val < 10) {
+		    Double v = new Double(val);
+			band[0] = v.intValue();
+			v = new Double((val-band[0])*10);
+			band[1] = v.intValue();
+			v = new Double((val*10-band[0]*10-band[1])*10);
+			band[2] = v.intValue(); //black
+		    band[3] = 0; //silver
+		}
+		else if (val < 100) {
+		    Double v = new Double(val/10);
+		    band[0] = v.intValue();
+		    v = new Double((val/10-band[0])*10);
+		    band[1] = v.intValue();
+		    v = new Double((val-10*band[0]-band[1])*10);
+		    band[2] = v.intValue();
+		    band[3] = 1; //gold
+		}
+		else {
+			int numZeroes = 2;
+			while (val >= 1000) {  
+			      val = val/10;
+			      numZeroes ++;
+			    }
+			    Double v = new Double(val/100);
+			    band[0] = v.intValue();
+			    v = new Double(val/10- band[0]*10);
+			    band[1] = v.intValue();
+			    v = new Double(val-100*band[0] - 10*band[2]);
+			    band[2] = v.intValue();
+			    band[3] = numZeroes;
+		}
+	}
 	}
 
 public static void main(String[] args) {
