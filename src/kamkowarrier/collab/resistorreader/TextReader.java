@@ -219,7 +219,7 @@ System.out.println(read.isValidString(str5));
 System.out.println(read.findClosestVal(1.8,read.validVals));
 System.out.println(read.findClosestVal(5,read.validVals));
 System.out.println(read.parseNumbers(".7"));
-read.valueToBands(read.parseNumbers(".7"));
+read.valueToBands(read.parseNumbers(".7"),4);
 for (int x = 0; x < 3; x++) {
   System.out.println(read.band[x]);
 }

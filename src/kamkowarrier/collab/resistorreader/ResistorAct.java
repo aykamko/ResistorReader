@@ -122,7 +122,7 @@ public class ResistorAct extends Activity {
 		   							ohm.setText(redX);
 		   							break;
 		   						}
-	    						  reader.read(valueOut.getText().toString());
+	    						  reader.read(valueOut.getText().toString(),4); //change to correct ref
         						  valueOut.setText(reader.realVal);
         						  boxVals[0] = valueOut.getText().toString();
         						  //BAD! This needs to be cleaned up
