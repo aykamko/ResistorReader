@@ -125,6 +125,8 @@ public double findClosestVal(double val, double[] valids) {
   return closestVal;
 }
 
+//the double given to this function must have a max of 3 sig digits
+//(ensured by calling closestVal before this function).
 public void valueToBands(double val, int numBands) { 
 	if (numBands == 4) {
 	  band = new int[3];
@@ -161,6 +163,7 @@ public void valueToBands(double val, int numBands) {
 	  }
 	}
 	else if (numBands == 5) {
+		band = new int[4];
 		if (val < 1) { //assuming val is >= 0.1
 			band[0] = 0; //black
 			Double v = new Double(val*10);
@@ -169,26 +172,34 @@ public void valueToBands(double val, int numBands) {
 			band[2] = v.intValue();
 			band[3] = 0; //silver
 		}
-		else if (val < 10) {
+		else if (val < 10) { 
+			System.out.println(val + " Meee");
 		    Double v = new Double(val);
 			band[0] = v.intValue();
-			v = new Double((val-band[0])*10);
-			band[1] = v.intValue();
-			v = new Double((val*10-band[0]*10-band[1])*10);
-			band[2] = v.intValue(); //black
+			System.out.println((val-band[0])*10);
+			v = new Double((val-band[0])*10 +.01);
+			band[1] = v.intValue(); //v.intValue();
+			if (val-band[0]-(new Double(band[1]).doubleValue()) < .005) { //if only 2 digits
+				band[2] = 0; //black
+			}
+			else {
+			    v = new Double((val*10-band[0]*10-band[1])*10 + .01);
+			    band[2] = v.intValue();
+			}
 		    band[3] = 0; //silver
+		    //System.out.println(band[0] + " " + band[1] + " " + band[2] + " " + band[3]);
 		}
 		else if (val < 100) {
 		    Double v = new Double(val/10);
 		    band[0] = v.intValue();
 		    v = new Double((val/10-band[0])*10);
 		    band[1] = v.intValue();
-		    v = new Double((val-10*band[0]-band[1])*10);
+		    v = new Double((val-10*band[0]-band[1])*10 + .01);
 		    band[2] = v.intValue();
 		    band[3] = 1; //gold
 		}
 		else {
-			int numZeroes = 2;
+			int numZeroes = 0;
 			while (val >= 1000) {  
 			      val = val/10;
 			      numZeroes ++;
@@ -197,12 +208,13 @@ public void valueToBands(double val, int numBands) {
 			    band[0] = v.intValue();
 			    v = new Double(val/10- band[0]*10);
 			    band[1] = v.intValue();
-			    v = new Double(val-100*band[0] - 10*band[2]);
+			    v = new Double(val-100*band[0] - 10*band[1]);
 			    band[2] = v.intValue();
 			    band[3] = numZeroes;
 		}
 	}
 	}
+
 
 public static void main(String[] args) {
 String str1 = "123M";
