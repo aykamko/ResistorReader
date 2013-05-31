@@ -122,8 +122,18 @@ public class ResistorAct extends Activity {
 		   							ohm.setText(redX);
 		   							break;
 		   						}
-	    						  reader.read(valueOut.getText().toString(),4); //change to correct ref
-        						  valueOut.setText(reader.realVal);
+		   						  int numBands = resistorView.bandColors.size();
+	    						  reader.read(valueOut.getText().toString(),numBands); //change to correct ref
+	    						  if (!reader.isInRange(reader.numUserVal,numBands)) {
+	    							  ohm.setText(redX);
+			   						  break;
+	    						  }
+        						  valueOut.setText(Double.valueOf(
+        								  reader.roundValue(reader.numUserVal,numBands)).toString());
+        						  System.out.println("g " + reader.roundValue(reader.numUserVal,numBands));
+        						  System.out.println(reader.numUserVal);
+        						  //need to decide to give options or give max/min value
+        						  //remember to do a second set text if necessary
         						  boxVals[0] = valueOut.getText().toString();
         						  //BAD! This needs to be cleaned up
 							  	  int original = resistorView.activeBandNum;

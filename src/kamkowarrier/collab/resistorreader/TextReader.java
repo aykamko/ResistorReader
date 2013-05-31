@@ -1,5 +1,7 @@
 package kamkowarrier.collab.resistorreader;
 
+import java.math.*;
+
 //ACCOUNT FOR GOLD AND SILVER BANDS!
 //BLACK AS FIRST BAND IS INVALID
 // Needs to know whether the resistor is 4 band or 5 band
@@ -10,6 +12,7 @@ public boolean isValid;
 public int[] band;
 public String realVal;
 public String userVal;
+public double numUserVal;
 double[] validVals = {1.0,1.1,1.2,1.3,1.5,1.6,1.8,2.0,2.2,2.4,2.7,3.0,3.3,3.6,3.9,4.3,4.7,5.1,5.6,6.2,6.8,7.5,8.2,9.1};
 double[] validTols = {0.1, 0.25, 0.5, 1.0, 2.0, 10.0};
 
@@ -78,6 +81,7 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
       value = Double.parseDouble(e.substring(0,e.length()));
     }
     if (value == 0.0) {
+      numUserVal = 0.0;
       return 0.0;
     }
     double smallVal = value;
@@ -88,15 +92,18 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
     }
     double closestVal = findClosestVal(smallVal,validVals);
     if (Character.toString(e.charAt(e.length() -1)).equals("M") || Character.toString(e.charAt(e.length() -1)).equals("m")) {
+      numUserVal = smallVal*Math.pow(10,numberOfZeroes)*1000000;
       value = closestVal*Math.pow(10,numberOfZeroes)*1000000;
       //System.out.println("get here");
       realVal = closestVal*Math.pow(10,numberOfZeroes) + "M"; 
     }
     else if (Character.toString(e.charAt(e.length() -1)).equals("K") || Character.toString(e.charAt(e.length() -1)).equals("k")) {
+      numUserVal = smallVal*Math.pow(10,numberOfZeroes)*1000;
       value = closestVal*Math.pow(10,numberOfZeroes)*1000;
       realVal = closestVal*Math.pow(10,numberOfZeroes) + "K"; 
     }
     else {
+      numUserVal = smallVal*Math.pow(10,numberOfZeroes);
       value = closestVal*Math.pow(10, numberOfZeroes); 
       realVal = value + "";
     }
@@ -104,9 +111,29 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
   return value;
 } 
 
+public double roundValue(double val, int numBands) {
+	BigDecimal num = new BigDecimal(val);
+	if (numBands == 4) {
+		num = num.round(new MathContext(2, RoundingMode.HALF_UP));
+	}
+	else if (numBands == 5) {
+		num = num.round(new MathContext(3, RoundingMode.HALF_UP));
+	}
+	System.out.println(num + " num");
+	return num.doubleValue();
+}
+
 public boolean isInRange(double val, int numBands) {
-	if (val < 0.1 || val > 999e9) {
-		return false;
+	val = roundValue(val,numBands);
+	if (numBands == 4) {
+		if (val < 0.1 || val > 99e9) {
+			return false;
+		}
+	}
+	else if (numBands == 5) {
+		if (val < 0.1 || val > 999e9) {
+			return false;
+		}
 	}
 	return true;
 } //this needs to be fixed so it notifies calling method of max allowed value
@@ -126,7 +153,6 @@ public double findClosestVal(double val, double[] valids) {
 }
 
 //the double given to this function must have a max of 3 sig digits
-//(ensured by calling closestVal before this function).
 public void valueToBands(double val, int numBands) { 
 	if (numBands == 4) {
 	  band = new int[3];
