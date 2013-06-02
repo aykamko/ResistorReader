@@ -241,6 +241,44 @@ public void valueToBands(double val, int numBands) {
 	}
 	}
 
+/*ModBSearch takes in a double and a SORTED array of standard values, 
+ * and uses binary search to give the two values below and above the input value. 
+ */
+public double[] modBSearch(double val, double[] standards, int low, int high) {
+    int mid = (high+low)/2;
+	double[] result = null;
+	if (low > high) {
+		if (low == 0) {
+	        result = new double[] {val, val, standards[low]};
+		}
+		else if (low == standards.length) {
+		    result = new double[] {standards[low],val,val};
+		}
+		else {
+		    result = new double[] {standards[high],val,standards[low]};
+		}
+	}
+	else if (Math.abs(val-standards[mid]) < .0001) {
+		if (mid == 0) {
+	        result = new double[] {standards[mid], standards[mid], standards[mid+1]};
+		}
+		else if (mid == standards.length-1) {
+		    result = new double[] {standards[mid -1],standards[mid],standards[mid]};
+		}
+		else {
+			result = new double[] {standards[mid-1],standards[mid],standards[mid+1]};
+		}
+	}
+	else if (val-standards[mid] > .0009) {
+		result = modBSearch(val,standards,mid+1,high);
+		}
+	else if (val-standards[mid] < -.0009) {
+		result = modBSearch(val,standards,low,mid-1);
+	}
+	return result;
+}
+
+
 
 public static void main(String[] args) {
 String str1 = "123M";
@@ -249,6 +287,8 @@ String str3 = "23.543M";
 String str4 = "2345.M";
 String str5 = "12.34.";
 TextReader read = new TextReader();
+double[] a = read.modBSearch(3.2,new double[] {1,2.0,3.1,3.3,4.5},0,4);
+System.out.println(a[0] + " " + a[1] + " " + a[2]);
 System.out.println(read.isValidString(str1));
 System.out.println(read.isValidString(str2));
 System.out.println(read.isValidString(str3));
