@@ -1,6 +1,7 @@
 package kamkowarrier.collab.resistorreader;
 
 import java.math.*;
+import java.util.PriorityQueue;
 
 //ACCOUNT FOR GOLD AND SILVER BANDS!
 //BLACK AS FIRST BAND IS INVALID
@@ -279,6 +280,107 @@ public double[] modBSearch(double val, double[] standards, int low, int high) {
 }
 
 
+//TODO: make a generic version of the following implementation for kicks and giggles
+public Double[] mergeSomeSortedArrays(Double[][] arrays) { 
+	DoublePQ[] qArray = new DoublePQ[arrays.length];
+	int totalLength = 0;
+	for (int i = 0; i < arrays.length; i++) {
+		totalLength += arrays[i].length;
+		qArray[i] = new DoublePQ(arrays[i]);
+	}
+	Double[] result = new Double[totalLength];
+	int i = 0;
+	while (!allAreNull(qArray)) { //TODO: use a check that doesn't go over the array twice
+		DoublePQ comparisonQ = new DoublePQ(qArray.length);
+		for (int j = 0; j < qArray.length; j++) {
+			if (!(qArray[i].peek() == null)) {
+				comparisonQ.insert(qArray[i].removeMin());
+			}
+		}
+		while (!(comparisonQ.peek() == null)) {
+			result[i] = comparisonQ.removeMin();
+			i++;
+		}
+	}
+	return result;
+}
+
+private boolean allAreNull(DoublePQ[] array) {
+	for (int i =0; i < array.length; i ++) {
+		if (array[i].peek() != null) {
+			return false;
+		}
+	}
+	return true;
+}
+
+
+/* The DoublePQ class is a partial priority queue implementation that is limited
+ * to the size of the array it is constructed with. Because of this its insert() method
+ * is bounded.
+ */
+protected class DoublePQ { 
+	Double[] heap;
+	int numItems;
+	
+	public DoublePQ(int size) {
+		Double[] heap = new Double[size];
+		numItems = 0;
+	}
+	
+	public DoublePQ(Double[] array) {
+		heap = new Double[array.length];
+		for (int i = 0;i < array.length;i++) {
+			heap[i] = array[array.length-i];
+		}
+		numItems = array.length;
+		bottomUpHeap();
+	}
+	
+	public void insert(Double key) {
+		if (numItems == heap.length) {
+			System.out.println("ERROR, array out of space in DoublePQ");
+			System.exit(0);
+		}
+		heap[heap.length-numItems-1] = key;
+		bottomUpHeap();
+		numItems++;
+	}
+	
+	private void bottomUpHeap() {
+		if (numItems == 0) {
+			return;
+		}
+		for (int i = heap.length- numItems;i < heap.length-1;i++) {
+			int parent = heap.length - Double.valueOf(Math.ceil((heap.length-i-1)/2.0)).intValue();
+			if (heap[i].compareTo(heap[parent]) < 0) {
+				Double temp = heap[i];
+				heap[i] = heap[parent];
+				heap[parent] = temp;
+			} 
+		}
+	}
+	
+	public Double removeMin() {
+		if (numItems == 0) {
+			return null;
+		}
+		Double min = heap[heap.length-1];
+		heap[heap.length-1] = heap[heap.length-numItems];
+		heap[heap.length-numItems] = null;
+		numItems--;
+		bottomUpHeap();
+		return min;
+	}
+	
+	public Double peek() {
+		Double result = heap[heap.length-1];
+		if (result == null) {
+			return null;
+		}
+		return result;
+	}
+}
 
 public static void main(String[] args) {
 String str1 = "123M";
