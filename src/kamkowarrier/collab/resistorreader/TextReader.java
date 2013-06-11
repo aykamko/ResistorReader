@@ -1,4 +1,5 @@
 package kamkowarrier.collab.resistorreader;
+
 import java.math.*;
 import java.util.PriorityQueue;
 
@@ -40,8 +41,8 @@ double[] e192 = {101,1.23,1.49,1.80,2.18,2.64,3.20,3.88,4.70,5.69,6.90,8.35,
 		1.20,1.45,1.76,2.13,2.58,3.12,3.79,4.59,5.56,6.73,8.16,9.88
 };
 
-public void read(String str,int numBands) {
-	valueToBands(parseNumbers(str), numBands);
+public void read(String str) {
+	valueToBands(parseNumbers(str));
 }
 
 public boolean isIn(String e, String things) {
@@ -89,10 +90,10 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
   if (isValidString(e)) {
     isValid = true;
     if (!isIn(Character.toString(e.charAt(e.length()-1)), "1234567890")) {
-      value = Double.parseDouble(e.substring(0,e.length()-1));
+      value = roundValue(Double.parseDouble(e.substring(0,e.length()-1)),bandNum);
     }
     else {
-      value = Double.parseDouble(e.substring(0,e.length()));
+      value = roundValue(Double.parseDouble(e.substring(0,e.length())),bandNum);
     }
     if (value == 0.0) {
       numUserVal = 0.0;
@@ -139,7 +140,22 @@ public double roundValue(double val, int numBands) {
 	return num.doubleValue();
 }
 
+//takes in a double less than 10
+//you can make a more efficient algorithm for this!
+public double findClosestVal(double val, double[] valids) {
+double min = 10.0;
+double closestVal = 0.0;
+for (double i : valids) {
+ if (Math.abs(i - val) < min) {
+   min = Math.abs(i-val);
+   closestVal = i;
+ }
+}
+return closestVal;
+}
+
 public void setTolerance(double tol) {
+tol = findClosestVal(tol,validTols);
 	double[][] tempArrays = {e6,e12,e24,e48,e96,e192};
 	Double[][] tolArrays = new Double[tempArrays.length][];  
 	for (int i = 0; i < tempArrays.length; i++) {
@@ -209,8 +225,8 @@ public boolean isInRange(double val, int numBands) {
 } //this needs to be fixed so it notifies calling method of max allowed value
 
 //the double given to this function must have a max of 3 sig digits
-public void valueToBands(double val, int numBands) { 
-	if (numBands == 4) {
+public void valueToBands(double val) { 
+	if (bandNum == 4) {
 	  band = new int[3];
 	  int numZeroes = 0;
 	  if (val < 1) {
@@ -244,7 +260,7 @@ public void valueToBands(double val, int numBands) {
 	    }
 	  }
 	}
-	else if (numBands == 5) {
+	else if (bandNum == 5) {
 		band = new int[4];
 		if (val < 1) { //assuming val is >= 0.1
 			band[0] = 0; //black
@@ -448,7 +464,10 @@ String str3 = "23.543M";
 String str4 = "2345.M";
 String str5 = "12.34.";
 TextReader read = new TextReader();
-read.setTolerance(1.0);
+read.setTolerance(12.6);
+read.read("1.2542345M");
+System.out.println(read.numUserVal + " " + read.realVal);
+
 double[] a = read.findClosestStandardVals(3.61,read.currValArray);
 System.out.println(a[0] + " " + a[1] + " " + a[2]);
 System.out.println(read.isValidString(str1));
@@ -457,7 +476,7 @@ System.out.println(read.isValidString(str3));
 System.out.println(read.isValidString(str4));
 System.out.println(read.isValidString(str5));
 System.out.println(read.parseNumbers(".7"));
-read.valueToBands(read.parseNumbers(".7"),4);
+read.valueToBands(read.parseNumbers(".7"));
 for (int x = 0; x < 3; x++) {
   System.out.println(read.band[x]);
 }
@@ -466,3 +485,4 @@ for (int x = 0; x < 3; x++) {
 
 
 }
+
