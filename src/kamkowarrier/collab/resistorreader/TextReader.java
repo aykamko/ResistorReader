@@ -1,30 +1,44 @@
 package kamkowarrier.collab.resistorreader;
-
 import java.math.*;
 import java.util.PriorityQueue;
 
-//ACCOUNT FOR GOLD AND SILVER BANDS!
-//BLACK AS FIRST BAND IS INVALID
-// Needs to know whether the resistor is 4 band or 5 band
+//REMEMBER TO SET VALUE ARRAYS BEFORE USING
+//TODO: change band settings when tolerance is set.
+//TODO: decide if you need to choose between Doubles and doubles.
 
 public class TextReader{
 
 public boolean isValid;
 public int[] band;
 public String realVal;
-public String userVal;
 public double numUserVal;
-double[] validVals = {1.0,1.1,1.2,1.3,1.5,1.6,1.8,2.0,2.2,2.4,2.7,3.0,3.3,3.6,3.9,4.3,4.7,5.1,5.6,6.2,6.8,7.5,8.2,9.1};
-double[] validTols = {0.1, 0.25, 0.5, 1.0, 2.0, 10.0};
-
+public double lowerStandard;
+public double upperStandard;
+double[] validTols = {0.1, 0.25, 0.5, 1.0, 2.0, 10.0, 20.0};
+int bandNum; //this is the band number that corresponds to the tolerance
+Double[] currValArray;
 double[] e6 = {1.0, 1.5, 2.2 , 3.3, 4.7, 6.8 }; //20%
 double[] e12 = {1.2,1.8,2.7,3.9,5.6,8.2}; // plus e6! 10%
 double[] e24 = {1.1,1.3,1.6,2.0,2.4,3.0,3.6,4.3,5.1,6.2,7.5,9.1}; //plus e12! 5%
-/*double[] e48 = {100,121,147,178,215,261,316,383,464,562,681,825,
-        105,127,154,187,226,274,332,402,487,590,715,866
-        110  133  162  196  237  287  348  422  511  619  750  909
-         115  140  169  205  249  301  365  442  536  649  787  953
-*/
+double[] e48 = { 100,1.21,1.47,1.78,2.15,2.61,3.16,3.83,4.64,5.62,6.81,8.25,
+		1.05,1.27,1.54,1.87,2.26,2.74,3.32,4.02,4.87,5.90,7.15,8.66,
+		1.10,1.33,1.62,1.96,2.37,2.87,3.48,4.22,5.11,6.19,7.50,9.09,
+		1.15,1.40,1.69,2.05,2.49,3.01,3.65,4.42,5.36,6.49,7.87,9.53
+};
+double[] e96 = {102,1.24,1.50,1.82,2.21,2.67,3.24,3.92,4.75,5.76,6.98,8.45,
+		1.07,1.30,1.58,1.91,2.32,2.80,3.40,4.12,4.99,6.04,7.32,8.87,
+		1.13,1.37,1.65,2.00,2.43,2.94,3.57,4.32,5.23,6.34,7.68,9.31,
+		1.18,1.43,1.74,2.10,2.55,3.09,3.74,4.53,5.49,6.65,8.06,9.76
+}; 
+double[] e192 = {101,1.23,1.49,1.80,2.18,2.64,3.20,3.88,4.70,5.69,6.90,8.35,
+		1.04,1.26,1.52,1.84,2.23,2.71,3.28,3.97,4.81,5.83,7.06,8.56,
+		1.06,1.29,1.56,1.89,2.29,2.77,3.36,4.07,4.93,5.97,7.23,8.76, 
+		1.09,1.32,1.60,1.93,2.34,2.84,3.44,4.17,5.05,6.12,7.41,8.98, 
+		1.11,1.35,1.64,1.98,2.40,2.91,3.52,4.27,5.17,6.26,7.59,9.20, 
+		1.14,1.38,1.67,2.03,2.46,2.98,3.61,4.37,5.30,6.42,7.77,9.42, 
+		1.17,1.42,1.72,2.08,2.52,3.05,3.70,4.48,5.42,6.57,7.96,9.65,
+		1.20,1.45,1.76,2.13,2.58,3.12,3.79,4.59,5.56,6.73,8.16,9.88
+};
 
 public void read(String str,int numBands) {
 	valueToBands(parseNumbers(str), numBands);
@@ -72,7 +86,6 @@ public boolean isValidString(String e) {
 //takes in a string of numbers (and M or K) and converts it to an integer value if the value is greater than 10, a double value otherwise. The returned double value must only have one decimal point.
 public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right now.
   double value = 0.0;
-  userVal = e;
   if (isValidString(e)) {
     isValid = true;
     if (!isIn(Character.toString(e.charAt(e.length()-1)), "1234567890")) {
@@ -85,17 +98,19 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
       numUserVal = 0.0;
       return 0.0;
     }
-    double smallVal = value;
+    double smallVal = value; //make sure that this can be out to two sigfigs
     int numberOfZeroes = 0;
     while (smallVal >= 10) {
       smallVal = smallVal/10;
       numberOfZeroes++;
     }
-    double closestVal = findClosestVal(smallVal,validVals);
+    double[] standards = findClosestStandardVals(smallVal,currValArray);
+    lowerStandard = standards[0];
+    double closestVal = standards[1];
+    upperStandard = standards[2];
     if (Character.toString(e.charAt(e.length() -1)).equals("M") || Character.toString(e.charAt(e.length() -1)).equals("m")) {
       numUserVal = smallVal*Math.pow(10,numberOfZeroes)*1000000;
       value = closestVal*Math.pow(10,numberOfZeroes)*1000000;
-      //System.out.println("get here");
       realVal = closestVal*Math.pow(10,numberOfZeroes) + "M"; 
     }
     else if (Character.toString(e.charAt(e.length() -1)).equals("K") || Character.toString(e.charAt(e.length() -1)).equals("k")) {
@@ -124,6 +139,60 @@ public double roundValue(double val, int numBands) {
 	return num.doubleValue();
 }
 
+public void setTolerance(double tol) {
+	double[][] tempArrays = {e6,e12,e24,e48,e96,e192};
+	Double[][] tolArrays = new Double[tempArrays.length][];  
+	for (int i = 0; i < tempArrays.length; i++) {
+		tolArrays[i] = new Double[tempArrays[i].length]; 
+		for (int j = 0; j < tempArrays[i].length; j++) {
+			tolArrays[i][j] = new Double(tempArrays[i][j]);
+		}
+	}
+	Double[] e6D = tolArrays[0];
+	Double[] e12D = tolArrays[1];
+	Double[] e24D = tolArrays[2];
+	Double[] e48D = tolArrays[3];
+	Double[] e96D = tolArrays[4];
+	Double[] e192D = tolArrays[5];
+	if (Double.valueOf(tol).equals(20.0)) {
+		currValArray = mergeAndSortArrays(new Double[][] {e6D});
+		bandNum = 3;
+	}
+	else if (Double.valueOf(tol).equals(10.0)) {
+		currValArray = mergeAndSortArrays(new Double[][] {e6D,e12D});
+		bandNum = 4;
+	}
+	else if (Double.valueOf(tol).equals(5.0)) {
+		currValArray = mergeAndSortArrays(new Double[][] {e6D,e12D,e24D});
+		bandNum = 4;
+	}
+	else if (Double.valueOf(tol).equals(2.0)) {
+		currValArray = mergeAndSortArrays(new Double[][] {e48D});
+		bandNum = 5;
+	}
+	else if (Double.valueOf(tol).equals(1.0)) {
+		currValArray = mergeAndSortArrays(new Double[][] {e48D,e96D,e6D,e12D,e24D});
+		bandNum = 5;
+	}
+	else if (Double.valueOf(tol).equals(0.5) || Double.valueOf(tol).equals(0.25)
+			|| Double.valueOf(tol).equals(0.1)) {
+		currValArray = mergeAndSortArrays(new Double[][] {e48D,e96D,e192D});
+		bandNum = 5;
+	}
+	else {
+		System.out.println("Message from setTolerance in TextReader: Not a valid tolerance!");
+		System.exit(0);
+	}
+}
+
+private double[] findClosestStandardVals(double val, Double[] valArray) {
+	double[] workingArray = new double[valArray.length];
+	for (int i = 0; i < valArray.length; i++) {
+		workingArray[i] = valArray[i].doubleValue();
+	}
+	return modBSearch(val,workingArray,0,workingArray.length-1);
+}
+
 public boolean isInRange(double val, int numBands) {
 	val = roundValue(val,numBands);
 	if (numBands == 4) {
@@ -138,20 +207,6 @@ public boolean isInRange(double val, int numBands) {
 	}
 	return true;
 } //this needs to be fixed so it notifies calling method of max allowed value
-
-//takes in a double less than 10
-// you can make a more efficient algorithm for this!
-public double findClosestVal(double val, double[] valids) {
-  double min = 10.0;
-  double closestVal = 0.0;
-  for (double i : valids) {
-    if (Math.abs(i - val) < min) {
-      min = Math.abs(i-val);
-      closestVal = i;
-    }
-  }
-  return closestVal;
-}
 
 //the double given to this function must have a max of 3 sig digits
 public void valueToBands(double val, int numBands) { 
@@ -250,10 +305,10 @@ public double[] modBSearch(double val, double[] standards, int low, int high) {
 	double[] result = null;
 	if (low > high) {
 		if (low == 0) {
-	        result = new double[] {val, val, standards[low]};
+	          result = new double[] {val, val, standards[low]};
 		}
 		else if (low == standards.length) {
-		    result = new double[] {standards[low],val,val};
+		    result = new double[] {standards[low-1],val,val};
 		}
 		else {
 		    result = new double[] {standards[high],val,standards[low]};
@@ -280,8 +335,9 @@ public double[] modBSearch(double val, double[] standards, int low, int high) {
 }
 
 
-//TODO: make a generic version of the following implementation for kicks and giggles
-public Double[] mergeSomeSortedArrays(Double[][] arrays) { 
+//TODO: make a generic version of merge and sort
+//TODO: test with duplicate values.
+public Double[] mergeAndSortArrays(Double[][] arrays) { 
 	DoublePQ[] qArray = new DoublePQ[arrays.length];
 	int totalLength = 0;
 	for (int i = 0; i < arrays.length; i++) {
@@ -293,8 +349,8 @@ public Double[] mergeSomeSortedArrays(Double[][] arrays) {
 	while (!allAreNull(qArray)) { //TODO: use a check that doesn't go over the array twice
 		DoublePQ comparisonQ = new DoublePQ(qArray.length);
 		for (int j = 0; j < qArray.length; j++) {
-			if (!(qArray[i].peek() == null)) {
-				comparisonQ.insert(qArray[i].removeMin());
+			if (!(qArray[j].peek() == null)) {
+				comparisonQ.insert(qArray[j].removeMin());
 			}
 		}
 		while (!(comparisonQ.peek() == null)) {
@@ -305,33 +361,26 @@ public Double[] mergeSomeSortedArrays(Double[][] arrays) {
 	return result;
 }
 
-private boolean allAreNull(DoublePQ[] array) {
-	for (int i =0; i < array.length; i ++) {
-		if (array[i].peek() != null) {
-			return false;
-		}
-	}
-	return true;
-}
-
-
 /* The DoublePQ class is a partial priority queue implementation that is limited
  * to the size of the array it is constructed with. Because of this its insert() method
- * is bounded.
+ * is bounded, and all items must be filled before using the other methods.
  */
 protected class DoublePQ { 
 	Double[] heap;
 	int numItems;
 	
 	public DoublePQ(int size) {
-		Double[] heap = new Double[size];
+		heap = new Double[size];
+                for (int i = 0; i < heap.length; i++) {
+                  heap[i] = null;
+                }
 		numItems = 0;
 	}
 	
 	public DoublePQ(Double[] array) {
 		heap = new Double[array.length];
 		for (int i = 0;i < array.length;i++) {
-			heap[i] = array[array.length-i];
+			heap[i] = array[array.length-i-1];
 		}
 		numItems = array.length;
 		bottomUpHeap();
@@ -382,6 +431,16 @@ protected class DoublePQ {
 	}
 }
 
+
+private boolean allAreNull(DoublePQ[] array) {
+	for (int i =0; i < array.length; i ++) {
+		if (array[i].peek() != null) {
+			return false;
+		}
+	}
+	return true;
+}
+
 public static void main(String[] args) {
 String str1 = "123M";
 String str2 = "4M54M";
@@ -389,15 +448,14 @@ String str3 = "23.543M";
 String str4 = "2345.M";
 String str5 = "12.34.";
 TextReader read = new TextReader();
-double[] a = read.modBSearch(3.2,new double[] {1,2.0,3.1,3.3,4.5},0,4);
+read.setTolerance(1.0);
+double[] a = read.findClosestStandardVals(3.61,read.currValArray);
 System.out.println(a[0] + " " + a[1] + " " + a[2]);
 System.out.println(read.isValidString(str1));
 System.out.println(read.isValidString(str2));
 System.out.println(read.isValidString(str3));
 System.out.println(read.isValidString(str4));
 System.out.println(read.isValidString(str5));
-System.out.println(read.findClosestVal(1.8,read.validVals));
-System.out.println(read.findClosestVal(5,read.validVals));
 System.out.println(read.parseNumbers(".7"));
 read.valueToBands(read.parseNumbers(".7"),4);
 for (int x = 0; x < 3; x++) {

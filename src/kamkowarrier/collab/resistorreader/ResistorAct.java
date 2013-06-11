@@ -123,7 +123,7 @@ public class ResistorAct extends Activity {
 		   							break;
 		   						}
 		   						  int numBands = resistorView.bandColors.size();
-	    						  reader.read(valueOut.getText().toString(),numBands); //change to correct ref
+	    						  reader.read(valueOut.getText().toString(),numBands);
 	    						  if (!reader.isInRange(reader.numUserVal,numBands)) {
 	    							  ohm.setText(redX);
 			   						  break;
