@@ -118,20 +118,20 @@ public class ResistorAct extends Activity {
 						switch(keyCode) {
 							case KeyEvent.KEYCODE_ENTER:
 		   						TextReader reader = new TextReader();
-		   						if (!reader.isValidString(valueOut.getText().toString())) {
+		   						if (!reader.isValidString(valueOut.getText().toString(),false)) {
 		   							ohm.setText(redX);
 		   							break;
 		   						}
 		   						  int numBands = resistorView.bandColors.size();
-	    						  reader.read(valueOut.getText().toString(),numBands);
+		   						  reader.parseNumbers(tolOut.getText().toString());
+		   						  reader.setTolerance(reader.numUserVal);
+	    						  reader.read(valueOut.getText().toString()); //also changes lower & upper textviews
 	    						  if (!reader.isInRange(reader.numUserVal,numBands)) {
 	    							  ohm.setText(redX);
 			   						  break;
 	    						  }
-        						  valueOut.setText(Double.valueOf(
-        								  reader.roundValue(reader.numUserVal,numBands)).toString());
-        						  System.out.println("g " + reader.roundValue(reader.numUserVal,numBands));
-        						  System.out.println(reader.numUserVal);
+        						  valueOut.setText(reader.realVal);
+        						  System.out.println(reader.realVal);
         						  //need to decide to give options or give max/min value
         						  //remember to do a second set text if necessary
         						  boxVals[0] = valueOut.getText().toString();
@@ -159,15 +159,36 @@ public class ResistorAct extends Activity {
 					if (event.getAction() == KeyEvent.ACTION_DOWN) {
 						switch(keyCode) {
 							case KeyEvent.KEYCODE_ENTER:
-								resistorView.activeBandNum = 3; //make this more general!
+								if (resistorView.bandColors.size() == 4) {
+								    resistorView.activeBandNum = 3;
+								}
+								else {
+									resistorView.activeBandNum = 4;
+								}
 								TextReader reader = new TextReader();
-								if (!reader.isValidString(tolOut.getText().toString())) {
+								if (!reader.isValidString(tolOut.getText().toString(),true)) {
 									percent.setText(redX);
 		   							break;
 								}
+								// change calc upper and lower to textreader buttons
 								double val = Double.valueOf(tolOut.getText().toString());
 								System.out.println(val);
 								val = reader.findClosestVal(val,reader.validTols);
+								reader.setTolerance(val);
+								reader.setOutputs(lower, upper);
+								if (reader.bandNum != resistorView.bandColors.size()) {
+									if (reader.bandNum == 4) {
+										resistorView.setBandMode(4);
+						                fourBandButton.setTextColor(0xFF000000);
+						                fiveBandButton.setTextColor(r.getColor(R.color.gray4));
+									}
+									else if (reader.bandNum == 5) {
+										resistorView.setBandMode(5);
+						                fiveBandButton.setTextColor(0xFF000000);
+						                fourBandButton.setTextColor(r.getColor(R.color.gray4));
+									}
+								}
+								reader.read(valueOut.getText().toString()); //also changes lower & upper textviews
 								tolOut.setText(Double.valueOf(val).toString());
 								boxVals[1] = Double.valueOf(val).toString();
 								ColorBand c = new ColorBand(resistorView.getContext());

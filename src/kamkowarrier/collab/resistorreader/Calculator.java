@@ -80,8 +80,8 @@ public class Calculator {
     	// Sending output to Views
 		valueOut.setText(str);
 		tolOut.setText(Double.toString(tol));
-		lower.setText(bounds[0]);
-		upper.setText(bounds[1]);
+		//lower.setText(bounds[0]);
+		//upper.setText(bounds[1]);  these are now standard values
 		
 	}
     

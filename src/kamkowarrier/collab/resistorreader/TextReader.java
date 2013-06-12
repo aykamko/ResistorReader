@@ -3,7 +3,9 @@ package kamkowarrier.collab.resistorreader;
 import java.math.*;
 import java.util.PriorityQueue;
 
-//REMEMBER TO SET VALUE ARRAYS BEFORE USING
+import android.widget.TextView;
+
+//REMEMBER TO SET TOLERANCE AND EDITTEXTS BEFORE USING
 //TODO: change band settings when tolerance is set.
 //TODO: decide if you need to choose between Doubles and doubles.
 
@@ -15,6 +17,8 @@ public String realVal;
 public double numUserVal;
 public double lowerStandard;
 public double upperStandard;
+public TextView lower;
+public TextView upper;
 double[] validTols = {0.1, 0.25, 0.5, 1.0, 2.0, 10.0, 20.0};
 int bandNum; //this is the band number that corresponds to the tolerance
 Double[] currValArray;
@@ -45,6 +49,11 @@ public void read(String str) {
 	valueToBands(parseNumbers(str));
 }
 
+public void setOutputs(TextView lower, TextView upper) {
+	this.lower = lower;
+	this.upper = upper;
+}
+
 public boolean isIn(String e, String things) {
   for (int i = 0; i < things.length(); i++) {
     if (e.equals(Character.toString(things.charAt(i)))) {
@@ -54,7 +63,7 @@ public boolean isIn(String e, String things) {
   return false;
 }
 
-public boolean isValidString(String e) {
+public boolean isValidString(String e, boolean tol) {
   String lastChar = Character.toString(e.charAt(e.length()-1));
   if (e.length() == 1 && !isIn(lastChar,"123456789")) {
     //System.out.println("String is one char and char is not a number");
@@ -63,6 +72,9 @@ public boolean isValidString(String e) {
   if (!isIn(lastChar,"1234567890MK.mk")) {
     //System.out.println("Last char " + lastChar + " is not valid");
     return false;
+  }
+  if (tol && !isIn(lastChar,"1234567890")) {
+	  return false;
   }
   int dotCount = 0;
   for (int i = 0; i < e.length()-1; i++) {
@@ -87,7 +99,7 @@ public boolean isValidString(String e) {
 //takes in a string of numbers (and M or K) and converts it to an integer value if the value is greater than 10, a double value otherwise. The returned double value must only have one decimal point.
 public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right now.
   double value = 0.0;
-  if (isValidString(e)) {
+  if (isValidString(e,false)) {
     isValid = true;
     if (!isIn(Character.toString(e.charAt(e.length()-1)), "1234567890")) {
       value = roundValue(Double.parseDouble(e.substring(0,e.length()-1)),bandNum);
@@ -125,6 +137,8 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
       realVal = value + "";
     }
   }
+  lower.setText(Double.valueOf(lowerStandard).toString());
+  upper.setText(Double.valueOf(upperStandard).toString());
   return value;
 } 
 
@@ -172,7 +186,7 @@ tol = findClosestVal(tol,validTols);
 	Double[] e192D = tolArrays[5];
 	if (Double.valueOf(tol).equals(20.0)) {
 		currValArray = mergeAndSortArrays(new Double[][] {e6D});
-		bandNum = 3;
+		bandNum = 4; //TODO: SHOULD BE 3
 	}
 	else if (Double.valueOf(tol).equals(10.0)) {
 		currValArray = mergeAndSortArrays(new Double[][] {e6D,e12D});
@@ -470,11 +484,11 @@ System.out.println(read.numUserVal + " " + read.realVal);
 
 double[] a = read.findClosestStandardVals(3.61,read.currValArray);
 System.out.println(a[0] + " " + a[1] + " " + a[2]);
-System.out.println(read.isValidString(str1));
-System.out.println(read.isValidString(str2));
-System.out.println(read.isValidString(str3));
-System.out.println(read.isValidString(str4));
-System.out.println(read.isValidString(str5));
+System.out.println(read.isValidString(str1,false));
+System.out.println(read.isValidString(str2,false));
+System.out.println(read.isValidString(str3,false));
+System.out.println(read.isValidString(str4,false));
+System.out.println(read.isValidString(str5,false));
 System.out.println(read.parseNumbers(".7"));
 read.valueToBands(read.parseNumbers(".7"));
 for (int x = 0; x < 3; x++) {
