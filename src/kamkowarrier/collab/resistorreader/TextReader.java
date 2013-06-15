@@ -102,10 +102,10 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
   if (isValidString(e,false)) {
     isValid = true;
     if (!isIn(Character.toString(e.charAt(e.length()-1)), "1234567890")) {
-      value = roundValue(Double.parseDouble(e.substring(0,e.length()-1)),bandNum);
+      value = Double.parseDouble(e.substring(0,e.length()-1));
     }
     else {
-      value = roundValue(Double.parseDouble(e.substring(0,e.length())),bandNum);
+      value = Double.parseDouble(e.substring(0,e.length()));
     }
     if (value == 0.0) {
       numUserVal = 0.0;
@@ -121,20 +121,32 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
     lowerStandard = standards[0];
     double closestVal = standards[1];
     upperStandard = standards[2];
-    if (Character.toString(e.charAt(e.length() -1)).equals("M") || Character.toString(e.charAt(e.length() -1)).equals("m")) {
+    if (Character.toString(e.charAt(e.length() -1)).equals("M") || Character.toString(e.charAt(e.length() -1)).equals("m")
+    		  || numberOfZeroes >= 6) {
       numUserVal = smallVal*Math.pow(10,numberOfZeroes)*1000000;
-      value = closestVal*Math.pow(10,numberOfZeroes)*1000000;
-      realVal = closestVal*Math.pow(10,numberOfZeroes) + "M"; 
+      value = roundValue(closestVal*Math.pow(10,numberOfZeroes)*1000000,bandNum);
+      if (Character.toString(e.charAt(e.length() -1)).equals("K")) {
+          realVal = roundValue(closestVal*Math.pow(10,numberOfZeroes),bandNum) + "M";
+      }
+      else {
+    	  realVal = roundValue(closestVal,bandNum) + "M";
+      }
     }
-    else if (Character.toString(e.charAt(e.length() -1)).equals("K") || Character.toString(e.charAt(e.length() -1)).equals("k")) {
+    else if (Character.toString(e.charAt(e.length() -1)).equals("K") || Character.toString(e.charAt(e.length() -1)).equals("k")
+    		  || numberOfZeroes >= 3) {
       numUserVal = smallVal*Math.pow(10,numberOfZeroes)*1000;
-      value = closestVal*Math.pow(10,numberOfZeroes)*1000;
-      realVal = closestVal*Math.pow(10,numberOfZeroes) + "K"; 
+      value = roundValue(closestVal*Math.pow(10,numberOfZeroes)*1000, bandNum);
+      if (Character.toString(e.charAt(e.length() -1)).equals("K")) {
+          realVal = roundValue(closestVal*Math.pow(10,numberOfZeroes),bandNum) + "K";
+      }
+      else {
+    	  realVal = roundValue(closestVal,bandNum) + "K";
+      }
     }
     else {
       numUserVal = smallVal*Math.pow(10,numberOfZeroes);
-      value = closestVal*Math.pow(10, numberOfZeroes); 
-      realVal = value + "";
+      value = roundValue(closestVal*Math.pow(10, numberOfZeroes), bandNum); 
+      realVal = roundValue(value,bandNum) + "";
     }
   }
   lower.setText(Double.valueOf(lowerStandard).toString());

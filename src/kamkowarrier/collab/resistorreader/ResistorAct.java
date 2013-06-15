@@ -123,8 +123,8 @@ public class ResistorAct extends Activity {
 		   							break;
 		   						}
 		   						  int numBands = resistorView.bandColors.size();
-		   						  reader.parseNumbers(tolOut.getText().toString());
-		   						  reader.setTolerance(reader.numUserVal);
+		   						  reader.setTolerance(new Double(tolOut.getText().toString()).doubleValue());
+		   						  reader.setOutputs(lower, upper);
 	    						  reader.read(valueOut.getText().toString()); //also changes lower & upper textviews
 	    						  if (!reader.isInRange(reader.numUserVal,numBands)) {
 	    							  ohm.setText(redX);
@@ -137,7 +137,7 @@ public class ResistorAct extends Activity {
         						  boxVals[0] = valueOut.getText().toString();
         						  //BAD! This needs to be cleaned up
 							  	  int original = resistorView.activeBandNum;
-								  for (int i = 0; i < 3; i++) { //replace 3 with variable for length
+								  for (int i = 0; i < numBands-1; i++) { //replace 3 with variable for length
 			        			    resistorView.activeBandNum = i;
 			        			    ColorBand c = new ColorBand(resistorView.getContext());
 			        			    ColorBand.ValBand valB = c.new ValBand(resistorView.getContext());
