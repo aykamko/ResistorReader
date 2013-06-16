@@ -19,7 +19,7 @@ public double lowerStandard;
 public double upperStandard;
 public TextView lower;
 public TextView upper;
-double[] validTols = {0.1, 0.25, 0.5, 1.0, 2.0, 10.0, 20.0};
+double[] validTols = {0.1, 0.25, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0};
 int bandNum; //this is the band number that corresponds to the tolerance
 Double[] currValArray;
 double[] e6 = {1.0, 1.5, 2.2 , 3.3, 4.7, 6.8 }; //20%
@@ -73,7 +73,7 @@ public boolean isValidString(String e, boolean tol) {
     //System.out.println("Last char " + lastChar + " is not valid");
     return false;
   }
-  if (tol && !isIn(lastChar,"1234567890")) {
+  if (tol && !isIn(lastChar,"1234567890.")) {
 	  return false;
   }
   int dotCount = 0;
@@ -99,6 +99,8 @@ public boolean isValidString(String e, boolean tol) {
 //takes in a string of numbers (and M or K) and converts it to an integer value if the value is greater than 10, a double value otherwise. The returned double value must only have one decimal point.
 public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right now.
   double value = 0.0;
+  String lowerString = "INVALID";
+  String upperString = "VALUE";
   if (isValidString(e,false)) {
     isValid = true;
     if (!isIn(Character.toString(e.charAt(e.length()-1)), "1234567890")) {
@@ -121,15 +123,31 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
     lowerStandard = standards[0];
     double closestVal = standards[1];
     upperStandard = standards[2];
+    
     if (Character.toString(e.charAt(e.length() -1)).equals("M") || Character.toString(e.charAt(e.length() -1)).equals("m")
     		  || numberOfZeroes >= 6) {
       numUserVal = smallVal*Math.pow(10,numberOfZeroes)*1000000;
       value = roundValue(closestVal*Math.pow(10,numberOfZeroes)*1000000,bandNum);
-      if (Character.toString(e.charAt(e.length() -1)).equals("K")) {
+      if (Character.toString(e.charAt(e.length() -1)).equals("M")) {
           realVal = roundValue(closestVal*Math.pow(10,numberOfZeroes),bandNum) + "M";
+          lowerString = roundValue(lowerStandard*Math.pow(10,numberOfZeroes),bandNum) + "M";
+          if (numUserVal >= 999000000) {
+        	  upperString = "MAX";
+          }
+          else {
+        	  upperString = roundValue(upperStandard*Math.pow(10,numberOfZeroes),bandNum) + "M";
+          }
+          
       }
       else {
     	  realVal = roundValue(closestVal,bandNum) + "M";
+    	  lowerString = roundValue(lowerStandard,bandNum) + "M";
+    	  if (numUserVal >= 999000000) {
+        	  upperString = "MAX";
+          }
+    	  else {
+    		  upperString = roundValue(upperStandard,bandNum) + "M";
+    	  }
       }
     }
     else if (Character.toString(e.charAt(e.length() -1)).equals("K") || Character.toString(e.charAt(e.length() -1)).equals("k")
@@ -138,19 +156,31 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
       value = roundValue(closestVal*Math.pow(10,numberOfZeroes)*1000, bandNum);
       if (Character.toString(e.charAt(e.length() -1)).equals("K")) {
           realVal = roundValue(closestVal*Math.pow(10,numberOfZeroes),bandNum) + "K";
+          lowerString = roundValue(lowerStandard*Math.pow(10,numberOfZeroes),bandNum) + "K";
+          upperString = roundValue(upperStandard*Math.pow(10,numberOfZeroes),bandNum) + "K";
+          
       }
       else {
     	  realVal = roundValue(closestVal,bandNum) + "K";
+    	  lowerString = roundValue(lowerStandard,bandNum) + "K";
+          upperString = roundValue(upperStandard,bandNum) + "K";
       }
     }
     else {
       numUserVal = smallVal*Math.pow(10,numberOfZeroes);
       value = roundValue(closestVal*Math.pow(10, numberOfZeroes), bandNum); 
       realVal = roundValue(value,bandNum) + "";
+	  if (closestVal <= 0.1) {
+		  lowerString = "MIN";
+	  }
+	  else {
+          lowerString = roundValue(lowerStandard,bandNum) + "";
+	  }
+      upperString = roundValue(upperStandard,bandNum) + "";
     }
   }
-  lower.setText(Double.valueOf(lowerStandard).toString());
-  upper.setText(Double.valueOf(upperStandard).toString());
+  lower.setText(lowerString);
+  upper.setText(upperString);
   return value;
 } 
 

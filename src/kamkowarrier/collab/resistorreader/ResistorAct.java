@@ -100,6 +100,10 @@ public class ResistorAct extends Activity {
 			
 			// Initial calculate
 			resistorView.calculate();
+			TextReader reader = new TextReader();
+			reader.setTolerance(reader.findClosestVal(new Double(tolOut.getText().toString()).doubleValue(),reader.validTols));
+			reader.setOutputs(lower, upper);
+			reader.read(valueOut.getText().toString());
 			
 			// Listener for EditText boxes
 			//Need to add error checking/ handling
@@ -214,6 +218,10 @@ public class ResistorAct extends Activity {
 			    	if (ohm.getText().toString().equals("X")) {
 			    		ohm.setText(getString(R.string.ohm));
 			    		valueOut.setText(boxVals[0]);
+			    		TextReader reader = new TextReader();
+			    		reader.setTolerance(new Double(tolOut.getText().toString()).doubleValue());
+			    		reader.setOutputs(lower, upper);
+			    		reader.read(valueOut.getText().toString());
 			    	}
 					default:
 						break;
