@@ -14,7 +14,9 @@ import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class ResistorView extends View {
 	
@@ -60,6 +62,7 @@ public class ResistorView extends View {
 	// Variables and methods to set ColorSelectionAdapter and Calculator instances
 	ColorSelectionAdapter selectAdap;
 	Calculator calc;
+	TextReader reader;
 	public void setSelector(ColorSelectionAdapter s) { this.selectAdap = s; }
 	public void setCalc(Calculator c) { this.calc = c; }
 	
@@ -124,6 +127,13 @@ public class ResistorView extends View {
 			}
 		});
 	}
+	
+	public void setUpTextReader(double initTol, TextView lower, TextView upper, EditText valOut, EditText tolOut) {
+		reader = new TextReader();
+		reader.setTolerance(initTol);
+		reader.setOutputs(lower, upper,valOut,tolOut);
+	}
+	
 	
 	// Method that sets the band mode for the ResistorView (4 bands or 5 bands)
 	public void setBandMode(int mode) {
@@ -231,8 +241,14 @@ public class ResistorView extends View {
 		invalidate();
 	}
 	
+	public void firstCalculate() {
+		calc.calculate(bandColors, bandTypeArray);
+	}
+	
 	public void calculate() {
 		calc.calculate(bandColors, bandTypeArray);
+		reader.setTolerance(new Double(reader.tolOut.getText().toString()).doubleValue());
+		reader.read(reader.valueOut.getText().toString());
 	}
 
 }

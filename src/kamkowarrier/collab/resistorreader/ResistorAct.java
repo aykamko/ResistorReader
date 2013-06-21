@@ -60,8 +60,7 @@ public class ResistorAct extends Activity {
 			selectLV.setAdapter(selectAdapter);
 			resistorView.setSelector(selectAdapter);
 			resistorView.setCalc(calc);
-			resistorView.setArrow((ImageView) arrow);
-			
+			resistorView.setArrow((ImageView) arrow);			
 
 			
 		    
@@ -99,11 +98,12 @@ public class ResistorAct extends Activity {
 	        });
 			
 			// Initial calculate
-			resistorView.calculate();
+			resistorView.firstCalculate();
 			TextReader reader = new TextReader();
 			reader.setTolerance(reader.findClosestVal(new Double(tolOut.getText().toString()).doubleValue(),reader.validTols));
-			reader.setOutputs(lower, upper);
+			reader.setOutputs(lower, upper,valueOut,tolOut);
 			reader.read(valueOut.getText().toString());
+	        resistorView.setUpTextReader(new Double(tolOut.getText().toString()).doubleValue(), lower, upper,valueOut,tolOut);
 			
 			// Listener for EditText boxes
 			//Need to add error checking/ handling
@@ -128,7 +128,7 @@ public class ResistorAct extends Activity {
 		   						}
 		   						  int numBands = resistorView.bandColors.size();
 		   						  reader.setTolerance(new Double(tolOut.getText().toString()).doubleValue());
-		   						  reader.setOutputs(lower, upper);
+		   						  reader.setOutputs(lower, upper,valueOut,tolOut);
 	    						  reader.read(valueOut.getText().toString()); //also changes lower & upper textviews
 	    						  if (!reader.isInRange(reader.numUserVal,numBands)) {
 	    							  ohm.setText(redX);
@@ -179,7 +179,7 @@ public class ResistorAct extends Activity {
 								System.out.println(val);
 								val = reader.findClosestVal(val,reader.validTols);
 								reader.setTolerance(val);
-								reader.setOutputs(lower, upper);
+								reader.setOutputs(lower, upper,valueOut,tolOut);
 								if (reader.bandNum != resistorView.bandColors.size()) {
 									if (reader.bandNum == 4) {
 										resistorView.setBandMode(4);
@@ -220,7 +220,7 @@ public class ResistorAct extends Activity {
 			    		valueOut.setText(boxVals[0]);
 			    		TextReader reader = new TextReader();
 			    		reader.setTolerance(new Double(tolOut.getText().toString()).doubleValue());
-			    		reader.setOutputs(lower, upper);
+			    		reader.setOutputs(lower, upper,valueOut,tolOut);
 			    		reader.read(valueOut.getText().toString());
 			    	}
 					default:

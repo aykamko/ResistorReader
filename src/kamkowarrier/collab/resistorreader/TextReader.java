@@ -3,6 +3,7 @@ package kamkowarrier.collab.resistorreader;
 import java.math.*;
 import java.util.PriorityQueue;
 
+import android.widget.EditText;
 import android.widget.TextView;
 
 //REMEMBER TO SET TOLERANCE AND EDITTEXTS BEFORE USING
@@ -19,6 +20,8 @@ public double lowerStandard;
 public double upperStandard;
 public TextView lower;
 public TextView upper;
+public EditText valueOut;
+public EditText tolOut;
 double[] validTols = {0.1, 0.25, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0};
 int bandNum; //this is the band number that corresponds to the tolerance
 Double[] currValArray;
@@ -45,13 +48,16 @@ double[] e192 = {101,1.23,1.49,1.80,2.18,2.64,3.20,3.88,4.70,5.69,6.90,8.35,
 		1.20,1.45,1.76,2.13,2.58,3.12,3.79,4.59,5.56,6.73,8.16,9.88
 };
 
+
 public void read(String str) {
 	valueToBands(parseNumbers(str));
 }
 
-public void setOutputs(TextView lower, TextView upper) {
+public void setOutputs(TextView lower, TextView upper, EditText valueOut, EditText tolOut) {
 	this.lower = lower;
 	this.upper = upper;
+	this.valueOut = valueOut;
+	this.tolOut = tolOut;
 }
 
 public boolean isIn(String e, String things) {
