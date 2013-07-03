@@ -45,7 +45,8 @@ public class ResistorAct extends Activity {
 			
 			// Initializing Calculator and setting outputs
 			final Calculator calc = new Calculator();
-			calc.setOutputViews(valueOut, tolOut, lower, upper);
+			calc.setOutputViews(valueOut, tolOut, lower, upper, ohm);
+			calc.ohmString = getString(R.string.ohm);
 			
 			// Setting input elements
 			final Button fourBandButton = (Button) findViewById(R.id.fourBandButton);
@@ -129,13 +130,13 @@ public class ResistorAct extends Activity {
 		   						  int numBands = resistorView.bandColors.size();
 		   						  reader.setTolerance(new Double(tolOut.getText().toString()).doubleValue());
 		   						  reader.setOutputs(lower, upper,valueOut,tolOut);
+		   						  reader.bandNum = numBands;
 	    						  reader.read(valueOut.getText().toString()); //also changes lower & upper textviews
 	    						  if (!reader.isInRange(reader.numUserVal,numBands)) {
 	    							  ohm.setText(redX);
 			   						  break;
 	    						  }
         						  valueOut.setText(reader.realVal);
-        						  System.out.println(reader.realVal);
         						  //need to decide to give options or give max/min value
         						  //remember to do a second set text if necessary
         						  boxVals[0] = valueOut.getText().toString();
@@ -178,11 +179,9 @@ public class ResistorAct extends Activity {
 								}
 								// change calc upper and lower to textreader buttons
 								double val = Double.valueOf(tolOut.getText().toString());
-								System.out.println(val);
 								val = reader.findClosestVal(val,reader.validTols);
 								reader.setTolerance(val);
 								reader.setOutputs(lower, upper,valueOut,tolOut);
-			        			System.out.println(resistorView.activeBandNum + " at begin");
 								if (reader.bandNum != resistorView.bandColors.size()) {
 									if (reader.bandNum == 4) {
 										resistorView.setBandMode(4);
@@ -202,7 +201,6 @@ public class ResistorAct extends Activity {
 			        			ColorBand.TolBand tolB = c.new TolBand(resistorView.getContext());
 			        			int color = tolB.valueToColor(val);
 			        			resistorView.updateWithoutCalc(color);
-			        			System.out.println(resistorView.activeBandNum + " at end");
 			        			resistorView.activeBandNum = original;
 			        			resistorView.updateWithoutCalc(originalColor);
 			        			percent.setText(getString(R.string.percent));

@@ -20,12 +20,15 @@ public class Calculator {
 	EditText tolOut;
 	TextView lower;
 	TextView upper;
+	TextView ohm;
+	String ohmString;
 	
-	public void setOutputViews(EditText valueOut, EditText tolOut, TextView lower, TextView upper) {
+	public void setOutputViews(EditText valueOut, EditText tolOut, TextView lower, TextView upper, TextView ohm) {
 		this.valueOut = valueOut;
 		this.tolOut = tolOut;
 		this.lower = lower;
 		this.upper = upper;
+		this.ohm = ohm;
 	}
 	
 	public void calculate(ArrayList<Integer> bandColors, ColorBand[] bandTypeArray) {
@@ -80,6 +83,7 @@ public class Calculator {
     	// Sending output to Views
 		valueOut.setText(str);
 		tolOut.setText(Double.toString(tol));
+		ohm.setText(ohmString);
 		//lower.setText(bounds[0]);
 		//upper.setText(bounds[1]);  these are now standard values
 		

@@ -28,7 +28,7 @@ Double[] currValArray;
 double[] e6 = {1.0, 1.5, 2.2 , 3.3, 4.7, 6.8 }; //20%
 double[] e12 = {1.2,1.8,2.7,3.9,5.6,8.2}; // plus e6! 10%
 double[] e24 = {1.1,1.3,1.6,2.0,2.4,3.0,3.6,4.3,5.1,6.2,7.5,9.1}; //plus e12! 5%
-double[] e48 = { 100,1.21,1.47,1.78,2.15,2.61,3.16,3.83,4.64,5.62,6.81,8.25,
+double[] e48 = { 1.00,1.21,1.47,1.78,2.15,2.61,3.16,3.83,4.64,5.62,6.81,8.25,
 		1.05,1.27,1.54,1.87,2.26,2.74,3.32,4.02,4.87,5.90,7.15,8.66,
 		1.10,1.33,1.62,1.96,2.37,2.87,3.48,4.22,5.11,6.19,7.50,9.09,
 		1.15,1.40,1.69,2.05,2.49,3.01,3.65,4.42,5.36,6.49,7.87,9.53
@@ -71,7 +71,7 @@ public boolean isIn(String e, String things) {
 
 public boolean isValidString(String e, boolean tol) {
   String lastChar = Character.toString(e.charAt(e.length()-1));
-  if (e.length() == 1 && !isIn(lastChar,"123456789")) {
+  if (e.length() == 1 && !isIn(lastChar,"1234567890")) {
     //System.out.println("String is one char and char is not a number");
     return false;
   }
@@ -115,12 +115,7 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
     else {
       value = Double.parseDouble(e.substring(0,e.length()));
     }
-    if (value == 0.0) {
-      numUserVal = 0.0;
-      lower.setText(lowerString);
-      upper.setText(upperString);
-      return 0.0;
-    }
+    
     double smallVal = value; //make sure that this can be out to two sigfigs
     int numberOfZeroes = 0;
     while (smallVal >= 10) {
@@ -131,17 +126,21 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
     lowerStandard = standards[0];
     double closestVal = standards[1];
     upperStandard = standards[2];
-    
-    if (Character.toString(e.charAt(e.length() -1)).equals("M") || Character.toString(e.charAt(e.length() -1)).equals("m")
+        
+    //TODO: Take care of 1000k case
+    if (Character.toString(e.charAt(e.length() -1)).equals("M") 
+    		|| Character.toString(e.charAt(e.length() -1)).equals("m")
     		  || numberOfZeroes >= 6) {
       numUserVal = smallVal*Math.pow(10,numberOfZeroes)*1000000;
       value = roundValue(closestVal*Math.pow(10,numberOfZeroes)*1000000,bandNum);
-      if (Character.toString(e.charAt(e.length() -1)).equals("M")) {
+      if (Character.toString(e.charAt(e.length() -1)).equals("M") 
+    		  || Character.toString(e.charAt(e.length() -1)).equals("m")) {
           realVal = roundValue(closestVal*Math.pow(10,numberOfZeroes),bandNum) + "M";
           lowerString = roundValue(lowerStandard*Math.pow(10,numberOfZeroes),bandNum) + "M";
           if (numUserVal >= 999000000) {
         	  upperString = "MAX";
-          }
+        	  lowerString = roundValue(currValArray[currValArray.length-1]*Math.pow(10, bandNum-3),bandNum)
+        			  + "M";          }
           else {
         	  upperString = roundValue(upperStandard*Math.pow(10,numberOfZeroes),bandNum) + "M";
           }
@@ -152,17 +151,22 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
     	  lowerString = roundValue(lowerStandard,bandNum) + "M";
     	  if (numUserVal >= 999000000) {
         	  upperString = "MAX";
+        	  lowerString = roundValue(currValArray[currValArray.length-1]*Math.pow(10, bandNum-3),bandNum)
+        			  + "M";
+;
           }
     	  else {
     		  upperString = roundValue(upperStandard,bandNum) + "M";
     	  }
       }
     }
-    else if (Character.toString(e.charAt(e.length() -1)).equals("K") || Character.toString(e.charAt(e.length() -1)).equals("k")
+    else if (Character.toString(e.charAt(e.length() -1)).equals("K") 
+    		|| Character.toString(e.charAt(e.length() -1)).equals("k")
     		  || numberOfZeroes >= 3) {
       numUserVal = smallVal*Math.pow(10,numberOfZeroes)*1000;
       value = roundValue(closestVal*Math.pow(10,numberOfZeroes)*1000, bandNum);
-      if (Character.toString(e.charAt(e.length() -1)).equals("K")) {
+      if (Character.toString(e.charAt(e.length() -1)).equals("K") 
+    		  || Character.toString(e.charAt(e.length() -1)).equals("k")) {
           realVal = roundValue(closestVal*Math.pow(10,numberOfZeroes),bandNum) + "K";
           lowerString = roundValue(lowerStandard*Math.pow(10,numberOfZeroes),bandNum) + "K";
           upperString = roundValue(upperStandard*Math.pow(10,numberOfZeroes),bandNum) + "K";
@@ -349,7 +353,6 @@ public void valueToBands(double val) {
 		else if (val < 10) { 
 		    Double v = new Double(val);
 			band[0] = v.intValue();
-			System.out.println((val-band[0])*10);
 			v = new Double((val-band[0])*10 +.01);
 			band[1] = v.intValue(); //v.intValue();
 			if (val-band[0]-(new Double(band[1]).doubleValue()) < .005) { //if only 2 digits
