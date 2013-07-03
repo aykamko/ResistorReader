@@ -163,6 +163,8 @@ public class ResistorAct extends Activity {
 					if (event.getAction() == KeyEvent.ACTION_DOWN) {
 						switch(keyCode) {
 							case KeyEvent.KEYCODE_ENTER:
+								int original = resistorView.activeBandNum;
+								int originalColor = resistorView.bandColors.get(original);
 								if (resistorView.bandColors.size() == 4) {
 								    resistorView.activeBandNum = 3;
 								}
@@ -180,6 +182,7 @@ public class ResistorAct extends Activity {
 								val = reader.findClosestVal(val,reader.validTols);
 								reader.setTolerance(val);
 								reader.setOutputs(lower, upper,valueOut,tolOut);
+			        			System.out.println(resistorView.activeBandNum + " at begin");
 								if (reader.bandNum != resistorView.bandColors.size()) {
 									if (reader.bandNum == 4) {
 										resistorView.setBandMode(4);
@@ -199,6 +202,9 @@ public class ResistorAct extends Activity {
 			        			ColorBand.TolBand tolB = c.new TolBand(resistorView.getContext());
 			        			int color = tolB.valueToColor(val);
 			        			resistorView.updateWithoutCalc(color);
+			        			System.out.println(resistorView.activeBandNum + " at end");
+			        			resistorView.activeBandNum = original;
+			        			resistorView.updateWithoutCalc(originalColor);
 			        			percent.setText(getString(R.string.percent));
 			        	        return true;
 							default:

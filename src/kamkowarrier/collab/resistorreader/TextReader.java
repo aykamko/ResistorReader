@@ -117,6 +117,8 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
     }
     if (value == 0.0) {
       numUserVal = 0.0;
+      lower.setText(lowerString);
+      upper.setText(upperString);
       return 0.0;
     }
     double smallVal = value; //make sure that this can be out to two sigfigs
@@ -126,7 +128,6 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
       numberOfZeroes++;
     }
     double[] standards = findClosestStandardVals(smallVal,currValArray);
-    System.out.println("Standards are: " + standards[0] + " " + standards[1]);
     lowerStandard = standards[0];
     double closestVal = standards[1];
     upperStandard = standards[2];
@@ -174,13 +175,11 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
       }
     }
     else {
-      System.out.println("here with " + numberOfZeroes + "zeroes");
       numUserVal = smallVal*Math.pow(10,numberOfZeroes);
       value = roundValue(closestVal*Math.pow(10, numberOfZeroes), bandNum); 
       realVal = roundValue(value,bandNum) + "";
       lowerStandard = lowerStandard*Math.pow(10, numberOfZeroes);
       upperStandard = upperStandard*Math.pow(10, numberOfZeroes);
-      System.out.println(lowerStandard + " " + upperStandard + "PRINT");
 	  if (closestVal <= 0.1) {
 		  lowerString = "MIN";
 	  }
@@ -188,7 +187,6 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
           lowerString = roundValue(lowerStandard,bandNum) + "";
 	  }
 	  
-	  System.out.println(upperString + "UPPER");
       upperString = roundValue(upperStandard,bandNum) + "";
     }
   }
@@ -205,7 +203,6 @@ public double roundValue(double val, int numBands) {
 	else if (numBands == 5) {
 		num = num.round(new MathContext(3, RoundingMode.HALF_UP));
 	}
-	System.out.println(num + " num");
 	return num.doubleValue();
 }
 
@@ -238,7 +235,6 @@ tol = findClosestVal(tol,validTols);
 	Double[] e6D = tolArrays[0];
 	Double[] e12D = tolArrays[1];
 	Double[] e24D = tolArrays[2];
-	System.out.println(findClosestStandardVals(4.5,e24D)[0] + "CALC");
 	Double[] e48D = tolArrays[3];
 	Double[] e96D = tolArrays[4];
 	Double[] e192D = tolArrays[5];
@@ -248,12 +244,10 @@ tol = findClosestVal(tol,validTols);
 	}
 	else if (Double.valueOf(tol).equals(10.0)) {
 		currValArray = mergeAndSortArrays(new Double[][] {e6D,e12D});
-		System.out.println(findClosestStandardVals(4.5,currValArray)[0]);
 		bandNum = 4;
 	}
 	else if (Double.valueOf(tol).equals(5.0)) {
 		currValArray = mergeAndSortArrays(new Double[][] {e6D,e12D,e24D});
-		System.out.println(findClosestStandardVals(4.5,currValArray)[0]);
 		bandNum = 4;
 	}
 	else if (Double.valueOf(tol).equals(2.0)) {
@@ -307,6 +301,10 @@ public void valueToBands(double val) {
 	if (bandNum == 4) {
 	  band = new int[3];
 	  int numZeroes = 0;
+	  if (!isInRange(val,bandNum)) {
+		  return;
+		  //These values are invalid
+	  }
 	  if (val < 1) {
 	    Double v = new Double(val*10);
 	    band[0] = v.intValue();
@@ -349,7 +347,6 @@ public void valueToBands(double val) {
 			band[3] = 0; //silver
 		}
 		else if (val < 10) { 
-			System.out.println(val + " Meee");
 		    Double v = new Double(val);
 			band[0] = v.intValue();
 			System.out.println((val-band[0])*10);
@@ -433,13 +430,11 @@ public double[] modBSearch(double val, double[] standards, int low, int high) {
 //TODO: test with duplicate values.
 public Double[] mergeAndSortArrays(Double[][] arrays) { 
 	DoublePQ[] qArray = new DoublePQ[arrays.length];
-	System.out.println("IN MERGE AND SORT: " + arrays.length);
 	int totalLength = 0;
 	for (int i = 0; i < arrays.length; i++) {
 		totalLength += arrays[i].length;
 		qArray[i] = new DoublePQ(arrays[i]);
 	}
-	System.out.println("IN MERGE AND SORT totlength: " + totalLength);
 	Double[] result = new Double[totalLength];
 	int i = 0;
 	while (!allAreNull(qArray)) { //TODO: use a check that doesn't go over the array twice
@@ -456,13 +451,10 @@ public Double[] mergeAndSortArrays(Double[][] arrays) {
 				}
 			}
 			result[i] = comparisonQ.removeMin();
-			System.out.println("result is: " + result[i]);
 			i++;
 		}
 	}
-	for (int j = 0; j<result.length; j++) {
-		System.out.println(result[j]);
-	}
+
 	return result;
 }
 
@@ -486,13 +478,10 @@ protected class DoublePQ {
 		heap = new Double[array.length];
 		for (int i = 0;i < array.length;i++) {
 			heap[i] = array[array.length-i-1];
-			System.out.println("heap: " + heap[i] + array.length);
 		}
 		numItems = array.length;
 		bottomUpHeap();
-		for (int i = 0; i < heap.length; i++) {
-			System.out.println("doublepq: " + heap[i]);
-		}
+
 	}
 	
 	public void insert(Double key) {
@@ -510,7 +499,6 @@ protected class DoublePQ {
 		if (numItems == 0) {
 			return;
 		}
-		System.out.println("numItems" + numItems);
 		for (int i = heap.length- numItems;i < heap.length-1;i++) {
 			int parent = heap.length - Double.valueOf(Math.ceil((heap.length-i-1)/2.0)).intValue();
 			if (heap[i].compareTo(heap[parent]) < 0) {
@@ -518,9 +506,6 @@ protected class DoublePQ {
 				heap[i] = heap[parent];
 				heap[parent] = temp;
 			} 
-			for (int j = 0; j < heap.length; j++) {
-				System.out.println( i + " " + heap[j]);
-			}
 		}
 	}
 	
