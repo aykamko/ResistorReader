@@ -22,7 +22,9 @@ public TextView lower;
 public TextView upper;
 public EditText valueOut;
 public EditText tolOut;
-double[] validTols = {0.1, 0.25, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0};
+double[] validTolsFour = {5.0, 10.0, 20.0};
+double[] validTolsFive = {0.1, 0.25, 0.5, 1.0, 2.0};
+static double[] validTols;
 int bandNum; //this is the band number that corresponds to the tolerance
 Double[] currValArray;
 double[] e6 = {1.0, 1.5, 2.2 , 3.3, 4.7, 6.8 }; //20%
@@ -58,6 +60,17 @@ public void setOutputs(TextView lower, TextView upper, EditText valueOut, EditTe
 	this.upper = upper;
 	this.valueOut = valueOut;
 	this.tolOut = tolOut;
+}
+
+public void setBandNum(int num) {
+	if (num == 4) {
+		TextReader.validTols = validTolsFour;
+		bandNum = num;
+	}
+	else if (num == 5) {
+		TextReader.validTols = validTolsFive;
+		bandNum = num;
+	}
 }
 
 public boolean isIn(String e, String things) {
@@ -225,9 +238,7 @@ return closestVal;
 }
 
 public void setTolerance(double tol) {
-	
-	
-tol = findClosestVal(tol,validTols);
+    tol = findClosestVal(tol,validTols);
 	double[][] tempArrays = {e6,e12,e24,e48,e96,e192};
 	Double[][] tolArrays = new Double[tempArrays.length][];  
 	for (int i = 0; i < tempArrays.length; i++) {
@@ -244,28 +255,28 @@ tol = findClosestVal(tol,validTols);
 	Double[] e192D = tolArrays[5];
 	if (Double.valueOf(tol).equals(20.0)) {
 		currValArray = mergeAndSortArrays(new Double[][] {e6D});
-		bandNum = 4; //TODO: SHOULD BE 3
+		setBandNum(4); //TODO: SHOULD BE 3
 	}
 	else if (Double.valueOf(tol).equals(10.0)) {
 		currValArray = mergeAndSortArrays(new Double[][] {e6D,e12D});
-		bandNum = 4;
+		setBandNum(4);
 	}
 	else if (Double.valueOf(tol).equals(5.0)) {
 		currValArray = mergeAndSortArrays(new Double[][] {e6D,e12D,e24D});
-		bandNum = 4;
+		setBandNum(4);
 	}
 	else if (Double.valueOf(tol).equals(2.0)) {
 		currValArray = mergeAndSortArrays(new Double[][] {e48D});
-		bandNum = 5;
+		setBandNum(5);
 	}
 	else if (Double.valueOf(tol).equals(1.0)) {
 		currValArray = mergeAndSortArrays(new Double[][] {e48D,e96D,e6D,e12D,e24D});
-		bandNum = 5;
+		setBandNum(5);
 	}
 	else if (Double.valueOf(tol).equals(0.5) || Double.valueOf(tol).equals(0.25)
 			|| Double.valueOf(tol).equals(0.1)) {
 		currValArray = mergeAndSortArrays(new Double[][] {e48D,e96D,e192D});
-		bandNum = 5;
+		setBandNum(5);
 	}
 	else {
 		System.out.println("Message from setTolerance in TextReader: Not a valid tolerance!");
@@ -274,7 +285,6 @@ tol = findClosestVal(tol,validTols);
 	if (valueOut != null) {
 		read(valueOut.getText().toString());
 	}
-	
 }
 
 private double[] findClosestStandardVals(double val, Double[] valArray) {

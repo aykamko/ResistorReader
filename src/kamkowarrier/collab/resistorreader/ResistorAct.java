@@ -61,8 +61,11 @@ public class ResistorAct extends Activity {
 			selectLV.setAdapter(selectAdapter);
 			resistorView.setSelector(selectAdapter);
 			resistorView.setCalc(calc);
-			resistorView.setArrow((ImageView) arrow);			
-
+			resistorView.setArrow((ImageView) arrow);
+			
+			//Setting stored tolerance values
+			final double[] storedTols = { 10.0, 2.0 }; 
+			//change 10.0 to starting value
 			
 		    
 		    // Observer that measures various screen elements when they are drawn
@@ -87,6 +90,8 @@ public class ResistorAct extends Activity {
 	                resistorView.setBandMode(4);
 	                fourBandButton.setTextColor(0xFF000000);
 	                fiveBandButton.setTextColor(r.getColor(R.color.gray4));
+	                //tolOut.setText(Double.valueOf(storedTols[0]).toString());
+	                //update
 	            }
 	        });
 	        
@@ -95,22 +100,20 @@ public class ResistorAct extends Activity {
 	                resistorView.setBandMode(5);
 	                fiveBandButton.setTextColor(0xFF000000);
 	                fourBandButton.setTextColor(r.getColor(R.color.gray4));
+	                //tolOut.setText(Double.valueOf(storedTols[1]).toString());
 	            }
 	        });
 			
 			// Initial calculate
 			resistorView.firstCalculate();
 			TextReader reader = new TextReader();
+			reader.setBandNum(resistorView.bandColors.size());
 			reader.setTolerance(reader.findClosestVal(new Double(tolOut.getText().toString()).doubleValue(),reader.validTols));
 			reader.setOutputs(lower, upper,valueOut,tolOut);
 			reader.read(valueOut.getText().toString());
 	        resistorView.setUpTextReader(new Double(tolOut.getText().toString()).doubleValue(), lower, upper,valueOut,tolOut);
 			
 			// Listener for EditText boxes
-			//Need to add error checking/ handling
-			//TextReader doesn't work with 5 band resistors
-			//Add checks for out of range
-			// The above is to set the X for error checking
 			final SpannableString redX = new SpannableString("X");
 			redX.setSpan(new ForegroundColorSpan(Color.RED), 0, 1, 0);
 			
@@ -137,8 +140,6 @@ public class ResistorAct extends Activity {
 			   						  break;
 	    						  }
         						  valueOut.setText(reader.realVal);
-        						  //need to decide to give options or give max/min value
-        						  //remember to do a second set text if necessary
         						  boxVals[0] = valueOut.getText().toString();
         						  //BAD! This needs to be cleaned up
 							  	  int original = resistorView.activeBandNum;
@@ -166,23 +167,26 @@ public class ResistorAct extends Activity {
 							case KeyEvent.KEYCODE_ENTER:
 								int original = resistorView.activeBandNum;
 								int originalColor = resistorView.bandColors.get(original);
-								if (resistorView.bandColors.size() == 4) {
-								    resistorView.activeBandNum = 3;
-								}
-								else {
-									resistorView.activeBandNum = 4;
-								}
 								TextReader reader = new TextReader();
 								if (!reader.isValidString(tolOut.getText().toString(),true)) {
 									percent.setText(redX);
 		   							break;
+								}
+								if (resistorView.bandColors.size() == 4) {
+								    resistorView.activeBandNum = 3;
+								    reader.setBandNum(4);
+								}
+								else {
+									resistorView.activeBandNum = 4;
+									reader.setBandNum(5);
 								}
 								// change calc upper and lower to textreader buttons
 								double val = Double.valueOf(tolOut.getText().toString());
 								val = reader.findClosestVal(val,reader.validTols);
 								reader.setTolerance(val);
 								reader.setOutputs(lower, upper,valueOut,tolOut);
-								if (reader.bandNum != resistorView.bandColors.size()) {
+								//this code enabled the view to update when tol changed
+								/*if (reader.bandNum != resistorView.bandColors.size()) {
 									if (reader.bandNum == 4) {
 										resistorView.setBandMode(4);
 						                fourBandButton.setTextColor(0xFF000000);
@@ -193,7 +197,7 @@ public class ResistorAct extends Activity {
 						                fiveBandButton.setTextColor(0xFF000000);
 						                fourBandButton.setTextColor(r.getColor(R.color.gray4));
 									}
-								}
+								}*/
 								reader.read(valueOut.getText().toString()); //also changes lower & upper textviews
 								tolOut.setText(Double.valueOf(val).toString());
 								boxVals[1] = Double.valueOf(val).toString();
