@@ -22,7 +22,7 @@ public TextView lower;
 public TextView upper;
 public EditText valueOut;
 public EditText tolOut;
-double[] validTolsFour = {5.0, 10.0, 20.0};
+double[] validTolsFour = {5.0, 10.0}; //Add 20% for three bands
 double[] validTolsFive = {0.1, 0.25, 0.5, 1.0, 2.0};
 static double[] validTols;
 int bandNum; //this is the band number that corresponds to the tolerance
@@ -226,7 +226,7 @@ public double roundValue(double val, int numBands) {
 //takes in a double less than 10
 //you can make a more efficient algorithm for this!
 public double findClosestVal(double val, double[] valids) {
-double min = 10.0;
+double min = 99999;
 double closestVal = 0.0;
 for (double i : valids) {
  if (Math.abs(i - val) < min) {

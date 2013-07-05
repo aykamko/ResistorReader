@@ -222,6 +222,7 @@ public class ResistorAct extends Activity {
 								}
 								double val = Double.valueOf(tolOut.getText().toString());
 								val = reader.findClosestVal(val,reader.validTols);
+								System.out.println("In listener: " + val);
 								if (resistorView.bandColors.size() == 4) {
 								    resistorView.activeBandNum = 3;
 								    reader.setBandNum(4);
