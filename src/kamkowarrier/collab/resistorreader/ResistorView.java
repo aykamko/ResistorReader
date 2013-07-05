@@ -91,7 +91,7 @@ public class ResistorView extends View {
 	public ResistorView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
-		this.setBandMode(4);
+		this.setBandMode(4,true);
 		this.bandColors.addAll(Arrays.asList(bandScheme[0][3], bandScheme[1][5], bandScheme[2][6], bandScheme[3][0]));
 		this.changeToBand(0);
 		this.thirdValBand = 0xFF1D1D1D;
@@ -136,7 +136,7 @@ public class ResistorView extends View {
 	
 	
 	// Method that sets the band mode for the ResistorView (4 bands or 5 bands)
-	public void setBandMode(int mode) {
+	public void setBandMode(int mode,boolean calculate) {
 		switch(mode) {
 		case 4:
 			bandScheme = new int[][] { firstB.colors, valB.colors, mulB.colors, tolB.colors };
@@ -170,7 +170,9 @@ public class ResistorView extends View {
 		if (arrow != null) {
 			arrow.setVisibility(View.INVISIBLE);
 			invalidate();
+			if (calculate) {
 			calculate();
+			}
 		}
 		
 	}
@@ -246,8 +248,11 @@ public class ResistorView extends View {
 	}
 	
 	public void calculate() {
+		System.out.println(reader.tolOut.getText() + " in calculate()");
 		calc.calculate(bandColors, bandTypeArray);
+		System.out.println(reader.tolOut.getText() + " in calculate()");
 		reader.setTolerance(new Double(reader.tolOut.getText().toString()).doubleValue());
+		System.out.println(reader.tolOut.getText() + " in calculate()");
 		reader.read(reader.valueOut.getText().toString());
 	}
 
