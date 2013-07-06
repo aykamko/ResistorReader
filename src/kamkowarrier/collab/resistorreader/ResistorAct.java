@@ -51,6 +51,7 @@ public class ResistorAct extends Activity {
 			calc.ohmString = getString(R.string.ohm);
 			
 			
+			
 			// Setting input elements
 			final Button fourBandButton = (Button) findViewById(R.id.fourBandButton);
 			final Button fiveBandButton = (Button) findViewById(R.id.fiveBandButton);
@@ -70,7 +71,7 @@ public class ResistorAct extends Activity {
 			final double[] storedTols = { 10.0, 2.0 }; 
 			//change 10.0 to starting value
 			
-			final double[] standards;
+			
 			
 			//element at index 0 is for value, 1 for tolerance
 			final String[] boxVals = {valueOut.getText().toString(), tolOut.getText().toString()};
@@ -106,11 +107,13 @@ public class ResistorAct extends Activity {
 			reader.setBandNum(resistorView.bandColors.size());
 			reader.setTolerance(reader.findClosestVal(new Double(tolOut.getText().toString()).doubleValue(),reader.validTols));
 			reader.setOutputs(lower, upper,valueOut,tolOut);
-			reader.read(valueOut.getText().toString());
-			standards = reader.standards;
+			reader.read(valueOut.getText().toString(),true);
 			resistorView.setUpTextReader(new Double(tolOut.getText().toString()).doubleValue(), lower, upper,valueOut,tolOut);
-
-			//TODO: change the tol updates to methods!!!
+            
+			final String[] standards = {lower.getText().toString(), valueOut.getText().toString(),
+					upper.getText().toString() };
+			
+			//TODO: change the tol and value updates to methods!!!
 			
 			
 			lower.setOnClickListener(new View.OnClickListener() {
@@ -121,21 +124,144 @@ public class ResistorAct extends Activity {
 						pressed[0] = true;
 						lower.setBackgroundResource(R.drawable.btn_default_pressed);
 						upper.setBackgroundResource(R.drawable.btn_default_normal);
+						
+						valueOut.setText(standards[0]);
+						TextReader reader = new TextReader();
+
+						int numBands = resistorView.bandColors.size();
+						reader.setTolerance(new Double(tolOut.getText().toString()).doubleValue());
+						reader.setOutputs(lower, upper,valueOut,tolOut);
+						reader.bandNum = numBands;
+						reader.read(valueOut.getText().toString(),false); //also changes lower & upper textviews
+
+						int original = resistorView.activeBandNum;
+						for (int i = 0; i < numBands-1; i++) { //replace 3 with variable for length
+							resistorView.activeBandNum = i;
+							ColorBand c = new ColorBand(resistorView.getContext());
+							int val = 0;
+							if (i < numBands-2) {
+								ColorBand.ValBand valB = c.new ValBand(resistorView.getContext());
+								val = valB.valueToColor(reader.band[i]);
+							}
+							else {
+								ColorBand.MultBand multB = c.new MultBand(resistorView.getContext());
+								val = multB.valueToColor(reader.band[i]);
+							}
+							resistorView.updateWithoutCalc(val);
+						}
+						resistorView.activeBandNum = original;
+						System.out.println(reader.isMin + " " + reader.isMax);
+						ohm.setText(getString(R.string.ohm));
+					}
+					else {
+						pressed[0] = false;
+						lower.setBackgroundResource(R.drawable.btn_default_normal);
+						valueOut.setText(standards[1]);
+						TextReader reader = new TextReader();
+
+						int numBands = resistorView.bandColors.size();
+						reader.setTolerance(new Double(tolOut.getText().toString()).doubleValue());
+						reader.setOutputs(lower, upper,valueOut,tolOut);
+						reader.bandNum = numBands;
+						reader.read(valueOut.getText().toString(),false); //also changes lower & upper textviews
+
+						int original = resistorView.activeBandNum;
+						for (int i = 0; i < numBands-1; i++) { //replace 3 with variable for length
+							resistorView.activeBandNum = i;
+							ColorBand c = new ColorBand(resistorView.getContext());
+							int val = 0;
+							if (i < numBands-2) {
+								ColorBand.ValBand valB = c.new ValBand(resistorView.getContext());
+								val = valB.valueToColor(reader.band[i]);
+							}
+							else {
+								ColorBand.MultBand multB = c.new MultBand(resistorView.getContext());
+								val = multB.valueToColor(reader.band[i]);
+							}
+							resistorView.updateWithoutCalc(val);
+						}
+						resistorView.activeBandNum = original;
+						System.out.println(reader.isMin + " " + reader.isMax);
+						if (!reader.isStandardVal) {
+						ohm.setText("\u26A0");
+						}
 					}
 				}
 				}
 			});
-			
+
 			upper.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					if (allowStandards[1]) {
-					if (!pressed[1]) {
-						pressed[0] = false;
-						pressed[1] = true;
-						upper.setBackgroundResource(R.drawable.btn_default_pressed);
-						lower.setBackgroundResource(R.drawable.btn_default_normal);
+						if (!pressed[1]) {
+							pressed[0] = false;
+							pressed[1] = true;
+							upper.setBackgroundResource(R.drawable.btn_default_pressed);
+							lower.setBackgroundResource(R.drawable.btn_default_normal);
+
+							valueOut.setText(standards[2]);
+							TextReader reader = new TextReader();
+
+							int numBands = resistorView.bandColors.size();
+							reader.setTolerance(new Double(tolOut.getText().toString()).doubleValue());
+							reader.setOutputs(lower, upper,valueOut,tolOut);
+							reader.bandNum = numBands;
+							reader.read(valueOut.getText().toString(),false); //also changes lower & upper textviews
+
+							int original = resistorView.activeBandNum;
+							for (int i = 0; i < numBands-1; i++) { //replace 3 with variable for length
+								resistorView.activeBandNum = i;
+								ColorBand c = new ColorBand(resistorView.getContext());
+								int val = 0;
+								if (i < numBands-2) {
+									ColorBand.ValBand valB = c.new ValBand(resistorView.getContext());
+									val = valB.valueToColor(reader.band[i]);
+								}
+								else {
+									ColorBand.MultBand multB = c.new MultBand(resistorView.getContext());
+									val = multB.valueToColor(reader.band[i]);
+								}
+								resistorView.updateWithoutCalc(val);
+							}
+							resistorView.activeBandNum = original;
+							System.out.println(reader.isMin + " " + reader.isMax);
+							ohm.setText(getString(R.string.ohm));
+
+						}
+						else {
+							pressed[1] = false;
+							upper.setBackgroundResource(R.drawable.btn_default_normal);
+							valueOut.setText(standards[1]);
+							TextReader reader = new TextReader();
+
+							int numBands = resistorView.bandColors.size();
+							reader.setTolerance(new Double(tolOut.getText().toString()).doubleValue());
+							reader.setOutputs(lower, upper,valueOut,tolOut);
+							reader.bandNum = numBands;
+							reader.read(valueOut.getText().toString(),false); //also changes lower & upper textviews
+
+							int original = resistorView.activeBandNum;
+							for (int i = 0; i < numBands-1; i++) { //replace 3 with variable for length
+								resistorView.activeBandNum = i;
+								ColorBand c = new ColorBand(resistorView.getContext());
+								int val = 0;
+								if (i < numBands-2) {
+									ColorBand.ValBand valB = c.new ValBand(resistorView.getContext());
+									val = valB.valueToColor(reader.band[i]);
+								}
+								else {
+									ColorBand.MultBand multB = c.new MultBand(resistorView.getContext());
+									val = multB.valueToColor(reader.band[i]);
+								}
+								resistorView.updateWithoutCalc(val);
+							}
+							resistorView.activeBandNum = original;
+							System.out.println(reader.isMin + " " + reader.isMax);
+							if (!reader.isStandardVal) {
+								ohm.setText("\u26A0");
+							}
+						}
 					}
-				}
 				}
 			});
 				
@@ -153,7 +279,7 @@ public class ResistorAct extends Activity {
 					reader.setBandNum(4);
 					reader.setTolerance(val);
 					reader.setOutputs(lower, upper,valueOut,tolOut);
-					reader.read(valueOut.getText().toString()); //also changes lower & upper textviews
+					reader.read(valueOut.getText().toString(),true); //also changes lower & upper textviews
 					tolOut.setText(Double.valueOf(val).toString());
 					boxVals[1] = Double.valueOf(val).toString();
 					ColorBand c = new ColorBand(resistorView.getContext());
@@ -183,7 +309,7 @@ public class ResistorAct extends Activity {
 					reader.setBandNum(5);
 					reader.setTolerance(val);
 					reader.setOutputs(lower, upper,valueOut,tolOut);
-					reader.read(valueOut.getText().toString()); //also changes lower & upper textviews
+					reader.read(valueOut.getText().toString(),true); //also changes lower & upper textviews
 					tolOut.setText(Double.valueOf(val).toString());
 					boxVals[1] = Double.valueOf(val).toString();
 					ColorBand c = new ColorBand(resistorView.getContext());
@@ -223,7 +349,7 @@ public class ResistorAct extends Activity {
 		   						  reader.setTolerance(new Double(tolOut.getText().toString()).doubleValue());
 		   						  reader.setOutputs(lower, upper,valueOut,tolOut);
 		   						  reader.bandNum = numBands;
-	    						  reader.read(valueOut.getText().toString()); //also changes lower & upper textviews
+	    						  reader.read(valueOut.getText().toString(),true); //also changes lower & upper textviews
 	    						  if (!reader.isInRange(reader.numUserVal,numBands)) {
 	    							  ohm.setText(redX);
 			   						  break;
@@ -243,6 +369,7 @@ public class ResistorAct extends Activity {
 			        			    else {
 			        			        ColorBand.MultBand multB = c.new MultBand(resistorView.getContext());
 				        			    val = multB.valueToColor(reader.band[i]);
+				        			    System.out.println("reader.band[i] is " + reader.band[i]);
 			        			    }
 					    			resistorView.updateWithoutCalc(val);
 								  }
@@ -270,6 +397,9 @@ public class ResistorAct extends Activity {
 									  allowStandards[1] = true;
 									  upper.setBackgroundResource(R.drawable.btn_default_normal);
 								  }
+								  standards[0] = lower.getText().toString();
+								  standards[1] = reader.valString;
+								  standards[2] = upper.getText().toString();
         						  return true;
 						    default:
 						    	break;
@@ -320,15 +450,18 @@ public class ResistorAct extends Activity {
 						                fourBandButton.setTextColor(r.getColor(R.color.gray4));
 									}
 								}*/
-								reader.read(valueOut.getText().toString()); //also changes lower & upper textviews
+								reader.read(valueOut.getText().toString(),true); //also changes lower & upper textviews
 								tolOut.setText(Double.valueOf(val).toString());
 								boxVals[1] = Double.valueOf(val).toString();
 								ColorBand c = new ColorBand(resistorView.getContext());
 			        			ColorBand.TolBand tolB = c.new TolBand(resistorView.getContext());
 			        			int color = tolB.valueToColor(val);
+			        			System.out.println("UPDATING");
 			        			resistorView.updateWithoutCalc(color);
+			        			if (original != resistorView.activeBandNum) {
 			        			resistorView.activeBandNum = original;
 			        			resistorView.updateWithoutCalc(originalColor);
+			        			}
 			        			percent.setText(getString(R.string.percent));
 			        	        return true;
 							default:
@@ -351,7 +484,7 @@ public class ResistorAct extends Activity {
 			    		TextReader reader = new TextReader();
 			    		reader.setTolerance(new Double(tolOut.getText().toString()).doubleValue());
 			    		reader.setOutputs(lower, upper,valueOut,tolOut);
-			    		reader.read(valueOut.getText().toString());
+			    		reader.read(valueOut.getText().toString(),true);
 			    	}
 					default:
 						break;

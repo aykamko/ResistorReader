@@ -253,7 +253,7 @@ public class ResistorView extends View {
 		System.out.println(reader.tolOut.getText() + " in calculate()");
 		reader.setTolerance(new Double(reader.tolOut.getText().toString()).doubleValue());
 		System.out.println(reader.tolOut.getText() + " in calculate()");
-		reader.read(reader.valueOut.getText().toString());
+		reader.read(reader.valueOut.getText().toString(),true);
 	}
 
 }

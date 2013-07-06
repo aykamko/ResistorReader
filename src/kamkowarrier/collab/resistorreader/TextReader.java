@@ -55,8 +55,8 @@ double[] e192 = {101,1.23,1.49,1.80,2.18,2.64,3.20,3.88,4.70,5.69,6.90,8.35,
 };
 
 
-public void read(String str) {
-	valueToBands(parseNumbers(str));
+public void read(String str, boolean update) {
+	valueToBands(parseNumbers(str,update));
 }
 
 public void setOutputs(TextView lower, TextView upper, EditText valueOut, EditText tolOut) {
@@ -120,7 +120,7 @@ public boolean isValidString(String e, boolean tol) {
 }
 
 //takes in a string of numbers (and M or K) and converts it to an integer value if the value is greater than 10, a double value otherwise. The returned double value must only have one decimal point.
-public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right now.
+public double parseNumbers(String e, boolean update) { // Decide on accuracy! 1 decimal right now.
   double value = 0.0;
   String lowerString = "INVALID";
   String upperString = "VAL";
@@ -134,8 +134,11 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
       value = Double.parseDouble(e.substring(0,e.length()));
     }
     if (value == 0) {
+    	isValid = false;
+    	if (update = true) {
     	lower.setText(lowerString);
     	upper.setText(upperString);
+    	}
     	valString = " " + 0.0;
     	return value;
     }
@@ -201,16 +204,18 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
     	lowerString = roundValue(lowerStandard*Math.pow(10,numberOfZeroes),bandNum) + "";
     	upperString = roundValue(upperStandard*Math.pow(10,numberOfZeroes),bandNum) + "";
     	valString = roundValue(smallVal*Math.pow(10,numberOfZeroes),bandNum) + "";
-    	if (value < 0.1) {
+    	if (value <= 0.1) {
     		lowerString = "MIN";
     		isMin = true;
-    		lowerString = roundValue(currValArray[0],bandNum) + "";          
+    		upperString = roundValue(currValArray[0],bandNum) + "";          
     	}
     }
   }
+    if (update) {
     System.out.println(value + " " + isInRange(value,bandNum));
     if (!isInRange(value,bandNum)) {
     	System.out.println("NOT IN RANGE: " + value);
+    	isValid = false;
     	lower.setText("INVALID");
     	upper.setText("VAL");
     }
@@ -218,6 +223,11 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
     	System.out.println("setting lower and upper" + lowerString + upperString);
     	  lower.setText(lowerString);
     	  upper.setText(upperString);
+    }
+    }
+    else {
+    	isMin = false;
+    	isMax = false;
     }
   return value;
 }
@@ -293,7 +303,7 @@ public void setTolerance(double tol) {
 		System.exit(0);
 	}
 	if (valueOut != null) {
-		read(valueOut.getText().toString());
+		read(valueOut.getText().toString(),true);
 	}
 }
 
@@ -354,7 +364,7 @@ public void valueToBands(double val) {
 	    v = new Double((val- band[0])*10 + .0001);
 	    band[1] = v.intValue();
 	    if (numZeroes > 0) {
-	      band[2] = numZeroes-1;
+	      band[2] = numZeroes+1;
 	    }
 	    else {
 	      band[2] = 0;
@@ -573,7 +583,7 @@ String str4 = "2345.M";
 String str5 = "12.34.";
 TextReader read = new TextReader();
 read.setTolerance(12.6);
-read.read("1.2542345M");
+//read.read("1.2542345M");
 double[] a = read.findClosestStandardVals(3.61,read.currValArray);
 System.out.println(a[0] + " " + a[1] + " " + a[2]);
 System.out.println(read.isValidString(str1,false));
@@ -581,8 +591,8 @@ System.out.println(read.isValidString(str2,false));
 System.out.println(read.isValidString(str3,false));
 System.out.println(read.isValidString(str4,false));
 System.out.println(read.isValidString(str5,false));
-System.out.println(read.parseNumbers(".7"));
-read.valueToBands(read.parseNumbers(".7"));
+//System.out.println(read.parseNumbers(".7"));
+//read.valueToBands(read.parseNumbers(".7"));
 for (int x = 0; x < 3; x++) {
   System.out.println(read.band[x]);
 }
