@@ -87,7 +87,8 @@ public class FirstBand extends ColorBand {
 		}
 		
 		public int valueToColor(double val) {
-			int i = Double.valueOf(Math.log10(val)).intValue();
+			//int i = Double.valueOf(Math.log10(val)).intValue();
+			int i = Double.valueOf(val).intValue();
 			return colors[i];
 		}
 	

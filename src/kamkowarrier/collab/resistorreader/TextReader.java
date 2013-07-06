@@ -14,7 +14,11 @@ public class TextReader{
 
 public boolean isValid;
 public int[] band;
-public String realVal;
+public String valString;
+double[] standards;
+boolean isStandardVal;
+boolean isMin;
+boolean isMax;
 public double numUserVal;
 public double lowerStandard;
 public double upperStandard;
@@ -119,8 +123,9 @@ public boolean isValidString(String e, boolean tol) {
 public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right now.
   double value = 0.0;
   String lowerString = "INVALID";
-  String upperString = "VALUE";
+  String upperString = "VAL";
   if (isValidString(e,false)) {
+	System.out.println("valid");
     isValid = true;
     if (!isIn(Character.toString(e.charAt(e.length()-1)), "1234567890")) {
       value = Double.parseDouble(e.substring(0,e.length()-1));
@@ -128,89 +133,94 @@ public double parseNumbers(String e) { // Decide on accuracy! 1 decimal right no
     else {
       value = Double.parseDouble(e.substring(0,e.length()));
     }
+    if (value == 0) {
+    	lower.setText(lowerString);
+    	upper.setText(upperString);
+    	valString = " " + 0.0;
+    	return value;
+    }
     
-    double smallVal = value; //make sure that this can be out to two sigfigs
+    
+    if (Character.toString(e.charAt(e.length() -1)).equals("M") 
+    		|| Character.toString(e.charAt(e.length() -1)).equals("m")) {
+    	value = value*1000000;
+    }
+    else if (Character.toString(e.charAt(e.length() -1)).equals("K") 
+    		|| Character.toString(e.charAt(e.length() -1)).equals("k")) {
+    	value = value*1000;
+    }
+    
+    numUserVal = roundValue(value,bandNum);
+    
+    double smallVal = roundValue(value,bandNum); //make sure that this can be out to two sigfigs
     int numberOfZeroes = 0;
     while (smallVal >= 10) {
       smallVal = smallVal/10;
       numberOfZeroes++;
     }
-    double[] standards = findClosestStandardVals(smallVal,currValArray);
-    lowerStandard = standards[0];
-    double closestVal = standards[1];
-    upperStandard = standards[2];
-        
-    //TODO: Take care of 1000k case
-    if (Character.toString(e.charAt(e.length() -1)).equals("M") 
-    		|| Character.toString(e.charAt(e.length() -1)).equals("m")
-    		  || numberOfZeroes >= 6) {
-      numUserVal = smallVal*Math.pow(10,numberOfZeroes)*1000000;
-      value = roundValue(closestVal*Math.pow(10,numberOfZeroes)*1000000,bandNum);
-      if (Character.toString(e.charAt(e.length() -1)).equals("M") 
-    		  || Character.toString(e.charAt(e.length() -1)).equals("m")) {
-          realVal = roundValue(closestVal*Math.pow(10,numberOfZeroes),bandNum) + "M";
-          lowerString = roundValue(lowerStandard*Math.pow(10,numberOfZeroes),bandNum) + "M";
-          if (numUserVal >= 999000000) {
-        	  upperString = "MAX";
-        	  lowerString = roundValue(currValArray[currValArray.length-1]*Math.pow(10, bandNum-3),bandNum)
-        			  + "M";          }
-          else {
-        	  upperString = roundValue(upperStandard*Math.pow(10,numberOfZeroes),bandNum) + "M";
-          }
-          
-      }
-      else {
-    	  realVal = roundValue(closestVal,bandNum) + "M";
-    	  lowerString = roundValue(lowerStandard,bandNum) + "M";
-    	  if (numUserVal >= 999000000) {
-        	  upperString = "MAX";
-        	  lowerString = roundValue(currValArray[currValArray.length-1]*Math.pow(10, bandNum-3),bandNum)
-        			  + "M";
-;
-          }
-    	  else {
-    		  upperString = roundValue(upperStandard,bandNum) + "M";
-    	  }
-      }
+
+    while (smallVal <= 1) {
+    	smallVal = smallVal*10;
+    	numberOfZeroes--;
     }
-    else if (Character.toString(e.charAt(e.length() -1)).equals("K") 
-    		|| Character.toString(e.charAt(e.length() -1)).equals("k")
-    		  || numberOfZeroes >= 3) {
-      numUserVal = smallVal*Math.pow(10,numberOfZeroes)*1000;
-      value = roundValue(closestVal*Math.pow(10,numberOfZeroes)*1000, bandNum);
-      if (Character.toString(e.charAt(e.length() -1)).equals("K") 
-    		  || Character.toString(e.charAt(e.length() -1)).equals("k")) {
-          realVal = roundValue(closestVal*Math.pow(10,numberOfZeroes),bandNum) + "K";
-          lowerString = roundValue(lowerStandard*Math.pow(10,numberOfZeroes),bandNum) + "K";
-          upperString = roundValue(upperStandard*Math.pow(10,numberOfZeroes),bandNum) + "K";
-          
-      }
-      else {
-    	  realVal = roundValue(closestVal,bandNum) + "K";
-    	  lowerString = roundValue(lowerStandard,bandNum) + "K";
-          upperString = roundValue(upperStandard,bandNum) + "K";
-      }
+    standards = findClosestStandardVals(smallVal,currValArray);
+    lowerStandard = standards[0];
+    upperStandard = standards[2];
+    
+    isMin = false;
+    isMax = false;
+    isStandardVal = false;
+    
+    for (int i = 0; i < currValArray.length; i++) {
+    	if (Math.abs(currValArray[i]- smallVal) < .0001) {
+    		isStandardVal = true;
+    		break;
+    	}
+    }
+
+    System.out.println("numZeroes is " + numberOfZeroes);
+    if (numberOfZeroes >= 6) {
+    	valString = roundValue(smallVal*Math.pow(10,numberOfZeroes-6),bandNum) + "M";
+    	if ((bandNum == 4 && value > 99000000) || (bandNum == 5 && value > 999000000)) {
+    		upperString = "MAX";
+    		isMax = true;
+    		lowerString = roundValue(currValArray[currValArray.length-1]*Math.pow(10, bandNum-3),bandNum)
+    				+ "M";          
+    	}
+    	else {
+    		lowerString = roundValue(lowerStandard*Math.pow(10,numberOfZeroes-6),bandNum) + "M";
+    		upperString = roundValue(upperStandard*Math.pow(10,numberOfZeroes-6),bandNum) + "M";
+    	}
+    }
+    else if (numberOfZeroes >= 3) {
+    	valString = roundValue(smallVal*Math.pow(10,numberOfZeroes-3),bandNum) + "K";
+    	lowerString = roundValue(lowerStandard*Math.pow(10,numberOfZeroes-3),bandNum) + "K";
+    	upperString = roundValue(upperStandard*Math.pow(10,numberOfZeroes-3),bandNum) + "K";
     }
     else {
-      numUserVal = smallVal*Math.pow(10,numberOfZeroes);
-      value = roundValue(closestVal*Math.pow(10, numberOfZeroes), bandNum); 
-      realVal = roundValue(value,bandNum) + "";
-      lowerStandard = lowerStandard*Math.pow(10, numberOfZeroes);
-      upperStandard = upperStandard*Math.pow(10, numberOfZeroes);
-	  if (closestVal <= 0.1) {
-		  lowerString = "MIN";
-	  }
-	  else {
-          lowerString = roundValue(lowerStandard,bandNum) + "";
-	  }
-	  
-      upperString = roundValue(upperStandard,bandNum) + "";
+    	lowerString = roundValue(lowerStandard*Math.pow(10,numberOfZeroes),bandNum) + "";
+    	upperString = roundValue(upperStandard*Math.pow(10,numberOfZeroes),bandNum) + "";
+    	valString = roundValue(smallVal*Math.pow(10,numberOfZeroes),bandNum) + "";
+    	if (value < 0.1) {
+    		lowerString = "MIN";
+    		isMin = true;
+    		lowerString = roundValue(currValArray[0],bandNum) + "";          
+    	}
     }
   }
-  lower.setText(lowerString);
-  upper.setText(upperString);
+    System.out.println(value + " " + isInRange(value,bandNum));
+    if (!isInRange(value,bandNum)) {
+    	System.out.println("NOT IN RANGE: " + value);
+    	lower.setText("INVALID");
+    	upper.setText("VAL");
+    }
+    else {
+    	System.out.println("setting lower and upper" + lowerString + upperString);
+    	  lower.setText(lowerString);
+    	  upper.setText(upperString);
+    }
   return value;
-} 
+}
 
 public double roundValue(double val, int numBands) {
 	BigDecimal num = new BigDecimal(val);
@@ -298,12 +308,12 @@ private double[] findClosestStandardVals(double val, Double[] valArray) {
 public boolean isInRange(double val, int numBands) {
 	val = roundValue(val,numBands);
 	if (numBands == 4) {
-		if (val < 0.1 || val > 99e9) {
+		if (val < 0.1 || val > Math.pow(10,6)*99) {
 			return false;
 		}
 	}
 	else if (numBands == 5) {
-		if (val < 0.1 || val > 999e9) {
+		if (val < 0.1 || val > Math.pow(10,6)*999) {
 			return false;
 		}
 	}
@@ -322,14 +332,15 @@ public void valueToBands(double val) {
 	  if (val < 1) {
 	    Double v = new Double(val*10);
 	    band[0] = v.intValue();
-	    v = new Double((val*10-band[0])*10);
+	    v = new Double((val*10-band[0])*10) + .0001;
 	    band[1] = v.intValue();
 	    band[2] = 0; //silver
 	  } 
 	  else if (val < 10) {
 	    Double v = new Double(val);
 	    band[0] = v.intValue();
-	    v = new Double((val- band[0])*10);
+	    v = new Double((val- band[0])*10 + .0001);
+	    System.out.println("v is" + v);
 	    band[1] = v.intValue();
 	    band[2] = 1; //gold
 	  } 
@@ -340,7 +351,7 @@ public void valueToBands(double val) {
 	    }
 	    Double v = new Double(val);
 	    band[0] = v.intValue();
-	    v = new Double((val- band[0])*10);
+	    v = new Double((val- band[0])*10 + .0001);
 	    band[1] = v.intValue();
 	    if (numZeroes > 0) {
 	      band[2] = numZeroes-1;
@@ -354,22 +365,22 @@ public void valueToBands(double val) {
 		band = new int[4];
 		if (val < 1) { //assuming val is >= 0.1
 			band[0] = 0; //black
-			Double v = new Double(val*10);
+			Double v = new Double(val*10 + .0001);
 			band[1] = v.intValue();
-			v = new Double((val*10-band[1])*10);
+			v = new Double((val*10-band[1])*10 + .0001);
 			band[2] = v.intValue();
 			band[3] = 0; //silver
 		}
 		else if (val < 10) { 
 		    Double v = new Double(val);
 			band[0] = v.intValue();
-			v = new Double((val-band[0])*10 +.01);
+			v = new Double((val-band[0])*10 +.0001);
 			band[1] = v.intValue(); //v.intValue();
 			if (val-band[0]-(new Double(band[1]).doubleValue()) < .005) { //if only 2 digits
 				band[2] = 0; //black
 			}
 			else {
-			    v = new Double((val*10-band[0]*10-band[1])*10 + .01);
+			    v = new Double((val*10-band[0]*10-band[1])*10 + .0001);
 			    band[2] = v.intValue();
 			}
 		    band[3] = 0; //silver
@@ -378,9 +389,9 @@ public void valueToBands(double val) {
 		else if (val < 100) {
 		    Double v = new Double(val/10);
 		    band[0] = v.intValue();
-		    v = new Double((val/10-band[0])*10);
+		    v = new Double((val/10-band[0])*10 + .0001);
 		    band[1] = v.intValue();
-		    v = new Double((val-10*band[0]-band[1])*10 + .01);
+		    v = new Double((val-10*band[0]-band[1])*10 + .0001);
 		    band[2] = v.intValue();
 		    band[3] = 1; //gold
 		}
@@ -392,13 +403,14 @@ public void valueToBands(double val) {
 			    }
 			    Double v = new Double(val/100);
 			    band[0] = v.intValue();
-			    v = new Double(val/10- band[0]*10);
+			    v = new Double(val/10- band[0]*10 + .0001);
 			    band[1] = v.intValue();
-			    v = new Double(val-100*band[0] - 10*band[1]);
+			    v = new Double(val-100*band[0] - 10*band[1] + .0001);
 			    band[2] = v.intValue();
 			    band[3] = numZeroes;
 		}
 	}
+	System.out.println("band 3 is " + band[2]);
 	}
 
 /*ModBSearch takes in a double and a SORTED array of standard values, 
@@ -562,8 +574,6 @@ String str5 = "12.34.";
 TextReader read = new TextReader();
 read.setTolerance(12.6);
 read.read("1.2542345M");
-System.out.println(read.numUserVal + " " + read.realVal);
-
 double[] a = read.findClosestStandardVals(3.61,read.currValArray);
 System.out.println(a[0] + " " + a[1] + " " + a[2]);
 System.out.println(read.isValidString(str1,false));
