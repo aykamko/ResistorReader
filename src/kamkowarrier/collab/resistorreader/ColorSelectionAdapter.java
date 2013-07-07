@@ -100,6 +100,9 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
 					{
 					case MotionEvent.ACTION_DOWN:
 					case MotionEvent.ACTION_MOVE:
+						if (resistorView.activeBandNum == resistorView.bandColors.size() - 1) {
+							resistorView.changeBandMode(activeScheme[position]);
+						}
 						resistorView.updateActiveBand(activeScheme[position]);
 						break;
 					}

@@ -14,6 +14,7 @@ import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -54,9 +55,10 @@ public class ResistorView extends View {
 	// Data variables
 	int[][] bandScheme = {};
 	ColorBand[] bandTypeArray = {};
-	int activeBandNum;
+	public int activeBandNum; //need to create getters and setters for listeners
 	int thirdValBand;
-	ArrayList<Integer> bandColors = new ArrayList<Integer>();
+	public ArrayList<Integer> bandColors = new ArrayList<Integer>(); //changed to public, should be changed back to protected once
+	//listeners are modified (see above)
 	ArrayList<Range> eventRangeList = new ArrayList<Range>();
 	
 	// Variables and methods to set ColorSelectionAdapter and Calculator instances
@@ -128,10 +130,11 @@ public class ResistorView extends View {
 		});
 	}
 	
-	public void setUpTextReader(double initTol, TextView lower, TextView upper, EditText valOut, EditText tolOut) {
+	public void setUpTextReader(double initTol, TextView lower, TextView upper, EditText valOut, EditText tolOut, 
+			Button fourBandButton, Button fiveBandButton) {
 		reader = new TextReader();
 		reader.setTolerance(initTol);
-		reader.setOutputs(lower, upper,valOut,tolOut);
+		reader.setOutputs(lower, upper,valOut,tolOut,fourBandButton,fiveBandButton);
 	}
 	
 	
@@ -233,6 +236,7 @@ public class ResistorView extends View {
 	}
 	
 	public void updateActiveBand(int color){
+		System.out.println("colorrrr" + color);
 		bandColors.set(activeBandNum, color);
 		calculate();
 		invalidate();
@@ -254,6 +258,27 @@ public class ResistorView extends View {
 		reader.setTolerance(new Double(reader.tolOut.getText().toString()).doubleValue());
 		System.out.println(reader.tolOut.getText() + " in calculate()");
 		reader.read(reader.valueOut.getText().toString(),true);
+	}
+	
+	// changes band mode if a tolerance is selected that doesn't belong to the current band setting.
+	//this is ONLY called when the active band is the tolerance band!
+	public void changeBandMode(int color) {
+		double val = tolB.colorToValue(color);
+		if (bandColors.size() == 4) {
+			if (val <= 2.0) {
+				//setBandMode(5,false);
+				setBandMode(5,true);
+		        reader.fiveBandButton.setTextColor(0xFF000000);
+		        reader.fourBandButton.setTextColor(reader.r.getColor(R.color.gray4));
+			}
+		}
+		else if (bandColors.size() == 5) {
+			if (val >= 5.0) {
+				setBandMode(4,true);
+				reader.fourBandButton.setTextColor(0xFF000000);
+		        reader.fiveBandButton.setTextColor(reader.r.getColor(R.color.gray4));
+			}
+		}
 	}
 
 }
