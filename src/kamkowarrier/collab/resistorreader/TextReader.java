@@ -11,16 +11,13 @@ import android.widget.TextView;
 public class TextReader{
 
 	//used to notify ResistorAct about aspects of the text input
-    boolean isValid;
+    protected boolean isValid;
 	public boolean isStandardVal;
-	public boolean isMin;
-	public boolean isMax;
 	public Resources r;
 	public boolean[] allowStandards;
 	
 	public int[] band;
 	public String valString;
-	String[] standards;
 	
 	public double numUserVal;
 	public double lowerStandard;
@@ -61,6 +58,12 @@ public class TextReader{
 	};
 	public Button fourBandButton;
 	public Button fiveBandButton;
+	
+	public void setUp(TextView ohm, TextView lower, TextView upper, EditText valueOut,
+			EditText tolOut, Button fourBandButton, Button fiveBandButton,
+			boolean[] allowStandards) {
+		
+	}
 
     /* read() is used by ResistorAct to parse input and update the lower and upper standards buttons.
      * 
@@ -143,9 +146,18 @@ public class TextReader{
 	 * "INVALID" and "VAL" respectively.
 	 */
 	public double parseNumbers(String e, boolean update) {
+		allowStandards[0] = true;
+		allowStandards[1] = true;
 		double value = 0.0;
+		double smallVal = 0;
 		String lowerString = "INVALID";
-		String upperString = "VAL";
+		String upperString = "INPUT";
+		
+		String lowerNeighbor = null;
+		String upperNeighbor = null;
+		double last = currValArray[currValArray.length-1];
+		double first = currValArray[0];
+		
 		if (isValidString(e,false)) {
 			System.out.println("valid");
 			isValid = true;
@@ -175,16 +187,19 @@ public class TextReader{
 				value = value*1000;
 			}
 
-			numUserVal = roundValue(value,bandNum);
+			value = roundValue(value,bandNum);
+			
+			numUserVal = value;
+			smallVal = value; //make sure that this can be out to two sigfigs
+			
 
-			double smallVal = roundValue(value,bandNum); //make sure that this can be out to two sigfigs
 			int numberOfZeroes = 0;
-			while (smallVal >= 10) {
+			while (smallVal >= 10.0) {
 				smallVal = smallVal/10;
 				numberOfZeroes++;
 			}
 
-			while (smallVal <= 1) {
+			while (smallVal < 1.0) {
 				smallVal = smallVal*10;
 				numberOfZeroes--;
 			}
@@ -192,8 +207,6 @@ public class TextReader{
 			lowerStandard = standards[0];
 			upperStandard = standards[2];
 
-			isMin = false;
-			isMax = false;
 			isStandardVal = false;
 
 			for (int i = 0; i < currValArray.length; i++) {
@@ -208,19 +221,29 @@ public class TextReader{
 				valString = roundValue(smallVal*Math.pow(10,numberOfZeroes-6),bandNum) + "M";
 				if ((bandNum == 4 && value > 99000000) || (bandNum == 5 && value > 999000000)) {
 					upperString = "MAX";
-					isMax = true;
+					allowStandards[1] = false;
 					lowerString = roundValue(currValArray[currValArray.length-1]*Math.pow(10, bandNum-3),bandNum)
-							+ "M";          
+							+ "M";
 				}
 				else {
 					lowerString = roundValue(lowerStandard*Math.pow(10,numberOfZeroes-6),bandNum) + "M";
 					upperString = roundValue(upperStandard*Math.pow(10,numberOfZeroes-6),bandNum) + "M";
+					lowerNeighbor = roundValue(last*Math.pow(10,numberOfZeroes-7),bandNum) 
+							+ getSuffix(last*Math.pow(10,numberOfZeroes));
+				    upperNeighbor = roundValue(first*Math.pow(10,numberOfZeroes-5),bandNum) 
+							+ getSuffix(first*Math.pow(10,numberOfZeroes));
 				}
 			}
 			else if (numberOfZeroes >= 3) {
 				valString = roundValue(smallVal*Math.pow(10,numberOfZeroes-3),bandNum) + "K";
 				lowerString = roundValue(lowerStandard*Math.pow(10,numberOfZeroes-3),bandNum) + "K";
 				upperString = roundValue(upperStandard*Math.pow(10,numberOfZeroes-3),bandNum) + "K";
+				lowerNeighbor = roundValue(last*Math.pow(10,numberOfZeroes-4),bandNum) 
+						+ getSuffix(last*Math.pow(10,numberOfZeroes));
+				System.out.println(lowerNeighbor + "lowerNeigh");
+			    upperNeighbor = roundValue(first*Math.pow(10,numberOfZeroes-2),bandNum) 
+						+ getSuffix(first*Math.pow(10,numberOfZeroes));
+			    System.out.println(upperNeighbor + "upperNeigh");
 			}
 			else {
 				lowerString = roundValue(lowerStandard*Math.pow(10,numberOfZeroes),bandNum) + "";
@@ -228,18 +251,38 @@ public class TextReader{
 				valString = roundValue(smallVal*Math.pow(10,numberOfZeroes),bandNum) + "";
 				if (value <= 0.1) {
 					lowerString = "MIN";
-					isMin = true;
+					allowStandards[0] = false;
 					upperString = roundValue(currValArray[0],bandNum) + "";          
 				}
+				lowerNeighbor = roundValue(last*Math.pow(10,numberOfZeroes-1),bandNum) 
+						+ getSuffix(last*Math.pow(10,numberOfZeroes));
+			    upperNeighbor = roundValue(first*Math.pow(10,numberOfZeroes+1),bandNum) 
+						+ getSuffix(first*Math.pow(10,numberOfZeroes));
+			}
+		}
+		// boundary cases
+		if (upperString.equals(valString)) {
+			System.out.println("HIT CASE 1");
+			if (isStandardVal || smallVal > last) {
+				upperString = upperNeighbor;
+			}
+		}
+		else if (lowerString.equals(valString)) {
+			System.out.println("HIT CASE 2");
+			if (isStandardVal || smallVal < first) {
+			System.out.println(lowerNeighbor + "final NEIGH");
+			lowerString = lowerNeighbor;
 			}
 		}
 		if (update) {
 			System.out.println(value + " " + isInRange(value,bandNum));
 			if (!isInRange(value,bandNum)) {
 				System.out.println("NOT IN RANGE: " + value);
-				isValid = false;
-				lower.setText("INVALID");
-				upper.setText("VAL");
+				//isValid = false;
+				lower.setText("OUTSIDE");
+				upper.setText("RANGE");
+				allowStandards[0] = false;
+				allowStandards[1] = false;
 			}
 			else {
 				System.out.println("setting lower and upper" + lowerString + upperString);
@@ -248,9 +291,10 @@ public class TextReader{
 			}
 		}
 		else {
-			isMin = false;
-			isMax = false;
+			//allowStandards[0] = true;
+			//allowStandards[1] = true;
 		}
+		System.out.println("final value is: " + value);
 		return value;
 	}
 
@@ -280,6 +324,30 @@ public class TextReader{
 		return closestVal;
 	}
 
+	public String getSuffix(double val) {
+		
+		double smallVal = roundValue(val,bandNum);
+		int numberOfZeroes = 0;
+		while (smallVal >= 10.0) {
+			smallVal = smallVal/10;
+			numberOfZeroes++;
+		}
+		while (smallVal < 1.0) {
+			smallVal = smallVal*10;
+			numberOfZeroes--;
+		}
+		if (numberOfZeroes >= 6) {
+			return "M";
+		}
+		else if (numberOfZeroes >= 3) {
+			return "K";
+		}
+		else {
+			return "";
+		}
+		
+	}
+	
 	/* setTolerance() builds the valid tolerance array and changes the band setting of this object values 
 	 * given a valid tolerance.
 	 */
@@ -357,6 +425,7 @@ public class TextReader{
 
 	//the double given to this function must have a max of 3 sig digits
 	public void valueToBands(double val) { 
+		System.out.println("ValtoBands given: " + val);
 		if (bandNum == 4) {
 			band = new int[3];
 			int numZeroes = 0;

@@ -297,20 +297,18 @@ public class ResistorView extends View {
 		  else {
 			  reader.ohm.setText("\u26A0");
 		  }
-		  if (reader.isMin) {
+		  if (!reader.allowStandards[0]) {
 			  System.out.println("IS MIN");
 			  reader.lower.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
 		  }
 		  else {
-			  reader.allowStandards[0] = true;
 			  reader.lower.setBackgroundResource(R.drawable.btn_default_normal);
 		  }
-		  if (reader.isMax){
+		  if (!reader.allowStandards[1]){
 			  System.out.println("IS MAX");
 			  reader.upper.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
 		  }
 		  else {
-			  reader.allowStandards[1] = true;
 			  reader.upper.setBackgroundResource(R.drawable.btn_default_normal);
 		  }
 	}
