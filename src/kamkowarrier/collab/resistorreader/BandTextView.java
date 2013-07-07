@@ -12,7 +12,7 @@ public class BandTextView extends TextView {
 	public BandTextView(Context context, Integer[] inputColors) {
 		super(context);
 		this.inputColors = inputColors;
-		this.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, 80));
+		this.setLayoutParams(new AbsListView.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, 80));
 		this.setTextIsSelectable(false);
 		this.setBackgroundResource(R.color.androidPurple);
 		

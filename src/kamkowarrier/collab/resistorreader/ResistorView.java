@@ -109,6 +109,7 @@ public class ResistorView extends View {
 		paint.setAntiAlias(true);
 		
 		this.setOnTouchListener(new OnTouchListener () {
+			@Override
 			public boolean onTouch(View v, MotionEvent e) {
 				switch(e.getAction())
 				{

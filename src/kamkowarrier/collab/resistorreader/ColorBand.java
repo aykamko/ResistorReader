@@ -22,6 +22,7 @@ public class ColorBand {
 			colors = res.getIntArray(R.array.valColors);
 		}
 		
+		@Override
 		public double colorToValue(int color) {
 			int val = 0;
 			while (val < colors.length) {
@@ -47,6 +48,7 @@ public class FirstBand extends ColorBand {
 			colors = res.getIntArray(R.array.firstColors);
 		}
 		
+		@Override
 		public double colorToValue(int color) {
 			int val = 0;
 			while (val < colors.length) {
@@ -75,6 +77,7 @@ public class FirstBand extends ColorBand {
 			colors = res.getIntArray(R.array.multColors);
 		}
 		
+		@Override
 		public double colorToValue(int color) {
 			int val = 0;
 			while (val < colors.length) {
@@ -86,6 +89,7 @@ public class FirstBand extends ColorBand {
 			return 50; // Error check
 		}
 		
+		@Override
 		public int valueToColor(double val) {
 			//int i = Double.valueOf(Math.log10(val)).intValue();
 			int i = Double.valueOf(val).intValue();
@@ -102,6 +106,7 @@ public class FirstBand extends ColorBand {
 			colors = res.getIntArray(R.array.tolColors);
 		}
 		
+		@Override
 		public double colorToValue(int color) {
 			double val = 0;
 			switch (color) {
@@ -130,6 +135,7 @@ public class FirstBand extends ColorBand {
 			return val;
 		}
 		
+		@Override
 		public int valueToColor(double val) {
 			int color = 0xFFFF00FF;
 			int sw = Double.valueOf(val * 10).intValue();
@@ -169,6 +175,7 @@ public class FirstBand extends ColorBand {
 			colors = res.getIntArray(R.array.tempColors);
 		}
 		
+		@Override
 		public double colorToValue(int color) {
 			int val = 0;
 			switch (color) {

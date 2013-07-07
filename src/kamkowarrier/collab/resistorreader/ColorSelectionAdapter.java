@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -54,6 +55,7 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
 	    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, metric);
 	}
 	
+	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
         	  LayoutInflater li = (LayoutInflater) 
@@ -84,12 +86,12 @@ public class ColorSelectionAdapter extends ArrayAdapter<Integer[]> {
            
            if (listViewHeight != 0) {
         	   AbsListView.LayoutParams newParams = new AbsListView.LayoutParams
-        			   (AbsListView.LayoutParams.MATCH_PARENT, 
+        			   (LayoutParams.MATCH_PARENT, 
         					   (int) (((listViewHeight - spToPix(4)) / activeScheme.length) - spToPix(4)));
         	   resultView.setLayoutParams(newParams);
         	   } else {
         		   resultView.setLayoutParams(new AbsListView.LayoutParams
-        				   (AbsListView.LayoutParams.MATCH_PARENT, 60));
+        				   (LayoutParams.MATCH_PARENT, 60));
         	   }
            
            resultView.setOnTouchListener(new OnTouchListener() {

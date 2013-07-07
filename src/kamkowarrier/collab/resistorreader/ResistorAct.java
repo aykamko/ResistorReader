@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -80,6 +81,7 @@ public class ResistorAct extends Activity {
 			
 		    // Observer that measures various screen elements when they are drawn
 			selectLV.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+				@Override
 				public void onGlobalLayout() { 
 					int selectLVHeight = selectLV.getMeasuredHeight();
 					float resistorViewTop = resistorView.getY();
@@ -99,7 +101,7 @@ public class ResistorAct extends Activity {
 			resistorView.firstCalculate();
 			TextReader reader = new TextReader();
 			reader.setBandNum(resistorView.bandColors.size());
-			reader.setTolerance(reader.findClosestVal(new Double(tolOut.getText().toString()).doubleValue(),reader.validTols));
+			reader.setTolerance(reader.findClosestVal(new Double(tolOut.getText().toString()).doubleValue(),TextReader.validTols));
 			reader.setOutputs(lower, upper,valueOut,tolOut,fourBandButton,fiveBandButton);
 			reader.read(valueOut.getText().toString(),true);
 			
@@ -134,6 +136,7 @@ public class ResistorAct extends Activity {
 			redX.setSpan(new ForegroundColorSpan(Color.RED), 0, 1, 0);
 			
 			valueOut.setOnKeyListener(new OnKeyListener() {
+				@Override
 				public boolean onKey(View view, int keyCode, KeyEvent event) {
 					if (event.getAction() == KeyEvent.ACTION_DOWN) {
 						switch(keyCode) {
@@ -214,6 +217,7 @@ public class ResistorAct extends Activity {
 			}
 		});
 			tolOut.setOnKeyListener(new OnKeyListener() {
+				@Override
 				public boolean onKey(View view, int keyCode, KeyEvent event) {
 					if (event.getAction() == KeyEvent.ACTION_DOWN) {
 						switch(keyCode) {
@@ -230,7 +234,7 @@ public class ResistorAct extends Activity {
 		   							break;
 								}
 								double val = Double.valueOf(tolOut.getText().toString());
-								val = reader.findClosestVal(val,reader.validTols);
+								val = reader.findClosestVal(val,TextReader.validTols);
 								System.out.println("In listener: " + val);
 								if (resistorView.bandColors.size() == 4) {
 								    resistorView.activeBandNum = 3;
@@ -284,10 +288,21 @@ public class ResistorAct extends Activity {
 
 	//Touch listener for ohm textView
 	ohm.setOnTouchListener(new OnTouchListener() {
+		@Override
 		public boolean onTouch(View view, MotionEvent event) {
 			switch(event.getAction()) {
 			    case MotionEvent.ACTION_DOWN:
-			    	if (ohm.getText().toString().equals("X")) {
+			    	if (ohm.getText().toString().equals("\u26A0")) {
+			    	  upper.setBackgroundResource(R.drawable.button_animation_l);
+			    	  lower.setBackgroundResource(R.drawable.button_animation_r);
+			    	  AnimationDrawable lowerFrame = (AnimationDrawable) lower.getBackground();
+			    	  AnimationDrawable upperFrame = (AnimationDrawable) upper.getBackground();
+			    	  lowerFrame.stop();
+			    	  upperFrame.stop();
+			    	  lowerFrame.start();
+			    	  upperFrame.start();
+			    	}
+			    	else if (ohm.getText().toString().equals("X")) {
 			    		ohm.setText(getString(R.string.ohm));
 			    		valueOut.setText(boxVals[0]);
 			    		TextReader reader = new TextReader();
@@ -303,6 +318,7 @@ public class ResistorAct extends Activity {
 	});
 	//Touch listener for percent TextView
 	percent.setOnTouchListener(new OnTouchListener() {
+		@Override
 		public boolean onTouch(View view, MotionEvent event) {
 			switch(event.getAction()) {
 			    case MotionEvent.ACTION_DOWN:

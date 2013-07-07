@@ -1,8 +1,6 @@
 package kamkowarrier.collab.resistorreader;
 
 import java.math.*;
-import java.util.PriorityQueue;
-
 import android.content.res.Resources;
 import android.widget.Button;
 import android.widget.EditText;
