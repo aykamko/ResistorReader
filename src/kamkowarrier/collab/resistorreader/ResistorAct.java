@@ -245,12 +245,12 @@ public class ResistorAct extends Activity {
 								//this code enabled the view to update when tol changed
 								/*if (reader.bandNum != resistorView.bandColors.size()) {
 									if (reader.bandNum == 4) {
-										resistorView.setBandMode(4);
+										resistorView.setBandMode(4,false,true);
 						                fourBandButton.setTextColor(0xFF000000);
 						                fiveBandButton.setTextColor(r.getColor(R.color.gray4));
 									}
 									else if (reader.bandNum == 5) {
-										resistorView.setBandMode(5);
+										resistorView.setBandMode(5,false,true);
 						                fiveBandButton.setTextColor(0xFF000000);
 						                fourBandButton.setTextColor(r.getColor(R.color.gray4));
 									}
