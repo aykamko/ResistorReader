@@ -110,10 +110,16 @@ public class ResistorAct extends Activity {
 			
 			resistorView.setUpTextReader(new Double(tolOut.getText().toString()).doubleValue(), lower, upper,
 					valueOut,tolOut,fourBandButton,fiveBandButton);
-			resistorView.reader.r = r; //Apologies for the hack, feel free to fix this.
-            
+			
 			final String[] standards = {lower.getText().toString(), valueOut.getText().toString(),
 					upper.getText().toString() };
+			
+			resistorView.reader.r = r; //Apologies for the hacky code, feel free to fix these.
+			resistorView.reader.allowStandards = allowStandards;
+			resistorView.reader.ohm = ohm;
+			resistorView.reader.standards = standards;
+            
+			
 			
 			//TODO: change the tol and value updates to methods!!!
 			

@@ -16,14 +16,16 @@ public class TextReader{
 	public boolean isMin;
 	public boolean isMax;
 	public Resources r;
+	public boolean[] allowStandards;
 	
 	public int[] band;
 	public String valString;
-	double[] standards;
+	String[] standards;
 	
 	public double numUserVal;
 	public double lowerStandard;
 	public double upperStandard;
+	public TextView ohm;
 	public TextView lower;
 	public TextView upper;
 	public EditText valueOut;
@@ -186,7 +188,7 @@ public class TextReader{
 				smallVal = smallVal*10;
 				numberOfZeroes--;
 			}
-			standards = findClosestStandardVals(smallVal,currValArray);
+			double[] standards = findClosestStandardVals(smallVal,currValArray);
 			lowerStandard = standards[0];
 			upperStandard = standards[2];
 
@@ -347,15 +349,8 @@ public class TextReader{
      */
 	public boolean isInRange(double val, int numBands) {
 		val = roundValue(val,numBands);
-		if (numBands == 4) {
-			if (val < 0.1 || val > Math.pow(10,6)*99) {
-				return false;
-			}
-		}
-		else if (numBands == 5) {
-			if (val < 0.1 || val > Math.pow(10,6)*999) {
-				return false;
-			}
+		if (val < 0.1 || val > Math.pow(10,6)*999) {
+			return false;
 		}
 		return true;
 	}

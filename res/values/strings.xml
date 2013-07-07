@@ -82,6 +82,18 @@
         <item>0xFFAA66CC</item>
     </integer-array>
     
+    <integer-array name="multColorsFive">
+        <item>0xFFCCCCCC</item>
+        <item>0xFFFFCC00</item>
+        <item>0xFF1D1D1D</item>
+        <item>0xFF43140F</item>
+        <item>0xFFFF4444</item>
+        <item>0xFFFF8800</item>
+        <item>0xFFFFFF4E</item>
+        <item>0xFF99CC00</item>
+        <item>0xFF33B5E5</item> 
+    </integer-array>
+    
     <integer-array name="tolColors">
         <item>0xFFCCCCCC</item>
         <item>0xFFFFCC00</item>

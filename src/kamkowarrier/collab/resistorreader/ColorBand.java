@@ -95,6 +95,93 @@ public class FirstBand extends ColorBand {
 			int i = Double.valueOf(val).intValue();
 			return colors[i];
 		}
+		
+		public int advanceVal(int color) {
+			for (int i = 0; i < colors.length; i++) {
+				if (colors[i] == color) {
+					if (i < colors.length-1) {
+				        return colors[i+1];
+					}
+					    return colors[i];
+				}
+			}
+			return 50; // Error check
+		}
+		
+		public int decreaseVal(int color) {
+			for (int i = 0; i < colors.length; i++) {
+				if (colors[i] == color) {
+					if (i > 0) {
+				        return colors[i-1];
+					}
+					    return colors[i];
+				}
+			}
+			return 50; // Error check
+		}
+		
+		public int getIndex(int color) {
+			for (int i = 0; i < colors.length; i++) {
+				if (colors[i] == color) {
+					return i;
+				}
+			}
+			return 50; // Error check
+		}
+	
+	}
+	
+	public class MultBandFive extends ColorBand {
+		
+		public int[] colors;
+		
+		public MultBandFive(Context context) {
+			super(context);
+			colors = res.getIntArray(R.array.multColorsFive);
+		}
+		
+		@Override
+		public double colorToValue(int color) {
+			int val = 0;
+			while (val < colors.length) {
+				if (color == colors[val]) {
+				    return Math.pow(10, val-2);
+				}
+				val++;
+			}
+			return 50; // Error check
+		}
+		
+		@Override
+		public int valueToColor(double val) {
+			//int i = Double.valueOf(Math.log10(val)).intValue();
+			int i = Double.valueOf(val).intValue();
+			return colors[i];
+		}
+		
+		public int advanceVal(int color) {
+			for (int i = 0; i < colors.length; i++) {
+				if (colors[i] == color) {
+					if (i < colors.length-1) {
+				        return colors[i+1];
+					}
+					    return colors[i];
+				}
+			}
+			return 50; // Error check
+		}
+		
+		public int decreaseVal(int color) {
+			for (int i = 0; i < colors.length; i++) {
+				if (colors[i] == color) {
+					if (i > 0) {
+				        return colors[i-1];
+					}
+					    return colors[i];
+				}
+			}
+			return 50; // Error check
+		}
 	
 	}
 	

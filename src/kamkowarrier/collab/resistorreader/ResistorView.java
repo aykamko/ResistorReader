@@ -50,6 +50,7 @@ public class ResistorView extends View {
 	ColorBand.ValBand valB = ColB.new ValBand(ctx);
 	ColorBand.TolBand tolB = ColB.new TolBand(ctx);
 	ColorBand.MultBand mulB = ColB.new MultBand(ctx);
+	ColorBand.MultBandFive mulBF = ColB.new MultBandFive(ctx);
 	ColorBand.TempBand temB = ColB.new TempBand(ctx);
 	
 	// Data variables
@@ -146,9 +147,16 @@ public class ResistorView extends View {
 			bandScheme = new int[][] { firstB.colors, valB.colors, mulB.colors, tolB.colors };
 			bandTypeArray = new ColorBand[] { firstB, valB, mulB, tolB };
 			
+			if (activeBandNum == 3) {
+				selectAdap.setActives(2);
+			}
+			
 			if (bandColors.size() == 5) {
 				thirdValBand = bandColors.get(2).intValue();
 				bandColors.remove(2);
+				//int color = bandColors.get(2);
+				//color = mulB.advanceVal(color);
+				//bandColors.set(2, color);
 				if (activeBandNum > 1) {
 					activeBandNum -= 1;
 				}
@@ -156,11 +164,27 @@ public class ResistorView extends View {
 			
 			break;
 		case 5:
-			bandScheme = new int[][] { firstB.colors, valB.colors, valB.colors, mulB.colors, tolB.colors };
-			bandTypeArray = new ColorBand[] { firstB, valB, valB, mulB, tolB };
+			bandScheme = new int[][] { firstB.colors, valB.colors, valB.colors, mulBF.colors, tolB.colors };
+			bandTypeArray = new ColorBand[] { firstB, valB, valB, mulBF, tolB };
+			
+			if (activeBandNum == 2) {
+				selectAdap.setActives(3);
+			}
 			
 			if (bandColors.size() == 4) {
 				bandColors.add(2, thirdValBand);
+				
+				//this check avoids errors in transition from MulB to MulBF
+				if (mulB.getIndex(bandColors.get(3)) == mulBF.colors.length) {
+					int fixedColor = mulB.decreaseVal(bandColors.get(3));
+					bandColors.set(3, fixedColor);
+				}
+				
+				//int black = valB.valueToColor(0);
+				//bandColors.add(2,black);
+				//int color = bandColors.get(3);
+				//color = mulB.decreaseVal(color);
+				//bandColors.set(3, color);
 				if (activeBandNum > 1) {
 					activeBandNum += 1;
 				}
@@ -237,7 +261,6 @@ public class ResistorView extends View {
 	}
 	
 	public void updateActiveBand(int color){
-		System.out.println("colorrrr" + color);
 		bandColors.set(activeBandNum, color);
 		calculate();
 		invalidate();
@@ -253,12 +276,43 @@ public class ResistorView extends View {
 	}
 	
 	public void calculate() {
-		System.out.println(reader.tolOut.getText() + " in calculate()");
+		for (int i = 0; i < bandColors.size(); i++) {
+			System.out.println(bandTypeArray[i].colorToValue((bandColors.get(i))));
+		}
 		calc.calculate(bandColors, bandTypeArray);
-		System.out.println(reader.tolOut.getText() + " in calculate()");
+		for (int i = 0; i < bandColors.size(); i++) {
+			System.out.println(bandTypeArray[i].colorToValue((bandColors.get(i))));
+		}
 		reader.setTolerance(new Double(reader.tolOut.getText().toString()).doubleValue());
-		System.out.println(reader.tolOut.getText() + " in calculate()");
 		reader.read(reader.valueOut.getText().toString(),true);
+		reader.allowStandards[0] = false;
+		reader.allowStandards[1] = false;
+		//Make these changes happen in reader:
+		reader.standards[0] = reader.lower.getText().toString();
+		reader.standards[1] = reader.valString;
+		reader.standards[2] = reader.upper.getText().toString();
+		if (reader.isStandardVal) {
+			  reader.ohm.setText(reader.r.getString(R.string.ohm));
+		  }
+		  else {
+			  reader.ohm.setText("\u26A0");
+		  }
+		  if (reader.isMin) {
+			  System.out.println("IS MIN");
+			  reader.lower.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
+		  }
+		  else {
+			  reader.allowStandards[0] = true;
+			  reader.lower.setBackgroundResource(R.drawable.btn_default_normal);
+		  }
+		  if (reader.isMax){
+			  System.out.println("IS MAX");
+			  reader.upper.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
+		  }
+		  else {
+			  reader.allowStandards[1] = true;
+			  reader.upper.setBackgroundResource(R.drawable.btn_default_normal);
+		  }
 	}
 	
 	// changes band mode if a tolerance is selected that doesn't belong to the current band setting.
