@@ -65,7 +65,6 @@ public class ResistorView extends View {
 	// Variables and methods to set ColorSelectionAdapter and Calculator instances
 	ColorSelectionAdapter selectAdap;
 	Calculator calc;
-	TextReader reader;
 	public void setSelector(ColorSelectionAdapter s) { this.selectAdap = s; }
 	public void setCalc(Calculator c) { this.calc = c; }
 	
@@ -131,14 +130,6 @@ public class ResistorView extends View {
 			}
 		});
 	}
-	
-	public void setUpTextReader(double initTol, TextView lower, TextView upper, EditText valOut, EditText tolOut, 
-			Button fourBandButton, Button fiveBandButton) {
-		reader = new TextReader();
-		reader.setTolerance(initTol);
-		reader.setOutputs(lower, upper,valOut,tolOut,fourBandButton,fiveBandButton);
-	}
-	
 	
 	// Method that sets the band mode for the ResistorView (4 bands or 5 bands)
 	public void setBandMode(int mode,boolean calculate) {
@@ -283,33 +274,28 @@ public class ResistorView extends View {
 		for (int i = 0; i < bandColors.size(); i++) {
 			System.out.println(bandTypeArray[i].colorToValue((bandColors.get(i))));
 		}
-		reader.setTolerance(new Double(reader.tolOut.getText().toString()).doubleValue());
-		reader.read(reader.valueOut.getText().toString(),true);
-		reader.allowStandards[0] = false;
-		reader.allowStandards[1] = false;
-		//Make these changes happen in reader:
-		reader.standards[0] = reader.lower.getText().toString();
-		reader.standards[1] = reader.valString;
-		reader.standards[2] = reader.upper.getText().toString();
-		if (reader.isStandardVal) {
-			  reader.ohm.setText(reader.r.getString(R.string.ohm));
+TextReader.setTolerance(new Double(TextReader.tolOut.getText().toString()).doubleValue(),false);
+TextReader.read(TextReader.valueOut.getText().toString(),true);
+
+		if (TextReader.isStandardVal) {
+			TextReader.ohm.setText(TextReader.r.getString(R.string.ohm));
 		  }
 		  else {
-			  reader.ohm.setText("\u26A0");
+			  TextReader.ohm.setText("\u26A0");
 		  }
-		  if (!reader.allowStandards[0]) {
+		  if (!TextReader.allowStandards[0]) {
 			  System.out.println("IS MIN");
-			  reader.lower.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
+			  TextReader.lower.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
 		  }
 		  else {
-			  reader.lower.setBackgroundResource(R.drawable.btn_default_normal);
+			  TextReader.lower.setBackgroundResource(R.drawable.btn_default_normal);
 		  }
-		  if (!reader.allowStandards[1]){
+		  if (!TextReader.allowStandards[1]){
 			  System.out.println("IS MAX");
-			  reader.upper.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
+			  TextReader.upper.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
 		  }
 		  else {
-			  reader.upper.setBackgroundResource(R.drawable.btn_default_normal);
+			  TextReader.upper.setBackgroundResource(R.drawable.btn_default_normal);
 		  }
 	}
 	
@@ -321,15 +307,15 @@ public class ResistorView extends View {
 			if (val <= 2.0) {
 				//setBandMode(5,false);
 				setBandMode(5,true);
-		        reader.fiveBandButton.setTextColor(0xFF000000);
-		        reader.fourBandButton.setTextColor(reader.r.getColor(R.color.gray4));
+				TextReader.fiveBandButton.setTextColor(0xFF000000);
+				TextReader.fourBandButton.setTextColor(TextReader.r.getColor(R.color.gray4));
 			}
 		}
 		else if (bandColors.size() == 5) {
 			if (val >= 5.0) {
 				setBandMode(4,true);
-				reader.fourBandButton.setTextColor(0xFF000000);
-		        reader.fiveBandButton.setTextColor(reader.r.getColor(R.color.gray4));
+				TextReader.fourBandButton.setTextColor(0xFF000000);
+				TextReader.fiveBandButton.setTextColor(TextReader.r.getColor(R.color.gray4));
 			}
 		}
 	}

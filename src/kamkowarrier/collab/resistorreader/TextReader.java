@@ -11,43 +11,44 @@ import android.widget.TextView;
 public class TextReader{
 
 	//used to notify ResistorAct about aspects of the text input
-    protected boolean isValid;
-	public boolean isStandardVal;
-	public Resources r;
-	public boolean[] allowStandards;
+    protected static boolean isValid;
+	public static boolean isStandardVal;
+	public static Resources r;
+	public static boolean[] allowStandards;
 	
-	public int[] band;
-	public String valString;
+	public static int[] band;
+	public static String valString;
+	public static String[] standards;
 	
-	public double numUserVal;
-	public double lowerStandard;
-	public double upperStandard;
-	public TextView ohm;
-	public TextView lower;
-	public TextView upper;
-	public EditText valueOut;
-	public EditText tolOut;
+	public static double numUserVal;
+	public static double lowerStandard;
+	public static double upperStandard;
+	public static TextView ohm;
+	public static TextView lower;
+	public static TextView upper;
+	public static EditText valueOut;
+	public static EditText tolOut;
 	
-	double[] validTolsFour = {5.0, 10.0}; //TODO: Add 20% for three bands
-	double[] validTolsFive = {0.1, 0.25, 0.5, 1.0, 2.0};
+	static double[] validTolsFour = {5.0, 10.0}; //TODO: Add 20% for three bands
+	static double[] validTolsFive = {0.1, 0.25, 0.5, 1.0, 2.0};
 	static double[] validTols;
-	public int bandNum; //this is the band number that corresponds to the tolerance. Public because the listeners are in a different package.
-	Double[] currValArray;
+	static public int bandNum; //this is the band number that corresponds to the tolerance. Public because the listeners are in a different package.
+	static Double[] currValArray;
 	
-	double[] e6 = {1.0, 1.5, 2.2 , 3.3, 4.7, 6.8 }; //20%
-	double[] e12 = {1.2,1.8,2.7,3.9,5.6,8.2}; // plus e6! 10%
-	double[] e24 = {1.1,1.3,1.6,2.0,2.4,3.0,3.6,4.3,5.1,6.2,7.5,9.1}; //plus e12! 5%
-	double[] e48 = { 1.00,1.21,1.47,1.78,2.15,2.61,3.16,3.83,4.64,5.62,6.81,8.25,
+	static double[] e6 = {1.0, 1.5, 2.2 , 3.3, 4.7, 6.8 }; //20%
+	static double[] e12 = {1.2,1.8,2.7,3.9,5.6,8.2}; // plus e6! 10%
+	static double[] e24 = {1.1,1.3,1.6,2.0,2.4,3.0,3.6,4.3,5.1,6.2,7.5,9.1}; //plus e12! 5%
+	static double[] e48 = { 1.00,1.21,1.47,1.78,2.15,2.61,3.16,3.83,4.64,5.62,6.81,8.25,
 			1.05,1.27,1.54,1.87,2.26,2.74,3.32,4.02,4.87,5.90,7.15,8.66,
 			1.10,1.33,1.62,1.96,2.37,2.87,3.48,4.22,5.11,6.19,7.50,9.09,
 			1.15,1.40,1.69,2.05,2.49,3.01,3.65,4.42,5.36,6.49,7.87,9.53
 	};
-	double[] e96 = {102,1.24,1.50,1.82,2.21,2.67,3.24,3.92,4.75,5.76,6.98,8.45,
+	static double[] e96 = {102,1.24,1.50,1.82,2.21,2.67,3.24,3.92,4.75,5.76,6.98,8.45,
 			1.07,1.30,1.58,1.91,2.32,2.80,3.40,4.12,4.99,6.04,7.32,8.87,
 			1.13,1.37,1.65,2.00,2.43,2.94,3.57,4.32,5.23,6.34,7.68,9.31,
 			1.18,1.43,1.74,2.10,2.55,3.09,3.74,4.53,5.49,6.65,8.06,9.76
 	}; 
-	double[] e192 = {101,1.23,1.49,1.80,2.18,2.64,3.20,3.88,4.70,5.69,6.90,8.35,
+	static double[] e192 = {101,1.23,1.49,1.80,2.18,2.64,3.20,3.88,4.70,5.69,6.90,8.35,
 			1.04,1.26,1.52,1.84,2.23,2.71,3.28,3.97,4.81,5.83,7.06,8.56,
 			1.06,1.29,1.56,1.89,2.29,2.77,3.36,4.07,4.93,5.97,7.23,8.76, 
 			1.09,1.32,1.60,1.93,2.34,2.84,3.44,4.17,5.05,6.12,7.41,8.98, 
@@ -56,13 +57,22 @@ public class TextReader{
 			1.17,1.42,1.72,2.08,2.52,3.05,3.70,4.48,5.42,6.57,7.96,9.65,
 			1.20,1.45,1.76,2.13,2.58,3.12,3.79,4.59,5.56,6.73,8.16,9.88
 	};
-	public Button fourBandButton;
-	public Button fiveBandButton;
+	public static Button fourBandButton;
+	public static Button fiveBandButton;
 	
-	public void setUp(TextView ohm, TextView lower, TextView upper, EditText valueOut,
+	public static void setUp(TextView ohm, TextView lower, TextView upper, EditText valueOut,
 			EditText tolOut, Button fourBandButton, Button fiveBandButton,
-			boolean[] allowStandards) {
-		
+			boolean[] allowStandards, Resources r, String[] standards) {
+		TextReader.ohm = ohm;
+		TextReader.lower = lower;
+		TextReader.upper = upper;
+		TextReader.valueOut = valueOut;
+		TextReader.tolOut = tolOut;
+		TextReader.allowStandards = allowStandards;
+		TextReader.fourBandButton = fourBandButton;
+		TextReader.fiveBandButton = fiveBandButton;
+		TextReader.r = r;
+		TextReader.standards = standards;
 	}
 
     /* read() is used by ResistorAct to parse input and update the lower and upper standards buttons.
@@ -72,24 +82,11 @@ public class TextReader{
      * 
      * @return no return value, but changes are made to the internal state of the TextReader and the lower and upper buttons.
      */
-	public void read(String str, boolean update) {
+	public static void read(String str, boolean update) {
 		valueToBands(parseNumbers(str,update));
 	}
 
-	/* setOutputs() is used by the ResistorAct and external programs to set the outputs of this object for updates.
-	 * 
-	 */
-	public void setOutputs(TextView lower, TextView upper, EditText valueOut, EditText tolOut, 
-			Button fourBandButton, Button fiveBandButton) {
-		this.lower = lower;
-		this.upper = upper;
-		this.valueOut = valueOut;
-		this.tolOut = tolOut;
-		this.fourBandButton = fourBandButton;
-		this.fiveBandButton = fiveBandButton;
-	}
-
-	public void setBandNum(int num) {
+	public static void setBandNum(int num) {
 		if (num == 4) {
 			TextReader.validTols = validTolsFour;
 			bandNum = num;
@@ -100,7 +97,7 @@ public class TextReader{
 		}
 	}
 
-	public boolean isIn(String e, String things) {
+	public static boolean isIn(String e, String things) {
 		for (int i = 0; i < things.length(); i++) {
 			if (e.equals(Character.toString(things.charAt(i)))) {
 				return true;
@@ -112,7 +109,7 @@ public class TextReader{
 	/* note: isValidString() doesn't account for the String.empty case
 	 * because that should be taken care of by ResistorAct
 	 */
-	public boolean isValidString(String e, boolean tol) {
+	public static boolean isValidString(String e, boolean tol) {
 		String lastChar = Character.toString(e.charAt(e.length()-1));
 		if (e.length() == 1 && !isIn(lastChar,"1234567890")) {
 			return false;
@@ -145,7 +142,7 @@ public class TextReader{
 	 * so that the ResistorAct can access the updated values. Note that the upper and lower box strings are pre set to 
 	 * "INVALID" and "VAL" respectively.
 	 */
-	public double parseNumbers(String e, boolean update) {
+	public static double parseNumbers(String e, boolean update) {
 		allowStandards[0] = true;
 		allowStandards[1] = true;
 		double value = 0.0;
@@ -285,6 +282,9 @@ public class TextReader{
 				allowStandards[1] = false;
 			}
 			else {
+				standards[0] = lowerString;
+				standards[1] = valString;
+				standards[2] = upperString;
 				System.out.println("setting lower and upper" + lowerString + upperString);
 				lower.setText(lowerString);
 				upper.setText(upperString);
@@ -298,7 +298,7 @@ public class TextReader{
 		return value;
 	}
 
-	public double roundValue(double val, int numBands) {
+	public static double roundValue(double val, int numBands) {
 		BigDecimal num = new BigDecimal(val);
 		if (numBands == 4) {
 			num = num.round(new MathContext(2, RoundingMode.HALF_UP));
@@ -312,7 +312,7 @@ public class TextReader{
 	/* findClosestVal() is a regrettably inefficient and 
 	 * finds the double in valids[] closest to val.
 	 */
-	public double findClosestVal(double val, double[] valids) {
+	public static double findClosestVal(double val, double[] valids) {
 		double min = 99999;
 		double closestVal = 0.0;
 		for (double i : valids) {
@@ -324,7 +324,7 @@ public class TextReader{
 		return closestVal;
 	}
 
-	public String getSuffix(double val) {
+	public static String getSuffix(double val) {
 		
 		double smallVal = roundValue(val,bandNum);
 		int numberOfZeroes = 0;
@@ -351,7 +351,7 @@ public class TextReader{
 	/* setTolerance() builds the valid tolerance array and changes the band setting of this object values 
 	 * given a valid tolerance.
 	 */
-	public void setTolerance(double tol) {
+	public static void setTolerance(double tol,boolean noUpdate) {
 		tol = findClosestVal(tol,validTols);
 		double[][] tempArrays = {e6,e12,e24,e48,e96,e192};
 		Double[][] tolArrays = new Double[tempArrays.length][];  
@@ -396,6 +396,10 @@ public class TextReader{
 			System.out.println("Message from setTolerance in TextReader: Not a valid tolerance!");
 			System.exit(0);
 		}
+		if (noUpdate) {
+			read(valueOut.getText().toString(),false);
+			return;
+		}
 		if (valueOut != null) {
 			read(valueOut.getText().toString(),true);
 		}
@@ -404,18 +408,19 @@ public class TextReader{
 	/* findClosestStandardValues() uses a modified binary search algorithm to return the
 	 * two values below and above the closest standard value to the given value. 
 	 */
-	private double[] findClosestStandardVals(double val, Double[] valArray) {
+	private static double[] findClosestStandardVals(double val, Double[] valArray) {
 		double[] workingArray = new double[valArray.length];
 		for (int i = 0; i < valArray.length; i++) {
 			workingArray[i] = valArray[i].doubleValue();
 		}
-		return modBSearch(val,workingArray,0,workingArray.length-1);
+		TextReader reader = new TextReader();
+		return reader.modBSearch(val,workingArray,0,workingArray.length-1);
 	}
     /* isInRange() checks if a value is in a given range allowed by the band settings.
      * Note that a value can be in range but be above the greatest standard value for
      * either band setting.
      */
-	public boolean isInRange(double val, int numBands) {
+	public static boolean isInRange(double val, int numBands) {
 		val = roundValue(val,numBands);
 		if (val < 0.1 || val > Math.pow(10,6)*999) {
 			return false;
@@ -424,7 +429,7 @@ public class TextReader{
 	}
 
 	//the double given to this function must have a max of 3 sig digits
-	public void valueToBands(double val) { 
+	public static void valueToBands(double val) { 
 		System.out.println("ValtoBands given: " + val);
 		if (bandNum == 4) {
 			band = new int[3];
@@ -564,17 +569,18 @@ public class TextReader{
 	 * array of Doubles[]
 	 * used to build the standard value arrays for a given tolerance.
 	 */
-	public Double[] mergeAndSortArrays(Double[][] arrays) { 
+	public static Double[] mergeAndSortArrays(Double[][] arrays) { 
 		DoublePQ[] qArray = new DoublePQ[arrays.length];
 		int totalLength = 0;
+		TextReader reader = new TextReader();
 		for (int i = 0; i < arrays.length; i++) {
 			totalLength += arrays[i].length;
-			qArray[i] = new DoublePQ(arrays[i]);
+			qArray[i] = reader.new DoublePQ(arrays[i]);
 		}
 		Double[] result = new Double[totalLength];
 		int i = 0;
 		while (!allAreNull(qArray)) { //TODO: use a check that doesn't go over the array twice
-			DoublePQ comparisonQ = new DoublePQ(qArray.length);
+			DoublePQ comparisonQ = reader.new DoublePQ(qArray.length);
 			for (int j = 0; j < qArray.length; j++) {
 				if (!(qArray[j].peek() == null)) {
 					comparisonQ.insert(qArray[j].removeMin());
@@ -667,7 +673,7 @@ public class TextReader{
 	}
 
 
-	private boolean allAreNull(DoublePQ[] array) {
+	private static boolean allAreNull(DoublePQ[] array) {
 		for (int i =0; i < array.length; i ++) {
 			if (array[i].peek() != null) {
 				return false;
@@ -686,7 +692,6 @@ public class TextReader{
 		String str4 = "2345.M";
 		String str5 = "12.34.";
 		TextReader read = new TextReader();
-		read.setTolerance(12.6);
 		//read.read("1.2542345M");
 		double[] a = read.findClosestStandardVals(3.61,read.currValArray);
 		System.out.println(a[0] + " " + a[1] + " " + a[2]);

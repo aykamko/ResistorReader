@@ -8,30 +8,32 @@ import android.widget.TextView;
 
 public class Calculator {
 	
-	double val1;
-	double val2;
-	double val3;
-	double mul;
-	double tol;
-	double result;
-	String[] bounds;
+	static double val1;
+	static double val2;
+	static double val3;
+	static double mul;
+	static double tol;
+	static double result;
+	static String[] bounds;
 	
-	EditText valueOut;
-	EditText tolOut;
-	TextView lower;
-	TextView upper;
-	TextView ohm;
-	String ohmString;
+	static EditText valueOut;
+	static EditText tolOut;
+	static TextView lower;
+	static TextView upper;
+	static TextView ohm;
+	static String ohmString;
 	
-	public void setOutputViews(EditText valueOut, EditText tolOut, TextView lower, TextView upper, TextView ohm) {
-		this.valueOut = valueOut;
-		this.tolOut = tolOut;
-		this.lower = lower;
-		this.upper = upper;
-		this.ohm = ohm;
+	public static void setOutputViews(EditText valueOut, EditText tolOut, TextView lower, 
+			TextView upper, TextView ohm, String ohmString) {
+	    Calculator.valueOut = valueOut;
+	    Calculator.tolOut = tolOut;
+	    Calculator.lower = lower;
+	    Calculator.upper = upper;
+	    Calculator.ohm = ohm;
+	    Calculator.ohmString = ohmString;
 	}
 	
-	public void calculate(ArrayList<Integer> bandColors, ColorBand[] bandTypeArray) {
+	public static void calculate(ArrayList<Integer> bandColors, ColorBand[] bandTypeArray) {
 		
 		String str = "";
 	    ArrayList<Double> values = new ArrayList<Double>();
@@ -91,7 +93,7 @@ public class Calculator {
 		
 	}
     
-    public String addSuffix(double result, int scale) {
+    public static String addSuffix(double result, int scale) {
     	String output;
     	if (result == 0) {
     		output = "0";
