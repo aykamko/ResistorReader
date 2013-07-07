@@ -31,7 +31,7 @@ public class TextReader{
 	
 	static double[] validTolsFour = {5.0, 10.0}; //TODO: Add 20% for three bands
 	static double[] validTolsFive = {0.1, 0.25, 0.5, 1.0, 2.0};
-	static double[] validTols;
+	public static double[] validTols;
 	static public int bandNum; //this is the band number that corresponds to the tolerance. Public because the listeners are in a different package.
 	static Double[] currValArray;
 	
