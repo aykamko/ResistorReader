@@ -180,9 +180,11 @@ public class ResistorAct extends Activity {
 								  resistorView.activeBandNum = original;
 								  if (TextReader.isStandardVal) {
 									  ohm.setText(getString(R.string.ohm));
+									  ohm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40);
 								  }
 								  else {
 									  ohm.setText("\u26A0");
+									  ohm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
 								  }
 								  if (!allowStandards[0]) {
 									  System.out.println("IS MIN");

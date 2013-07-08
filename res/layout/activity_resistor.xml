@@ -42,38 +42,65 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
             
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="35sp"
-            android:layout_marginLeft="15sp"
-            android:layout_marginRight="15sp"
-            android:layout_marginTop="15sp"
-            android:layout_marginBottom="4sp"
-            android:orientation="horizontal"
-            android:background="@color/gray3"
-            android:padding="2dp" >
-                
-            <Button
-                android:id="@+id/fourBandButton"
-                android:text="4"
-                android:textSize="25sp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:background="@color/gray2"
-                android:layout_marginRight="1dp" />
-
-            <Button
-                android:id="@+id/fiveBandButton"
-                android:text="5"
-                android:textSize="25sp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:background="@color/gray2"
-                android:layout_marginLeft="1dp" />
-        
-        </LinearLayout>
+            <View 
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="15sp"
+                android:layout_marginRight="15sp"
+                android:layout_marginLeft="15sp"
+                android:background="@color/gray3"/>
+            
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="35sp"
+	            android:layout_marginLeft="15sp"
+	            android:layout_marginRight="15sp"
+	            android:orientation="horizontal"
+	            android:background="@color/gray2">
+	            
+	            <View 
+	                android:layout_width="2dp"
+	                android:layout_height="match_parent"
+	                android:background="@color/gray3"/>
+	                
+	            <Button
+	                android:id="@+id/fourBandButton"
+	                android:text="4"
+	                android:textSize="25sp"
+	                android:layout_height="match_parent"
+	                android:layout_weight="1"
+	                android:layout_width="0dp"
+	                android:background="?android:attr/selectableItemBackground" />
+	            
+	            <View 
+	                android:layout_width="2dp"
+	                android:layout_height="match_parent"
+	                android:background="@color/gray3"/>
+	
+	            <Button
+	                android:id="@+id/fiveBandButton"
+	                android:text="5"
+	                android:textSize="25sp"
+	                android:layout_height="match_parent"
+	                android:layout_weight="1"
+	                android:layout_width="0dp"
+	                android:background="?android:attr/selectableItemBackground" />
+	            
+	            <View 
+	                android:layout_width="2dp"
+	                android:layout_height="match_parent"
+	                android:background="@color/gray3" />
+	        
+	        </LinearLayout>
+	        
+	        <View 
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginRight="15sp"
+                android:layout_marginLeft="15sp"
+                android:background="@color/gray3" />
+	                    
         <LinearLayout
             android:id="@+id/selectHolder"
             android:layout_width="match_parent"
@@ -83,9 +110,6 @@
             android:layout_marginBottom="15sp"
             android:orientation="vertical"
             android:background="@color/gray3" >
-            
-        <!--  - spToPix(4) - (spToPix(4) / (activeScheme.length + 1)) 
-        android:dividerHeight="4sp" -->
         
         <ListView
             android:id="@+id/LV_bands"
@@ -185,7 +209,8 @@
                 android:gravity="center"
                 android:hint="@string/range_hint"
                 android:textIsSelectable="false"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                android:padding="2sp" />
     
             <EditText
                 android:id="@+id/tolerance_output"
@@ -217,7 +242,8 @@
                 android:gravity="center"
                 android:hint="@string/range_hint"
                 android:textIsSelectable="false"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                android:padding="4sp" />
             
         </LinearLayout>
     </LinearLayout>

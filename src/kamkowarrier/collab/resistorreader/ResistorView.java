@@ -12,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -284,9 +285,11 @@ public class ResistorView extends View {
 
 		if (TextReader.isStandardVal) {
 			TextReader.ohm.setText(TextReader.r.getString(R.string.ohm));
+			TextReader.ohm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40);
 		}
 		else {
 			TextReader.ohm.setText("\u26A0");
+			TextReader.ohm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
 		}
 		if (!TextReader.allowStandards[0]) {
 			System.out.println("IS MIN");

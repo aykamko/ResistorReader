@@ -7,6 +7,7 @@ import kamkowarrier.collab.resistorreader.ResistorAct;
 import kamkowarrier.collab.resistorreader.TextReader;
 import kamkowarrier.collab.resistorreader.ColorBand.MultBand;
 import kamkowarrier.collab.resistorreader.ColorBand.ValBand;
+import android.util.TypedValue;
 import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
@@ -72,9 +73,11 @@ public class UpperStandardListener implements View.OnClickListener {
 		resistorView.activeBandNum = original;
 		if (!TextReader.isStandardVal) {
 			TextReader.ohm.setText("\u26A0");
+			TextReader.ohm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
 		}
 		else {
 			TextReader.ohm.setText(resistorAct.getString(R.string.ohm));
+			TextReader.ohm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40);
 		}
 	}
 }
