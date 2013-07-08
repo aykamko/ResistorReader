@@ -1,7 +1,11 @@
 package kamkowarrier.collab.resistorreader;
 
+import kamkowarrier.collab.resistorreader.Listeners.FiveBandButtonListener;
+import kamkowarrier.collab.resistorreader.Listeners.FourBandButtonListener;
+import kamkowarrier.collab.resistorreader.Listeners.LowerStandardListener;
+import kamkowarrier.collab.resistorreader.Listeners.TolOutListener;
+import kamkowarrier.collab.resistorreader.Listeners.UpperStandardListener;
 import android.app.Activity;
-
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
@@ -15,13 +19,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import kamkowarrier.collab.resistorreader.Listeners.*;
 
 public class ResistorAct extends Activity {
 	
@@ -56,6 +62,7 @@ public class ResistorAct extends Activity {
 			fiveBandButton.setTextColor(r.getColor(R.color.gray4));
 			final ResistorView resistorView = (ResistorView) findViewById(R.id.resistor_view);
 			final ListView selectLV = (ListView) findViewById(R.id.LV_bands);
+			final FrameLayout resistorFL = (FrameLayout) findViewById(R.id.FL_resistor);
 			
 			// Initializing and assigning ColorSelectionAdapter
 			final ColorSelectionAdapter selectAdapter = new ColorSelectionAdapter(ResistorAct.this, 
@@ -85,6 +92,14 @@ public class ResistorAct extends Activity {
 			selectLV.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 				@Override
 				public void onGlobalLayout() { 
+					// Setting dimension of ResistorView_FL (holds ResistorView)
+					int resistorHeight = resistorView.getMeasuredHeight();
+					LinearLayout.LayoutParams resizedParams = new LinearLayout.LayoutParams(
+							(int) (resistorHeight * (419.0 / 1252.0)), 
+							LayoutParams.MATCH_PARENT);
+					resizedParams.setMargins(35, 0, 0, 0);
+					resistorFL.setLayoutParams(resizedParams);
+					
 					int selectLVHeight = selectLV.getMeasuredHeight();
 					float resistorViewTop = resistorView.getY();
 					
