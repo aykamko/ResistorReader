@@ -50,7 +50,6 @@ public class TolOutListener implements OnKeyListener {
 					break;
 				}
 				double val = Double.valueOf(TextReader.tolOut.getText().toString());
-				System.out.println("In listener: " + val);
 				if (resistorView.bandColors.size() == 4) {
 					resistorView.activeBandNum = 3;
 					TextReader.setBandNum(4);
@@ -87,7 +86,6 @@ public class TolOutListener implements OnKeyListener {
 				ColorBand.TolBand tolB = c.new TolBand(resistorView.getContext());
 
 				int color = tolB.valueToColor(val);
-				System.out.println("UPDATING");
 				resistorView.updateWithoutCalc(color);
 				if (original != resistorView.activeBandNum) {
 					resistorView.activeBandNum = original;
