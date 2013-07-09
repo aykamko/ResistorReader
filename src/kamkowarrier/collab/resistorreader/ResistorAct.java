@@ -83,6 +83,8 @@ public class ResistorAct extends Activity {
 			//enables/disables lower and upper standard buttons for "MIN", "MAX", and invalid values
 			final boolean[] allowStandards = {true, true};
 			
+			final String[] boxVals = new String[2];
+			
 			//final String[] standards = {lower.getText().toString(), valueOut.getText().toString(),
 				//	upper.getText().toString() };
 			
@@ -118,14 +120,15 @@ public class ResistorAct extends Activity {
 			resistorView.firstCalculate();
 			resistorView.selectAdap.notifyDataSetChanged();
 			TextReader.setUp(ohm, lower, upper, valueOut, tolOut, fourBandButton, 
-					fiveBandButton, allowStandards, r,standards,pressed);
+					fiveBandButton, allowStandards, r,standards,pressed,boxVals);
 			TextReader.setBandNum(resistorView.bandColors.size());
 			//check that init tol is given!
 			TextReader.setTolerance(TextReader.findClosestVal(new Double(tolOut.getText().toString()).doubleValue(),TextReader.validTols),false);
 			TextReader.read(valueOut.getText().toString(),true);
 			
 			//element at index 0 is for value, 1 for tolerance
-			final String[] boxVals = {valueOut.getText().toString(), tolOut.getText().toString()};
+			 boxVals[0] = valueOut.getText().toString();
+			 boxVals[1] = tolOut.getText().toString();
 			
 			//resistorView.setUpTextReader(new Double(tolOut.getText().toString()).doubleValue(), lower, upper,
 					//valueOut,tolOut,fourBandButton,fiveBandButton);

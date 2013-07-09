@@ -16,6 +16,7 @@ public class TextReader{
 	public static Resources r;
 	public static boolean[] allowStandards;
 	public static boolean[] pressed;
+	public static String[] boxVals;
 	
 	public static int[] band;
 	public static String valString;
@@ -63,7 +64,8 @@ public class TextReader{
 	
 	public static void setUp(TextView ohm, TextView lower, TextView upper, EditText valueOut,
 			EditText tolOut, Button fourBandButton, Button fiveBandButton,
-			boolean[] allowStandards, Resources r, String[] standards,boolean[] pressed) {
+			boolean[] allowStandards, Resources r, String[] standards,boolean[] pressed,
+			String[] boxVals) {
 		TextReader.ohm = ohm;
 		TextReader.lower = lower;
 		TextReader.upper = upper;
@@ -75,6 +77,7 @@ public class TextReader{
 		TextReader.r = r;
 		TextReader.standards = standards;
 		TextReader.pressed = pressed;
+		TextReader.boxVals = boxVals;
 	}
 
     /* read() is used by ResistorAct to parse input and update the lower and upper standards buttons.

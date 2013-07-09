@@ -302,6 +302,9 @@ public class ResistorView extends View {
 		else {
 			TextReader.upper.setBackgroundResource(R.drawable.btn_default_normal);
 		}
+		TextReader.boxVals[0] = TextReader.valueOut.getText().toString();
+		TextReader.boxVals[0] = TextReader.tolOut.getText().toString();
+
 	}
 
 	// changes band mode if a tolerance is selected that doesn't belong to the current band setting.
