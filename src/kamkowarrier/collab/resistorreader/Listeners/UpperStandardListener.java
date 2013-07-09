@@ -79,5 +79,17 @@ public class UpperStandardListener implements View.OnClickListener {
 			TextReader.ohm.setText(resistorAct.getString(R.string.ohm));
 			TextReader.ohm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40);
 		}
+		if (!TextReader.allowStandards[0]) {
+			TextReader.lower.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
+		}
+		else {
+			TextReader.lower.setBackgroundResource(R.drawable.btn_default_normal);
+		}
+		if (!TextReader.allowStandards[1]){
+			TextReader.upper.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
+		}
+		else {
+			TextReader.upper.setBackgroundResource(R.drawable.btn_default_normal);
+		}
 	}
 }

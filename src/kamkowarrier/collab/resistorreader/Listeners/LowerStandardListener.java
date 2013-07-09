@@ -59,15 +59,12 @@ public class LowerStandardListener implements View.OnClickListener {
 		System.out.println(TextReader.standards[0] + "THIS IS");
 		
 		int numBands = resistorView.bandColors.size();
-		System.out.println(TextReader.standards[0] + "THIS IS BEFORE");
 		TextReader.setTolerance(new Double(TextReader.tolOut.getText().toString()).doubleValue(),true);
-		System.out.println(TextReader.standards[0] + "THIS IS AFTER");
 		TextReader.setBandNum(numBands);
 		
 		TextReader.read(TextReader.valueOut.getText().toString(),false); //also changes lower & upper textviews
 		
 
-		System.out.println(TextReader.standards[0] + "THIS IS");
 		
 		int original = resistorView.activeBandNum;
 		for (int i = 0; i < numBands-1; i++) {
@@ -84,7 +81,6 @@ public class LowerStandardListener implements View.OnClickListener {
 			}
 			resistorView.updateWithoutCalc(val);
 			
-			System.out.println(TextReader.standards[0] + "THIS IS");
 
 		}
 		resistorView.activeBandNum = original;
@@ -95,6 +91,18 @@ public class LowerStandardListener implements View.OnClickListener {
 		else {
 			TextReader.ohm.setText(resistorAct.getString(R.string.ohm));
 			TextReader.ohm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40);
+		}
+		if (!TextReader.allowStandards[0]) {
+			TextReader.lower.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
+		}
+		else {
+			TextReader.lower.setBackgroundResource(R.drawable.btn_default_normal);
+		}
+		if (!TextReader.allowStandards[1]){
+			TextReader.upper.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
+		}
+		else {
+			TextReader.upper.setBackgroundResource(R.drawable.btn_default_normal);
 		}
 	}
 }
