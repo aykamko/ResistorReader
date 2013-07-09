@@ -145,8 +145,10 @@ public class TextReader{
 	 * "INVALID" and "VAL" respectively.
 	 */
 	public static double parseNumbers(String e, boolean update) {
+		if (update) {
 		allowStandards[0] = true;
 		allowStandards[1] = true;
+		}
 		double value = 0.0;
 		double smallVal = 0;
 		String lowerString = "INVALID";
@@ -218,7 +220,9 @@ public class TextReader{
 				valString = roundValue(smallVal*Math.pow(10,numberOfZeroes-6),bandNum) + "M";
 				if ((bandNum == 4 && value > 99000000) || (bandNum == 5 && value > 999000000)) {
 					upperString = "MAX";
+					if (update) {
 					allowStandards[1] = false;
+					}
 					lowerString = roundValue(currValArray[currValArray.length-1]*Math.pow(10, bandNum-3),bandNum)
 							+ "M";
 				}
@@ -246,7 +250,9 @@ public class TextReader{
 				valString = roundValue(smallVal*Math.pow(10,numberOfZeroes),bandNum) + "";
 				if (value <= 0.1) {
 					lowerString = "MIN";
+					if (update) {
 					allowStandards[0] = false;
+					}
 					upperString = roundValue(currValArray[0],bandNum) + "";          
 				}
 				lowerNeighbor = roundValue(last*Math.pow(10,numberOfZeroes-1),bandNum) 
