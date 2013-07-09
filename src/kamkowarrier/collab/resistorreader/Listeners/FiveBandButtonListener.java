@@ -63,8 +63,6 @@ public class FiveBandButtonListener implements View.OnClickListener {
 		ColorBand.TolBand tolB = c.new TolBand(resistorView.getContext());
 
 		int color = tolB.valueToColor(val);
-		
-		System.out.println(tolB.valueToColor(10.0) + " " + tolB.valueToColor(val));
 
 		resistorView.updateWithoutCalc(color);
 		

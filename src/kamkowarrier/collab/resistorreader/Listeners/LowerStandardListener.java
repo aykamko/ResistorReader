@@ -36,13 +36,9 @@ public class LowerStandardListener implements View.OnClickListener {
 				TextReader.lower.setBackgroundResource(R.drawable.btn_default_pressed);
 				TextReader.upper.setBackgroundResource(R.drawable.btn_default_normal);
 				TextReader.valueOut.setText(TextReader.standards[0]);
-				
-				System.out.println(TextReader.standards[0] + "BEFORE");
-				
+								
 				updateBands();
 				
-				System.out.println(TextReader.standards[0] + "AFTER");
-
 			}
 			else {
 				pressed[0] = false;
@@ -55,9 +51,7 @@ public class LowerStandardListener implements View.OnClickListener {
 	}
 	
 	public void updateBands() {
-		
-		System.out.println(TextReader.standards[0] + "THIS IS");
-		
+				
 		int numBands = resistorView.bandColors.size();
 		TextReader.setTolerance(new Double(TextReader.tolOut.getText().toString()).doubleValue(),true);
 		TextReader.setBandNum(numBands);
