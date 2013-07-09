@@ -116,8 +116,9 @@ public class ResistorAct extends Activity {
 
 			// Initial calculate
 			resistorView.firstCalculate();
+			resistorView.selectAdap.notifyDataSetChanged();
 			TextReader.setUp(ohm, lower, upper, valueOut, tolOut, fourBandButton, 
-					fiveBandButton, allowStandards, r,standards);
+					fiveBandButton, allowStandards, r,standards,pressed);
 			TextReader.setBandNum(resistorView.bandColors.size());
 			//check that init tol is given!
 			TextReader.setTolerance(TextReader.findClosestVal(new Double(tolOut.getText().toString()).doubleValue(),TextReader.validTols),false);
@@ -167,7 +168,6 @@ public class ResistorAct extends Activity {
 		   						TextReader.bandNum = numBands;
 		   						TextReader.read(valueOut.getText().toString(),true); //also changes lower & upper textviews
 	    						  if (!TextReader.isInRange(TextReader.numUserVal,numBands)) {
-	    							  System.out.println("IN RES ACT: " + allowStandards[0] + " " + allowStandards[1]);
 	    							  ohm.setText(redX);
 	    							  valueOut.setText(TextReader.valString);
 									  lower.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
@@ -202,14 +202,12 @@ public class ResistorAct extends Activity {
 									  ohm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
 								  }
 								  if (!allowStandards[0]) {
-									  System.out.println("IS MIN");
 									  lower.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
 								  }
 								  else {
 									  lower.setBackgroundResource(R.drawable.btn_default_normal);
 								  }
 								  if (!allowStandards[1]){
-									  System.out.println("IS MAX");
 									  upper.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
 								  }
 								  else {

@@ -39,9 +39,7 @@ public class Calculator {
 	    ArrayList<Double> values = new ArrayList<Double>();
 	    
 	    for (int i = 0; i < bandColors.size(); i++) {
-	    	// System.out.println(bandTypeArray[i].colorToValue(bandColors[i]));
 	        values.add(bandTypeArray[i].colorToValue(bandColors.get(i).intValue()));
-	        System.out.println("IN CALCS: " + bandTypeArray[i].colorToValue(bandColors.get(i).intValue()));
 	    }
 	    
 	    if (values.size() == 4) {
@@ -84,7 +82,6 @@ public class Calculator {
     	bounds[1] = addSuffix(result + ((tol / 100.0) * result), 1);
     	
     	// Sending output to Views
-    	System.out.println("IN CALC" + str);
 		valueOut.setText(str);
 		tolOut.setText(Double.toString(tol));
 		ohm.setText(ohmString);
@@ -110,8 +107,14 @@ public class Calculator {
     		thou2 = thou2.setScale(scale, BigDecimal.ROUND_HALF_DOWN);
     		output = thou2 + "K";
     	} else {
-    		int resultInt = (Double.valueOf(result)).intValue();
-    		output = (Integer.valueOf(resultInt)).toString();
+    		//check for integer
+    		if (result - Double.valueOf(result).intValue() > 0.001) {
+    			output = (Integer.valueOf(
+    					Double.valueOf(result).toString())).toString();
+    		}
+    		else {
+    		output = "" + TextReader.roundValue(result, TextReader.bandNum);
+    		}
     	}
     return output;
     }

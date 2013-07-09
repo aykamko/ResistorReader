@@ -15,6 +15,7 @@ public class TextReader{
 	public static boolean isStandardVal;
 	public static Resources r;
 	public static boolean[] allowStandards;
+	public static boolean[] pressed;
 	
 	public static int[] band;
 	public static String valString;
@@ -62,7 +63,7 @@ public class TextReader{
 	
 	public static void setUp(TextView ohm, TextView lower, TextView upper, EditText valueOut,
 			EditText tolOut, Button fourBandButton, Button fiveBandButton,
-			boolean[] allowStandards, Resources r, String[] standards) {
+			boolean[] allowStandards, Resources r, String[] standards,boolean[] pressed) {
 		TextReader.ohm = ohm;
 		TextReader.lower = lower;
 		TextReader.upper = upper;
@@ -73,6 +74,7 @@ public class TextReader{
 		TextReader.fiveBandButton = fiveBandButton;
 		TextReader.r = r;
 		TextReader.standards = standards;
+		TextReader.pressed = pressed;
 	}
 
     /* read() is used by ResistorAct to parse input and update the lower and upper standards buttons.
@@ -156,7 +158,6 @@ public class TextReader{
 		double first = currValArray[0];
 		
 		if (isValidString(e,false)) {
-			System.out.println("valid");
 			isValid = true;
 			if (!isIn(Character.toString(e.charAt(e.length()-1)), "1234567890")) {
 				value = Double.parseDouble(e.substring(0,e.length()-1));
@@ -213,7 +214,6 @@ public class TextReader{
 				}
 			}
 
-			System.out.println("numZeroes is " + numberOfZeroes);
 			if (numberOfZeroes >= 6) {
 				valString = roundValue(smallVal*Math.pow(10,numberOfZeroes-6),bandNum) + "M";
 				if ((bandNum == 4 && value > 99000000) || (bandNum == 5 && value > 999000000)) {
@@ -237,10 +237,8 @@ public class TextReader{
 				upperString = roundValue(upperStandard*Math.pow(10,numberOfZeroes-3),bandNum) + "K";
 				lowerNeighbor = roundValue(last*Math.pow(10,numberOfZeroes-4),bandNum) 
 						+ getSuffix(last*Math.pow(10,numberOfZeroes));
-				System.out.println(lowerNeighbor + "lowerNeigh");
 			    upperNeighbor = roundValue(first*Math.pow(10,numberOfZeroes-2),bandNum) 
 						+ getSuffix(first*Math.pow(10,numberOfZeroes));
-			    System.out.println(upperNeighbor + "upperNeigh");
 			}
 			else {
 				lowerString = roundValue(lowerStandard*Math.pow(10,numberOfZeroes),bandNum) + "";
@@ -259,22 +257,17 @@ public class TextReader{
 		}
 		// boundary cases
 		if (upperString.equals(valString)) {
-			System.out.println("HIT CASE 1");
 			if (isStandardVal || smallVal > last) {
 				upperString = upperNeighbor;
 			}
 		}
 		else if (lowerString.equals(valString)) {
-			System.out.println("HIT CASE 2");
 			if (isStandardVal || smallVal < first) {
-			System.out.println(lowerNeighbor + "final NEIGH");
 			lowerString = lowerNeighbor;
 			}
 		}
 		if (update) {
-			System.out.println(value + " " + isInRange(value,bandNum));
 			if (!isInRange(value,bandNum)) {
-				System.out.println("NOT IN RANGE: " + value);
 				//isValid = false;
 				lower.setText("OUTSIDE");
 				upper.setText("RANGE");
@@ -285,7 +278,6 @@ public class TextReader{
 				standards[0] = lowerString;
 				standards[1] = valString;
 				standards[2] = upperString;
-				System.out.println("setting lower and upper" + lowerString + upperString);
 				lower.setText(lowerString);
 				upper.setText(upperString);
 			}
@@ -294,7 +286,6 @@ public class TextReader{
 			//allowStandards[0] = true;
 			//allowStandards[1] = true;
 		}
-		System.out.println("final value is: " + value);
 		return value;
 	}
 
@@ -430,7 +421,6 @@ public class TextReader{
 
 	//the double given to this function must have a max of 3 sig digits
 	public static void valueToBands(double val) { 
-		System.out.println("ValtoBands given: " + val);
 		if (bandNum == 4) {
 			band = new int[3];
 			int numZeroes = 0;
@@ -449,7 +439,6 @@ public class TextReader{
 				Double v = new Double(val);
 				band[0] = v.intValue();
 				v = new Double((val- band[0])*10 + .0001);
-				System.out.println("v is" + v);
 				band[1] = v.intValue();
 				band[2] = 1; //gold
 			} 
@@ -493,7 +482,6 @@ public class TextReader{
 					band[2] = v.intValue();
 				}
 				band[3] = 0; //silver
-				//System.out.println(band[0] + " " + band[1] + " " + band[2] + " " + band[3]);
 			}
 			else if (val < 100) {
 				Double v = new Double(val/10);
@@ -519,7 +507,6 @@ public class TextReader{
 				band[3] = numZeroes;
 			}
 		}
-		System.out.println("band 3 is " + band[2]);
 	}
 
 	/*ModBSearch takes in a double and a SORTED array of standard values, 

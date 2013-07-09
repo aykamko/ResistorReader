@@ -273,14 +273,13 @@ public class ResistorView extends View {
 	}
 
 	public void calculate() {
-		for (int i = 0; i < bandColors.size(); i++) {
-			System.out.println(bandTypeArray[i].colorToValue((bandColors.get(i))));
-		}
+
+		TextReader.pressed[0] = false;
+		TextReader.pressed[1] = false;
 		calc.calculate(bandColors, bandTypeArray);
-		for (int i = 0; i < bandColors.size(); i++) {
-			System.out.println(bandTypeArray[i].colorToValue((bandColors.get(i))));
-		}
+
 		TextReader.setTolerance(new Double(TextReader.tolOut.getText().toString()).doubleValue(),false);
+
 		TextReader.read(TextReader.valueOut.getText().toString(),true);
 
 		if (TextReader.isStandardVal) {
@@ -292,14 +291,12 @@ public class ResistorView extends View {
 			TextReader.ohm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
 		}
 		if (!TextReader.allowStandards[0]) {
-			System.out.println("IS MIN");
 			TextReader.lower.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
 		}
 		else {
 			TextReader.lower.setBackgroundResource(R.drawable.btn_default_normal);
 		}
 		if (!TextReader.allowStandards[1]){
-			System.out.println("IS MAX");
 			TextReader.upper.setBackgroundResource(R.drawable.btn_default_disabled_holo_dark);
 		}
 		else {
