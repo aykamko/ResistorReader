@@ -108,9 +108,8 @@ public class Calculator {
     		output = thou2 + "K";
     	} else {
     		//check for integer
-    		if (result - Double.valueOf(result).intValue() > 0.001) {
-    			output = (Integer.valueOf(
-    					Double.valueOf(result).toString())).toString();
+    		if (result - Double.valueOf(result).intValue() < 0.001) {
+    			output = Double.valueOf(result).intValue() + "";
     		}
     		else {
     		output = "" + TextReader.roundValue(result, TextReader.bandNum);
